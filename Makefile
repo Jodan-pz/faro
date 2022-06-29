@@ -173,7 +173,7 @@ client-stop: ## Stop client container
 client-restart: client-stop client-start ## Restart client container
 
 client-log: ## Client log
-	@$(COMPOSE) logs -f --tail 20 client
+	@$(COMPOSE) logs -f --tail 30 client
 
 client-yarn-shell: ## Start a bash shell on the yarn container (use it for deps update)
 	@$(YARN) /bin/bash
@@ -197,7 +197,7 @@ db-remove: db-stop
 db-reset: | db-remove db-start ## Reset dev database
 
 db-log: ## Database log
-	@$(COMPOSE) logs -f --tail 20 db 
+	@$(COMPOSE) logs -f --tail 30 db 
 
 .PHONY: db-start db-stop db-remove db-reset db-log
 
@@ -225,7 +225,7 @@ else
 endif
 
 cache-srv-log: ## Cache service log
-	@$(COMPOSE) logs -f --tail 20 $(CACHE_SERVICE) 
+	@$(COMPOSE) logs -f --tail 30 $(CACHE_SERVICE) 
 
 .PHONY: cache-srv-start cache-srv-stop cache-srv-reset cache-srv-shell cache-srv-log
 
@@ -246,7 +246,7 @@ db-image-persister-remove: db-image-persister-stop
 db-image-persister-reset: | db-image-persister-remove db-image-persister-start ## Reset dev image persister database
 
 db-image-persister-log: ## Database image persister log
-	@$(COMPOSE) logs -f --tail 20 db-image-persister 
+	@$(COMPOSE) logs -f --tail 30 db-image-persister 
 
 .PHONY: db-image-persister-start db-image-persister-stop db-image-persister-remove db-image-persister-reset db-image-persister db-image-persister-log 
 
