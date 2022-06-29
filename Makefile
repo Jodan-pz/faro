@@ -95,18 +95,18 @@ start-admins: docker-composer.yml ## Start administration ui (db, db-image-persi
 	$(call logNotice,Starting admins...)
 	@$(COMPOSE) up --build -d db-admin db-image-persister-admin
 
-gen-client-proxy: ## Generate client proxy (from swagger)
+gen-client-proxy: docker-composer.yml ## Generate client proxy (from swagger)
 	@printf $(LBLUE)"Client proxy generation from swagger file: "$(NOCOLOR)$(YELLOW)"$(SWAGGER_URI)"$(GREEN)"...\n"
 	@cd $(ROOT)FARO.webclient/src/actions; \
 	curl -k $(SWAGGER_URI) -o FARO.json && \
 	$(COMPOSE) run --rm -w /workspace/FARO.webclient/src/actions proxygen -l ts -s FARO.json -o faro_api_proxy.ts && rm FARO.json
 	@printf $(NOCOLOR)
 
-kill: ## Kill and down docker containers
+kill: docker-composer.yml ## Kill and down docker containers
 	@$(COMPOSE) kill
 	@$(COMPOSE) down --volumes --remove-orphans
 
-ls:  ## List running containers
+ls: docker-composer.yml ## List running containers
 	@$(COMPOSE) ps --filter "status=running"
 
 .PHONY: init build start stop restart start-admins gen-client-proxy kill ls
