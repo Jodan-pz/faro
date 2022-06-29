@@ -117,7 +117,7 @@ ls: docker-composer.yml ## List running containers
 bargs:=--help
 batch-start: docker-compose.yml ## Start batch
 	$(call logNotice,FARO...)
-	@$(COMPOSE) up --build --quiet-pull -d db db-image-persister $(CACHE_SERVICE) $(MAIL_CATCHER_SERVICE)
+	@$(COMPOSE) up --build --quiet-pull -d db db-image-persister $(CACHE_SERVICE) $(MAIL_CATCHER_SERVICE) 2>/dev/null
 	@$(COMPOSE) run -i --rm batch dotnet run -- $(bargs)
 
 batch-plugs-restore: ## Restore api pluggables services
