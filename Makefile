@@ -268,7 +268,7 @@ mail-catcher-stop: ## Stop mail catcher service
 
 test-client: ## Run client tests
 	$(call logInfo,Testing client...)
-	@$(COMPOSE) build client-test && $(COMPOSE) run --rm client-test yarn test:ci
+	@$(COMPOSE) build -q client-test && $(COMPOSE) run --rm client-test yarn test:ci
 
 test-api: ## Run api tests
 	$(call logNotice,Testing api...)
