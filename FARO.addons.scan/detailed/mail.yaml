@@ -1,0 +1,6 @@
+faro-addons:
+  - mail:
+      id: MAIL
+      assembly: /workspace/FARO.addons/mail/bin/Debug/net6.0/publish/FARO.addons.mail.dll
+      writers:
+        - engine: FARO.Addons.Mail.Writers.Engine.MailWriterEngine

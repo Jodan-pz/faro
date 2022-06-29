@@ -1,0 +1,16 @@
+faro-addons:
+  - http:
+      assembly: /workspace/FARO.addons/http/bin/Debug/net6.0/publish/FARO.addons.http.dll
+      rootnamespace: FARO.Addons.Http
+
+      keysiterators:
+        - id: WEBAPI
+          engine: KeysIterators.Engine.WebApiKeysIteratorEngine
+          source: WebApiSource
+          webapi-scoped: true
+
+      decorators:
+        - id: WEBAPI
+          engine: Decorators.Engine.WebApiDecoratorEngine
+          source: WebApiSource
+          webapi-scoped: true

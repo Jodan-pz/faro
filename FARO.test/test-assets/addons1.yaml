@@ -1,0 +1,35 @@
+faro-addons:
+  - test:
+      assembly: test.dll
+      keysiterators:
+        - id: key1
+          assembly: key1.dll
+          engine: FARO.Addons.Test.KeysIterators.Sample1KeysIteratorEngine
+          source: FARO.Addons.Test.KeysIterators.SampleSource
+        - id: key2
+          assembly: key2.dll
+          engine: FARO.Addons.Test.KeysIterators.Sample2KeysIteratorEngine
+          source: FARO.Addons.Test.KeysIterators.SampleSource
+      decorators:
+        - engine: FARO.Addons.Test.Decorators.SampleDecoratorEngine
+          source: FARO.Addons.Test.Decorators.SampleSource
+          webapi-scoped: true
+      validators:
+        - id: val1
+          assembly: val1.dll
+          engine: FARO.Addons.Test.Validators.Sample1ValidatorEngine
+          webapi-scoped: true
+        - id: val2
+          assembly: val2.dll
+          engine: FARO.Addons.Test.Validators.Sample2ValidatorEngine
+      aggregators:
+        - engine: FARO.Addons.Test.Aggregators.SampleAggregatorEngine      
+      writers:
+        - id: wri1  
+          assembly: wri1.dll
+          engine: FARO.Addons.Test.Writers.Sample1WriterEngine
+          webapi-scoped: true
+        - id: wri2
+          assembly: wri2.dll
+          engine: FARO.Addons.Test.Writers.Sample2WriterEngine
+        - engine: FARO.Addons.Test.Writers.Sample3WriterEngine

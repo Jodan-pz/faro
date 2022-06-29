@@ -1,0 +1,41 @@
+dharma:
+  users:
+    - login: LOCAL\TESTUSER
+      description: Owner Test User
+
+  roles:
+    owner: [LOCAL\TESTUSER]
+
+  parameters:
+    system:
+      dave_log_level: INFO
+      root_dir: "%HOME%/faro_data"
+      keysIteratorsDataRootPath: "%root_dir%/keysiterators"
+      decoratorsDataRootPath: "%root_dir%/decorators"
+      validatorsDataRootPath: "%root_dir%/validators"
+      aggregatorsDataRootPath: "%root_dir%/aggregators"
+      writersDataRootPath: "%root_dir%/writers"
+      jsonFileDefinitionDataRootPath: "%root_dir%/defs"
+
+  connections:
+    - name: FARODB
+      description: FARO Database
+      isNetworkResource: true
+      host: mongodb://host.docker.internal:27073
+      path: faro
+      user: root
+      value: 65 12 220 131 254 44 46 248 19 111 95 2 252 191 198 92
+
+    - name: CACHEDB
+      description: FARO Decorator Cache Database
+      isNetworkResource: true
+      host: host.docker.internal:6379
+      path: FARO
+
+    - name: IMAGEPERSISTERDB
+      description: FARO Image Persister Database
+      isNetworkResource: true
+      host: host.docker.internal:3373
+      path: faro
+      user: root
+      value: 187 21 120 110 3 124 38 33 135 160 38 52 69 131 225 98

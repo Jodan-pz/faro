@@ -1,0 +1,46 @@
+faro-addons:
+  - rdb:
+      assembly: /workspace/FARO.addons/rdb/bin/Debug/net6.0/publish/FARO.addons.rdb.dll
+      rootnamespace: FARO.Addons.Rdb
+
+      keysiterators:
+        - id: MSSQL
+          engine: KeysIterators.Engine.MSSQLKeysIteratorEngine
+          source: SqlSource
+          webapi-scoped: true
+
+        - id: ORACLE
+          engine: KeysIterators.Engine.OracleKeysIteratorEngine
+          source: SqlSource
+          webapi-scoped: true
+
+        - id: SYBASE
+          engine: KeysIterators.Engine.SybaseKeysIteratorEngine
+          source: SqlSource
+          webapi-scoped: true
+
+        - id: MYSQL
+          engine: KeysIterators.Engine.MySqlKeysIteratorEngine
+          source: SqlSource
+          webapi-scoped: true
+
+      decorators:
+        - id: MSSQL
+          engine: Decorators.Engine.MSSQLDecoratorEngine
+          source: SqlSource
+          webapi-scoped: true
+
+        - id: ORACLE
+          engine: Decorators.Engine.OracleDecoratorEngine
+          source: SqlSource
+          webapi-scoped: true
+
+        - id: SYBASE
+          engine: Decorators.Engine.SybaseDecoratorEngine
+          source: SqlSource
+          webapi-scoped: true
+
+        - id: MYSQL
+          engine: Decorators.Engine.MySqlDecoratorEngine
+          source: SqlSource
+          webapi-scoped: true

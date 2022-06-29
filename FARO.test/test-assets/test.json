@@ -1,0 +1,533 @@
+{
+  "old_no_more_writers_in_std_flows": {
+    "TEST_TO_XLS": {
+      "image": "PROVA",
+      "writer": "excel"
+    },
+    "TEST_TO_DELIMITED": {
+      "image": "PROVA",
+      "writer": "delimited"
+    },
+    "TEST_TO_FIXED": {
+      "image": "PROVA",
+      "writer": "fixed"
+    },
+    "TEST_TO_JSON": {
+      "image": "PROVA",
+      "writer": "json"
+    }
+  },
+  "flows": {
+    "TEST_TO_CONSOLE_AGGREGATE": {
+      "image": "PROVA",
+      "aggregator": "TEST_AGGREGATION",
+      "writer": "console"
+    },
+    "TEST_TO_CONSOLE": {
+      "image": "PROVA",
+      "validator": "TEST_VALIDATION",
+      "writer": "console"
+    }
+  },
+  "validators": {
+    "TEST_VALIDATION": {
+      "image": "PROVA",
+      "kind": "DEFAULT",
+      "config": {
+        "value": {
+          "rules": [
+            {
+              "name": "rule1",
+              "expression": "NOT IsNullOrEmpty({COD_NAZIONE})"
+            },
+            {
+              "name": "rule2",
+              "expression": "NOT IsNullOrEmpty({NAZIONE})"
+            },
+            {
+              "name": "rule3",
+              "expression": "NOT IsNull({PRICE})"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "aggregators": {
+    "TEST_AGGREGATION": {
+      "image": "PROVA",
+      "kind": "DEFAULT",
+      "config": {
+        "value": {
+          "fields": [
+            {
+              "name": "#key:portfolioCode",
+              "function": "Distinct"
+            },
+            {
+              "name": "COD_NAZIONE",
+              "function": "Distinct"
+            },
+            {
+              "name": "NAZIONE",
+              "function": "Distinct"
+            },
+            {
+              "name": "NAZIONE",
+              "function": "Count"
+            },
+            {
+              "name": "PRICE",
+              "function": "Min"
+            },
+            {
+              "name": "PRICE",
+              "function": "Sum"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "writers": {
+    "console": {
+      "name": "console",
+      "description": "Console Standard Output Writer",
+      "kind": "CONSOLE",
+      "args": [
+        {
+          "name": "debug",
+          "description": "activate debug!"
+        }
+      ]
+    },
+    "excel": {
+      "name": "Anagrafica Titoli",
+      "description": "Anatit file Delimited Writer",
+      "kind": "EXCEL",
+      "args": [
+        {
+          "name": "file",
+          "description": "Output full file name"
+        }
+      ],
+      "config": {
+        "value": {
+          "template": "test-assets/tpl.xlsx",
+          "culture": "it",
+          "sheets": [
+            {
+              "name": "anagrafica",
+              "startrow": 5,
+              "rowstyle": 5,
+              "fields": [
+                {
+                  "column": 1,
+                  "name": "CODICE_EMITTENTE"
+                },
+                {
+                  "column": 2,
+                  "name": "CHIAVE_ARG_DATA",
+                  "type": "datetime"
+                }
+              ]
+            },
+            {
+              "name": "COM.01 - Sottostanti OICR",
+              "startrow": 6,
+              "rowstyle": 6,
+              "fields": [
+                {
+                  "column": 8,
+                  "name": "DES_EMITTENTE"
+                },
+                {
+                  "column": 18,
+                  "name": "PRICE"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "json": {
+      "name": "Anagrafica Titoli",
+      "description": "Anatit file Json Writer",
+      "kind": "JSON",
+      "args": [
+        {
+          "name": "file",
+          "description": "Output full file name"
+        }
+      ],
+      "config": {
+        "value": {
+          "encoding": "UTF-8",
+          "fields": [
+            {
+              "name": "CODICE_EMITTENTE",
+              "label": "Emittente"
+            },
+            {
+              "name": "DES_EMITTENTE",
+              "label": "Descrizione"
+            },
+            {
+              "name": "COD_NAZIONE"
+            },
+            {
+              "name": "CHIAVE_ARG_DATA",
+              "label": "Data",
+              "type": "datetime",
+              "format": "dd-MM-yyyy"
+            },
+            {
+              "name": "PRICE",
+              "label": "Prezzo"
+            }
+          ]
+        }
+      }
+    },
+    "delimited": {
+      "name": "Anagrafica Titoli",
+      "description": "Anatit file Delimited Writer",
+      "kind": "DELIMITED",
+      "args": [
+        {
+          "name": "file",
+          "description": "Output full file name"
+        }
+      ],
+      "config": {
+        "value": {
+          "delim": ",",
+          "culture": "it",
+          "encoding": "ASCII",
+          "includeheader": false,
+          "fields": [
+            {
+              "order": 1,
+              "name": "CODICE_EMITTENTE"
+            },
+            {
+              "order": 2,
+              "name": "DES_EMITTENTE"
+            },
+            {
+              "order": 3,
+              "name": "COD_NAZIONE"
+            },
+            {
+              "order": 4,
+              "name": "CHIAVE_ARG_DATA",
+              "type": "datetime",
+              "format": "dd-MM-yyyy"
+            },
+            {
+              "order": 5,
+              "name": "PRICE"
+            }
+          ]
+        }
+      }
+    },
+    "fixed": {
+      "name": "Anagrafica Titoli (Fixed)",
+      "description": "Anatit file Fixed Writer",
+      "kind": "FIXED",
+      "args": [
+        {
+          "name": "file",
+          "description": "Output full file name"
+        }
+      ],
+      "config": {
+        "value": {
+          "culture": "it",
+          "encoding": "ASCII",
+          "length": 65,
+          "fields": [
+            {
+              "name": "CODICE_EMITTENTE",
+              "start": 1,
+              "length": 10
+            },
+            {
+              "name": "DES_EMITTENTE",
+              "start": 11,
+              "length": 20
+            },
+            {
+              "name": "COD_NAZIONE",
+              "start": 31,
+              "length": 6
+            },
+            {
+              "name": "CHIAVE_ARG_DATA",
+              "type": "datetime",
+              "format": "dd-MM-yyyy",
+              "start": 37,
+              "length": 10
+            },
+            {
+              "name": "PRICE",
+              "start": 47,
+              "length": 18,
+              "type": "Decimal",
+              "virtualdec": 4,
+              "format": "000000000000000000"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "keys": {
+    "test_keys": {
+      "args": [
+        {
+          "name": "portfolioCode"
+        }
+      ],
+      "fields": [
+        {
+          "name": "instCode"
+        },
+        {
+          "name": "instName"
+        },
+        {
+          "name": "opPrice"
+        },
+        {
+          "name": "opDate"
+        }
+      ],
+      "source": {
+        "type": "WEBAPI",
+        "args": {
+          "action": "getOperations",
+          "method": "GET",
+          "qs": "portfolioCode={portfolioCode}&actDateFrom=2018-08-01&actDateTo=2018-08-31&settlementDateFrom=2018-08-01&settlementDateTo=2099-12-31&opType=ALL",
+          "connection": "mediaplus@dharma"
+        }
+      }
+    },
+    "test_keys2": {
+      "args": [
+        {
+          "name": "opDate"
+        }
+      ],
+      "fields": [
+        {
+          "name": "Id"
+        },
+        {
+          "name": "Emittente"
+        }
+      ],
+      "source": {
+        "type": "MSSQL",
+        "args": {
+          "sqlBody": "select top 10 idTitolo as Id, idEmittente as Emittente from Titoli where DtInserimento <= @opDate",
+          "connection": "arpi"
+        }
+      }
+    }
+  },
+  "images": {
+    "PROVA": {
+      "keys": [
+        {
+          "keyId": "test_keys"
+        },
+        {
+          "keyId": "test_keys2"
+        }
+      ],
+      "layers": {
+        "1": [
+          {
+            "Field": "CODICE_EMITTENTE",
+            "Config": "#decorator:Emittente.Codice"
+          },
+          {
+            "Field": "DES_EMITTENTE",
+            "Config": "#decorator:Emittente.Descrizione"
+          },
+          {
+            "Field": "COD_NAZIONE",
+            "Config": "#decorator:Emittente.Nazione"
+          },
+          {
+            "Field": "TEST",
+            "Config": "THIS_IS_A_SAMPLE_VALUE"
+          }
+        ],
+        "2": [
+          {
+            "Field": "NAZIONE",
+            "Config": {
+              "decorator": "Nazione",
+              "args": {
+                "codice": "{COD_NAZIONE}"
+              }
+            }
+          }
+        ],
+        "3": [
+          {
+            "Field": "NAZIONE_2",
+            "Config": "#decorator:Nazione2"
+          }
+        ],
+        "4": [
+          {
+            "Field": "CHIAVE_ARG_DATA",
+            "Config": "#key:opDate"
+          },
+          {
+            "Field": "CHIAVE_RES_ID",
+            "Config": "#key:Id"
+          },
+          {
+            "Field": "CHIAVE_RES_EMITTENTE",
+            "Config": "#key:Emittente"
+          }
+        ],
+        "5": [
+          {
+            "Field": "PROVOLA",
+            "Config": {
+              "decorator": "Emittente.Codice",
+              "args": {
+                "Emittente": "{CHIAVE_RES_EMITTENTE}"
+              }
+            }
+          },
+          {
+            "Field": "PRICE",
+            "Config": "#key:opPrice"
+          }
+        ]
+      }
+    }
+  },
+  "decorators": {
+    "instrument_info": {
+      "args": [
+        {
+          "name": "instNum"
+        }
+      ],
+      "fields": [
+        {
+          "name": "instCodeMarket"
+        },
+        {
+          "name": "instIssuerName"
+        },
+        {
+          "name": "instGroupName"
+        },
+        {
+          "name": "instCurCode"
+        },
+        {
+          "name": "instDuration"
+        }
+      ],
+      "source": {
+        "type": "WEBAPI",
+        "args": {
+          "action": "getInstrument",
+          "method": "GET",
+          "qs": "instNum={instNum}",
+          "connection": "mediaplus@dharma"
+        }
+      }
+    },
+    "RacConfig": {
+      "args": [],
+      "fields": [
+        {
+          "name": "AccountId",
+          "selector": "Result.Account.Id"
+        },
+        {
+          "name": "AliasFilter",
+          "selector": "Result.AdminMenu.JobAliasFilter"
+        },
+        {
+          "name": "FirstGroupName",
+          "selector": "Result.AdminMenu.Groups[0].Name"
+        }
+      ],
+      "source": {
+        "type": "WEBAPI",
+        "args": {
+          "connection": "http://localhost:5050/api",
+          "method": "GET",
+          "action": "v1/ClientConfig",
+          "qs": ""
+        }
+      }
+    },
+    "Emittente": {
+      "args": [
+        {
+          "name": "Emittente"
+        }
+      ],
+      "fields": [
+        {
+          "name": "Codice"
+        },
+        {
+          "name": "Descrizione"
+        },
+        {
+          "name": "Nazione"
+        }
+      ],
+      "source": {
+        "type": "MSSQL",
+        "args": {
+          "sqlBody": "select CodEmittente as Codice, DescLunga as Descrizione, CodNazione as Nazione from Emittenti where idEmittente = @Emittente",
+          "connection": "arpi"
+        }
+      }
+    },
+    "Nazione": {
+      "args": [
+        {
+          "name": "codice"
+        }
+      ],
+      "source": {
+        "type": "MSSQL",
+        "args": {
+          "sqlBody": "select DescLunga from Nazioni where codNazione = @codice",
+          "connection": "arpi"
+        }
+      }
+    },
+    "Nazione2": {
+      "args": [
+        {
+          "name": "COD_NAZIONE"
+        }
+      ],
+      "source": {
+        "type": "MSSQL",
+        "args": {
+          "sqlBody": "select DescLunga from Nazioni where codNazione = @COD_NAZIONE",
+          "connection": "arpi"
+        }
+      }
+    }
+  }
+}

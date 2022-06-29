@@ -1,0 +1,26 @@
+.flyContainer{
+    
+    border-radius:6px; 
+    box-shadow:1px 1px 10px rgba(0, 0, 0, 0.5);  
+    background-color: rgb(240, 240, 240); 
+    margin-bottom:2px;   
+    z-index: 1000;
+}
+.flyBar{
+    width:100%;  
+    margin-top: 2px;  
+    background-color:rgb(240, 240, 240); 
+    background-image: linear-gradient( rgb(240, 240, 240), rgba(200, 200, 200, 0.4) );
+    padding:4px; 
+}
+.flyContainer:hover .flyBar{
+    background-color:rgb(240, 240, 240); 
+    background-image: linear-gradient( rgb(240, 240, 240), rgb(240, 240, 240) );
+} 
+ 
+
+ 
+
+
+ 
+ 

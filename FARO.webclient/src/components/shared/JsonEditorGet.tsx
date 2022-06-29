@@ -1,0 +1,112 @@
+import * as React from 'react';
+ 
+import AceEditor from 'react-ace';
+import 'brace/mode/json';
+import 'brace/theme/terminal';
+
+import { Segment, Message, Icon } from 'semantic-ui-react';
+
+interface JsonEditorGetProps {
+    item?: any;
+    newitem?: boolean;
+    onModified?: (modified: boolean) => void;
+}
+
+export class JsonEditorGet extends React.Component<JsonEditorGetProps, { value: string, errors?: any[], save: boolean }> {
+    aceReference: any;
+    modified: boolean = false;
+    origValue: string;
+    constructor(props: JsonEditorGetProps) {
+        super(props);
+
+        this.origValue = JSON.stringify(props.item, null, 2);
+        this.state = { value: this.origValue, save: false, errors: undefined };
+    }
+
+    onModified = (f: boolean) => {
+        if (this.props.onModified && f) {
+            this.props.onModified(f);
+        }
+        this.modified = f;
+    }
+    componentWillReceiveProps(next: JsonEditorGetProps): void {
+        if (next.newitem) {
+            this.modified = false;
+            this.origValue = JSON.stringify(next.item, null, 2);
+            this.setState({ save: false, errors: undefined, value: this.origValue });
+        }
+    }
+    /*
+    componentDidUpdate(): void {
+        const { errors, value, save } = this.state;
+        if (this.modified && save && errors === undefined && this.origValue !== value) {
+            try {
+                const { name, onChange } = this.props;
+                const item = JSON.parse(value);
+                if (onChange) onChange(name, item);
+            } catch (err) {
+                // 
+            }
+        }
+    }
+    */
+
+    getJson = (): any => {
+        const { errors, value, save } = this.state;
+        if (save && errors === undefined) {
+            try {
+                return JSON.parse(value);
+            } catch (err) {
+                // 
+            }
+        }
+        return null;
+    }
+
+    hdlChange = (text: string) => {
+        const { errors , value} = this.state;
+        this.setState({ ...this.state, value: text, save: false }, () => {
+            if (errors === undefined || errors.length === 0) {
+                this.onModified(true);
+            }
+        });
+    }
+    hdlValidate = (value: any[]) => {
+        if (value && value.length > 0) {
+            let err: any[] = value.map(v => `ROW: ${v.row} - COLUMN: ${v.column} : ${v.text}`);
+            this.setState({ ...this.state, errors: err, save: false });
+        } else {
+            this.setState({ ...this.state, errors: undefined, save: true });
+        }
+    }
+
+
+    render() {
+        const { value, errors } = this.state;
+        let line: number = value ? value.split('\n').length : 1;
+        let h: string = (line * 17) + 10 + 'px';
+        return (
+            <Segment attached style={{ padding: '5px' }}>
+                
+                    {errors && errors.length > 0 && <Message warning attached="bottom"><Icon name="warning" />{errors.map((v, i) => v)}</Message>}
+                    <AceEditor
+                        mode="json"
+                        theme={'terminal'}
+                        width="100%"
+                        height={h}
+                        name={name}
+                        value={value}
+                        onChange={this.hdlChange}
+                        onValidate={this.hdlValidate}
+                        fontSize={14}
+                        showPrintMargin={false}
+                        showGutter={true}
+                        highlightActiveLine={true}
+                        editorProps={{ $blockScrolling: true }}
+                        setOptions={{ showLineNumbers: true }}
+                    />
+                
+            </Segment>
+        );
+    }
+}

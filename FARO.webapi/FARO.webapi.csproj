@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Version>1.4.2</Version>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Lamar" Version="8.0.1" />
+    <PackageReference Include="Lamar.Microsoft.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="6.0.6" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.2.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
+    <PackageReference Include="Unchase.Swashbuckle.AspNetCore.Extensions" Version="2.6.12" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FARO.servicelayer\FARO.servicelayer.csproj" />
+    <ProjectReference Include="..\FARO.support\FARO.support.csproj" />
+    <!-- <ProjectReference Include="..\FARO.support.dharma\FARO.support.dharma.csproj" /> -->
+  </ItemGroup>
+
+</Project>

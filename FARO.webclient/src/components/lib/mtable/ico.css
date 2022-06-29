@@ -1,0 +1,46 @@
+.defaultIco{
+    height: 10px; 
+    width: 10px; 
+    background-color: #CCC;
+   
+}
+.downIco,
+.upIco{
+    width: 0px;
+    height: 0px;
+   
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+}
+.downIco{
+    border-top: 10px solid #CCC
+}
+.upIco{
+    border-bottom: 10px solid #CCC
+}
+
+
+/*=================================================*/
+.containerIcoValue{
+    
+    margin-right: 4px;
+    font-size: 10px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.containerIco{
+    width:20px;
+   
+    margin-top: auto;
+    margin-bottom: auto;
+}
+ 
+.icoComp{
+    display: flex;
+    margin-left: 16px;
+    
+}
+
+.hideValue{
+    visibility: hidden;
+}

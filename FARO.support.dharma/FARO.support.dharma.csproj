@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dharma.Dave" Version="6.0.3" />
+    <PackageReference Include="Dharma.Dave.WebApi" Version="6.0.3" />
+    <PackageReference Include="Dharma.Dave.Logger.Serilog" Version="6.0.3" />
+    <PackageReference Include="Dharma.Workspace.YAML" Version="6.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
+    <!-- <PackageReference Include="Dharma.Workspace.EntityFramework.MSSQL" Version="6.0.1" /> -->
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FARO.common\FARO.common.csproj" />
+  </ItemGroup>
+
+</Project>

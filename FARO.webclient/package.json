@@ -1,0 +1,44 @@
+{
+  "name": "faro-webclient",
+  "homepage": "/faro.webclient",
+  "version": "1.4.2",
+  "private": true,
+  "dependencies": {
+    "@types/memoize-one": "^4.1.1",
+    "@types/xml2js": "^0.4.3",
+    "app-support": "^2.0.20",
+    "lodash": "^4.17.4",
+    "memoize-one": "^5.0.4",
+    "mglib-faro.webclient": "1.0.90",
+    "mildev-react-table": "^1.1.7",
+    "moment": "^2.22.2",
+    "react": "^16.5.2",
+    "react-ace": "^6.1.0",
+    "react-datepicker": "^1.0.4",
+    "react-dom": "^16.6.1",
+    "react-scripts-ts": "3.1.0",
+    "react-sortable-hoc": "^0.8.3",
+    "semantic-ui-css": "^2.2.12",
+    "semantic-ui-react": "^0.82.5",
+    "tslib": "^2.3.1",
+    "xml2js": "^0.4.19",
+    "yamljs": "^0.3.0"
+  },
+  "scripts": {
+    "start": "BROWSER=none react-scripts-ts start",
+    "build": "react-scripts-ts build",
+    "test": "react-scripts-ts test --env=jsdom",
+    "test:ci": "CI=true react-scripts-ts test --coverage --env=jsdom",
+    "eject": "react-scripts-ts eject"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.2",
+    "@types/lodash": "^4.14.106",
+    "@types/node": "^10.11.3",
+    "@types/react": "^16.4.14",
+    "@types/react-datepicker": "^0.62.0",
+    "@types/react-dom": "^16.0.8",
+    "@types/yamljs": "^0.2.30",
+    "typescript": "^3.1.1"
+  }
+}

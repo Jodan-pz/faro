@@ -1,0 +1,10 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+ 
+textarea:focus, input:focus { 
+  box-shadow: 0 0 5px #21BA45 !important;
+  border: 1px solid #21BA45 !important;
+}

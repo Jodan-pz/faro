@@ -1,0 +1,19 @@
+{
+    "Current": "LOCAL_TEST",
+    "Connections": {
+        "DID_TEST": {
+            "Host": "host.docker.internal",
+            "Port": 27017,
+            "User": "faro",
+            "Pwd": "farodb",
+            "Database": "faro"
+        },
+        "LOCAL_TEST": {
+            "Host": "localhost",
+            "Port": 27017,
+            "User": "faro",
+            "Pwd": "farodb",
+            "Database": "faro"
+        }
+    }
+}

@@ -1,0 +1,77 @@
+import { ItemValue } from 'src/actions/model';
+import * as React from 'react';
+import { InputValue } from './InputValue';
+import { Button, Modal, TextArea, TextAreaProps } from 'semantic-ui-react';
+import '../../../styles/items/items.css';
+
+interface ExpandInputValueProps extends ItemValue<any> {
+    placeholder?: string;
+    /** The HTML input type. */
+    type?: string;
+    fireChangeOnBlur?: boolean;
+}
+interface ExpandInputValueState {
+    open: boolean;
+}
+
+export class ExpandInputValue extends React.Component<ExpandInputValueProps, ExpandInputValueState> {
+    state = { open: false };
+
+    shouldComponentUpdate(nextProps: ExpandInputValueProps, nextState: ExpandInputValueState): boolean {
+        const { value, disabled, fireChangeOnBlur, style } = this.props;
+        if (
+            value !== nextProps.value
+            || disabled !== nextProps.disabled
+            || fireChangeOnBlur !== nextProps.fireChangeOnBlur
+            || style !== nextProps.style
+            || this.state.open !== nextState.open
+        ) return true;
+        return false;
+    }
+
+    render() {
+        const { value, disabled, fireChangeOnBlur, style } = this.props;
+        const { open } = this.state;
+ 
+        if (!open) {
+            return (
+                <div className="divbox" style={{ ...style }}>
+                    <Button
+                        style={{ height: '30px', marginTop: 'auto', marginBottom: 'auto' }}
+                        size="tiny"
+                        icon="expand arrows alternate"
+                        onClick={() => this.setState({ ...this.state, open: true })}
+                    />
+                    <InputValue
+                        style={{ ...style }}
+                        fireChangeOnBlur={fireChangeOnBlur}
+                        name={this.props.name}
+                        className={this.props.className}
+                        disabled={disabled}
+                        placeholder={this.props.placeholder}
+                        type={this.props.type}
+                        onChange={this.props.onChange}
+                        value={value}
+                    />
+                </div>);
+        }
+
+        return (
+            <Modal closeIcon open={true} onClose={() => this.setState({ ...this.state, open: false })} style={{ width: '90%' }} closeOnDimmerClick={false}>
+                <Modal.Content scrolling={true}>
+                    <TextArea
+                        ref={r => r && r.focus && r.focus()}
+                        style={{ width: '100%' }}
+                        value={value}
+                        onChange={(event: React.FormEvent<HTMLTextAreaElement>, data: TextAreaProps) => {
+                            if (this.props.onChange) {
+                                this.props.onChange(this.props.name || '', data.value);
+                            }
+                        }}
+                    />
+                </Modal.Content>
+            </Modal>
+        );
+    }
+}
+

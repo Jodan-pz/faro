@@ -1,0 +1,143 @@
+import { LayerDefinitionModel, ItemValue, KeysIteratorModel, DecoratorModel, LodashItem } from 'src/actions/model';
+import * as React from 'react';
+import { appConnector } from 'app-support';
+import { addMessage } from '../../../../../actions/indexMsg';
+import { listValues } from '../../../../Utils';
+import { ArrayContainerSearch } from '../../ArrayContainerSearch';
+import { LayerFieldItemDefinition } from '../../service/faro_api_proxy';
+import '../../../../../styles/image/imageKeySelector.css';
+import { ViewItem } from './ViewItem';
+import { alternateStyle } from 'src/components/lib/UtilLib';
+
+
+interface ViewItemsLayerProps extends ItemValue<LayerDefinitionModel> {
+    searchKeys?: Array<KeysIteratorModel>;
+    searchDecorators?: Array<DecoratorModel>;
+    fields?: Array<string>;
+    presentLayers?: Array<{ label: string, index: number }>;
+    onMoveItemTo?: (itemIndex: number, fromLayer: number, toLayer: number) => void;
+}
+
+const conn = appConnector<ViewItemsLayerProps>()(
+    (s, p) => ({
+    }),
+    {
+        addMessage
+    }
+);
+
+class ViewItemsLayerComp extends conn.StatefulCompo<{ list: Array<number> | null }> {
+    state = { list: [] };
+    indexLayer: number = -1;
+    changeItems = (name: string | number, newValue: any) => {
+        const { value } = this.props;
+        let layer: LayerDefinitionModel = { ...(value as LayerDefinitionModel) };
+        if (this.props.onChange) {
+            // Ritrasformo in uscita l'array di LodashItem in un array di items
+            let lodashItems: Array<LodashItem> = newValue as Array<LodashItem>;
+            let newItems: Array<LayerFieldItemDefinition> = lodashItems.map((item, index: number) => {
+                let obj: LayerFieldItemDefinition = {
+                    field: item.key
+                };
+                if (item.value !== undefined) obj.config = item.value;
+                // obj[item.key] = item.value === undefined ? 'undefined' : item.value;
+                return obj;
+            });
+            layer.items = newItems;
+            this.props.onChange(this.props.name || '', layer);
+        }
+    }
+
+    onMoveItemTo = (itemIndex: number, layer: any) => {
+        if (this.props.onMoveItemTo) {
+            this.props.onMoveItemTo(itemIndex, this.indexLayer, layer);
+        }
+    }
+    toClone = (item: any) => {
+        let clone: any = { ...item };
+        clone.key = 'Clone of ' + clone.key;
+        return clone;
+    }
+    lodashItem = (layer: LayerDefinitionModel) => {
+        return (layer.items || []).map((item, index: number): LodashItem => {
+            return {
+                key: item.field!,
+                value: item.config,
+                index
+            };
+        });
+    }
+    /*
+         if (this.props.addMessage && listCheck.length > 0) {
+            listCheck.forEach((val: string, indx: number) => {
+                this.props.addMessage({
+                    id: 'WARNING-MESSAGE-' + indx,
+                    message: val,
+                    modal: false,
+                    stackable: false,
+                    title: 'WARNING',
+                    timed: false,
+                    typeMessage: TypeMessage.Error
+                });
+            });
+        }
+    */
+    render() {
+        const { value, searchKeys, searchDecorators, presentLayers, fields } = this.props;
+        if (searchDecorators === undefined || searchKeys === undefined) return null;
+        const { list } = this.state;
+
+        
+        // Ribalto l'array degli items in un array di LodashItem con key, value e index, utile per l'ArrayContainer
+        let layer: LayerDefinitionModel = value as LayerDefinitionModel;
+        let items: Array<LodashItem> = this.lodashItem(layer);
+      
+
+        let listVal: Array<any> = list === null ? [] : list && list.length === 0 ? items : listValues(list, items);
+        let menuLayers: Array<any> = [];
+        this.indexLayer = -1;
+        if (presentLayers && presentLayers.length > 0) {
+            // meno l'item inesistente
+            this.indexLayer = presentLayers.findIndex(element => element.label === this.props.name) - 1;
+            presentLayers.forEach(element => {
+                if (element.label !== this.props.name) {
+                    menuLayers.push({
+                        label: element.label,
+                        value: element.index,
+                        key: element.index
+                    });
+                }
+            });
+        }
+
+        const newItemDefaultValue: LodashItem = { key: '' };
+
+        return (
+           
+
+            <ArrayContainerSearch
+                alternateStyle={alternateStyle()}
+                showRowNumber={true}
+                style={{ width: '99%' }}
+                defaultValue={newItemDefaultValue}
+                showAdd
+                showDelete
+                value={listVal}
+                name={'items'}
+                onChange={this.changeItems}
+                toClone={this.toClone}
+            >
+                <ViewItem
+                    fields={fields}
+                    searchKeys={searchKeys}
+                    searchDecorators={searchDecorators} 
+                    presentLayers={menuLayers}
+                    onMoveItemTo={this.onMoveItemTo}
+                />
+            </ArrayContainerSearch>
+
+            
+        );
+    }
+}
+export const ViewItemsLayer = conn.connect(ViewItemsLayerComp);

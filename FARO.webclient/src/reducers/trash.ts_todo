@@ -1,0 +1,26 @@
+import { UniqueStateParametric, UniqueState, manageUniqueState, selectorItems, isEmptyPayload } from './utils';
+import { TrashModel } from '../actions/model';
+import { trashSearch, trashSearchClear } from '../actions/index';
+
+export interface TrashState {
+    list?: UniqueStateParametric<TrashModel>;
+}
+
+const defaultState: TrashState = {};
+
+export default (state: TrashState = defaultState, action: any): TrashState => {
+    if (trashSearch.matchOnSuccess(action)) {
+        let list: any = manageUniqueState(state.list, action.promiseActionParams, action.payload);
+        return { ...state, list: list };
+    } else if (trashSearchClear.matchAction(action)) {
+        return { ...state, list: manageUniqueState(state.list, action.payload) };
+    }
+    return state;  
+};
+
+
+
+// Selectors
+export const getTrashSearch = (s: TrashState, uniqueId: string) => selectorItems(s.list, uniqueId);
+export const isTrashSearchEmpty = (s: TrashState, uniqueId: string) => isEmptyPayload(s.list, uniqueId);
+ 

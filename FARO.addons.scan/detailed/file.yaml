@@ -1,0 +1,36 @@
+faro-addons:
+  - files:
+      assembly: /workspace/FARO.addons/file/bin/Debug/net6.0/publish/FARO.addons.file.dll
+      rootnamespace: FARO.Addons.File
+
+      keysiterators:
+        - id: FILE_ENTRY
+          engine: KeysIterators.Engine.FileSystemEntryKeysIteratorEngine
+          source: KeysIterators.FileSystemEntrySource
+
+        - id: DELIMITED
+          engine: KeysIterators.Engine.DelimitedKeysIteratorEngine
+          source: DelimitedSource
+          webapi-scoped: true
+
+      decorators:
+        - id: DELIMITED
+          engine: Decorators.Engine.DelimitedDecoratorEngine
+          source: DelimitedSource
+          webapi-scoped: true
+
+      writers:
+        - id: FILE_OPE
+          engine: Writers.Engine.FileOperationWriterEngine
+
+        - id: FIXED
+          engine: Writers.Engine.FixedWriterEngine
+
+        - id: JSON
+          engine: Writers.Engine.JsonWriterEngine
+
+        - id: EXCEL
+          engine: Writers.Engine.ExcelWriterEngine
+
+        - id: DELIMITED
+          engine: Writers.Engine.DelimitedWriterEngine

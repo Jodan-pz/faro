@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FARO.addons.http.test", "http.test\FARO.addons.http.test.csproj", "{4040E507-0AF3-4FE1-B5E9-96FA39E69949}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FARO.addons.common.test", "common.test\FARO.addons.common.test.csproj", "{B561436B-D6E2-4196-86AA-6FAF6ADF36CE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4040E507-0AF3-4FE1-B5E9-96FA39E69949}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4040E507-0AF3-4FE1-B5E9-96FA39E69949}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4040E507-0AF3-4FE1-B5E9-96FA39E69949}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4040E507-0AF3-4FE1-B5E9-96FA39E69949}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B561436B-D6E2-4196-86AA-6FAF6ADF36CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B561436B-D6E2-4196-86AA-6FAF6ADF36CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B561436B-D6E2-4196-86AA-6FAF6ADF36CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B561436B-D6E2-4196-86AA-6FAF6ADF36CE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

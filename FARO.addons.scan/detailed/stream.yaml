@@ -1,0 +1,11 @@
+faro-addons:
+  - stream:
+      assembly: /workspace/FARO.addons/stream/bin/Debug/net6.0/publish/FARO.addons.stream.dll
+      rootnamespace: FARO.Addons.Stream
+      writers:
+        - id: STREAM
+          engine: Writers.Engine.StreamableWriterEngine
+          webapi-scoped: true
+
+        - id: STREAM_TO_FILE
+          engine: Writers.Engine.StreamToFileWriterEngine

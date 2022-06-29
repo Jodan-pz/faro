@@ -1,0 +1,58 @@
+dharma:
+  users:
+    - login: LOCAL\TESTUSER
+      description: Owner Test User
+
+  roles:
+    owner: [LOCAL\TESTUSER]
+
+  arguments:
+    - name: FLOW_ID
+      type: string
+    - name: FLOW_NAME
+      type: string
+    - name: INPUT_ARGS
+      type: string
+    - name: OUTPUT_ARGS
+      type: string
+    - name: ENABLE_CHECK
+      type: boolean
+    - name: ENABLE_PERSISTER
+      type: boolean
+    - name: PERSISTER_BUILD_STEP
+      type: string
+      
+  parameters:
+    system:
+      dave_log_level: DEBUG
+      root_dir: "/Users/jodan/support/faro_data"
+      keysIteratorsDataRootPath: "%root_dir%/keysiterators"
+      decoratorsDataRootPath: "%root_dir%/decorators"
+      validatorsDataRootPath: "%root_dir%/validators"
+      aggregatorsDataRootPath: "%root_dir%/aggregators"
+      writersDataRootPath: "%root_dir%/writers"
+      jsonFileDefinitionDataRootPath: "%root_dir%/datadef"
+
+  connections:
+    - name: FARODB
+      description: FARO Database
+      isMSSQL: false
+      isNetworkResource: true
+      host: mongodb://localhost:27073
+      path: faro
+      user: root
+      value: 65 12 220 131 254 44 46 248 19 111 95 2 252 191 198 92
+
+    - name: CACHEDB
+      description: FARO Decorator Cache Database
+      isNetworkResource: true
+      host: localhost:6379
+      path: FARO
+
+    - name: IMAGEPERSISTERDB
+      description: FARO Image Persister Database
+      isNetworkResource: true
+      host: localhost:3373
+      path: faro
+      user: root
+      value: 187 21 120 110 3 124 38 33 135 160 38 52 69 131 225 98

@@ -1,0 +1,125 @@
+import * as React from 'react';
+import * as reducers from '../../reducers';
+import { writer } from '../../actions/proxy';
+import { appConnector, Link } from 'app-support';
+import { writerGet, setCacheRunArg } from '../../actions';
+import { Segment, Header, Form, Button, Menu } from 'semantic-ui-react';
+import { Spinner } from '../shared/Spinner';
+
+import { ArgumentModel } from '../../actions/model';
+import { addMessage } from '../../actions/indexMsg';
+
+const conn = appConnector<{ id: string }>()(
+    (s, p) => ({
+        current: reducers.getWriter(s, p.id),
+        cacheRunArgs: reducers.getCacheRunArgs(s)
+    }),
+    {
+        writerGet,
+        setCacheRunArg,
+        addMessage
+    }
+);
+
+export interface WriterRunnerState {
+    args: any;
+    result?: any;
+    running: boolean;
+}
+
+class  WriterRunnerComp extends conn.StatefulCompo<WriterRunnerState> {
+
+    private notPerformed: boolean = true;
+
+    constructor(props: any) {
+        super(props);
+        this.state = { args: {}, running: false };
+        this.notPerformed = true;
+    }
+
+    componentDidUpdate(prev: any) {
+        const prevProps = this.castProps(prev);
+        if (this.props.id !== prevProps.id) {
+            this.props.writerGet(this.props.id);
+        }
+        const { result, running } = this.state;
+        if (!running && result) {
+            this.setState({ ...this.state, result: null });
+        }
+    }
+
+    componentDidMount() {
+        this.props.writerGet(this.props.id);
+    }
+
+    onChangedArgValue = (key: string, value: string) => {
+        this.props.setCacheRunArg({ argName: key, argValue: value });
+        this.setState({
+            args: { ...this.state.args, [key]: value }
+        });
+    }
+
+    onRun = () => {
+        this.notPerformed = false;
+        /*
+        this.setState({ ...this.state.args, result: undefined, running: true }, () => {
+            writer.create
+            writer.run(this.props.id, this.state.args).then(res => {
+                this.setState({
+                    result: res,
+                    running: false
+                });
+            }).catch(err => {
+                this.setState({
+                    result: {
+                        ERROR: err
+                    },
+                    running: false
+                });
+            });
+        }); */
+    }
+
+    render() {
+        const { args, result, running } = this.state;
+        const { current, cacheRunArgs } = this.props;
+        if (current && current.name) {
+
+            return (
+                <React.Fragment>
+                    <Segment>
+                        <Spinner message="Running" loading={running} />
+                        <Header>{current.name} - run playground</Header>
+                        <Form>
+                            {(current.args || []).map((ky: ArgumentModel, ix: number) => {
+                                let nm: string = ky.name! || '';
+                                return ky && <Form.Input
+                                    width={8}
+                                    key={ix}
+                                    label={nm}
+                                    value={args[nm] || ''}
+                                    onChange={(a, b) => this.onChangedArgValue(nm, b.value)}
+                                >
+                                    <input />
+
+                                    {this.notPerformed && cacheRunArgs[nm] && cacheRunArgs[nm] !== args[nm] && <Button size="mini" style={{ marginLeft: 10 }} onClick={() => this.onChangedArgValue(nm, cacheRunArgs[nm])}>
+                                        use last used value: {cacheRunArgs[nm]}
+                                    </Button>}
+
+                                </Form.Input>;
+                            })}
+                        </Form>
+
+                        <Button style={{ marginTop: '5px' }} content="Run" onClick={this.onRun} />
+
+                    </Segment>
+                </React.Fragment >
+            );
+        }
+
+        return null;
+    }
+
+}
+
+export const WriterRunner = conn.connect(WriterRunnerComp);

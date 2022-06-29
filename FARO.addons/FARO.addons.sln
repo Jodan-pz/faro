@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FARO.addons.common", "common\FARO.addons.common.csproj", "{87AF2D53-D028-4810-AEDC-7CACBC5257E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FARO.addons.file", "file\FARO.addons.file.csproj", "{B12F122A-35DC-4E07-9EAD-E45C2567B42E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FARO.addons.multi", "multi\FARO.addons.multi.csproj", "{76E88D72-CFD6-4535-A6FB-20CFA9BE794F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FARO.addons.mail", "mail\FARO.addons.mail.csproj", "{98D04053-5946-4B58-8C8B-F0CC2F5E0DD5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FARO.addons.stream", "stream\FARO.addons.stream.csproj", "{71973FC3-D558-4646-8495-6009CAF44B63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FARO.addons.rdb", "rdb\FARO.addons.rdb.csproj", "{AA46C05F-A63C-4A5A-962A-06ECF82D6114}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FARO.addons.http", "http\FARO.addons.http.csproj", "{62BABBC1-A139-4DB2-825C-B3DCBB9238B2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{87AF2D53-D028-4810-AEDC-7CACBC5257E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87AF2D53-D028-4810-AEDC-7CACBC5257E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87AF2D53-D028-4810-AEDC-7CACBC5257E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87AF2D53-D028-4810-AEDC-7CACBC5257E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B12F122A-35DC-4E07-9EAD-E45C2567B42E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B12F122A-35DC-4E07-9EAD-E45C2567B42E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B12F122A-35DC-4E07-9EAD-E45C2567B42E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B12F122A-35DC-4E07-9EAD-E45C2567B42E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76E88D72-CFD6-4535-A6FB-20CFA9BE794F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76E88D72-CFD6-4535-A6FB-20CFA9BE794F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76E88D72-CFD6-4535-A6FB-20CFA9BE794F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76E88D72-CFD6-4535-A6FB-20CFA9BE794F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98D04053-5946-4B58-8C8B-F0CC2F5E0DD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98D04053-5946-4B58-8C8B-F0CC2F5E0DD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98D04053-5946-4B58-8C8B-F0CC2F5E0DD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98D04053-5946-4B58-8C8B-F0CC2F5E0DD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71973FC3-D558-4646-8495-6009CAF44B63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71973FC3-D558-4646-8495-6009CAF44B63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71973FC3-D558-4646-8495-6009CAF44B63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71973FC3-D558-4646-8495-6009CAF44B63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA46C05F-A63C-4A5A-962A-06ECF82D6114}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA46C05F-A63C-4A5A-962A-06ECF82D6114}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA46C05F-A63C-4A5A-962A-06ECF82D6114}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA46C05F-A63C-4A5A-962A-06ECF82D6114}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62BABBC1-A139-4DB2-825C-B3DCBB9238B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62BABBC1-A139-4DB2-825C-B3DCBB9238B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62BABBC1-A139-4DB2-825C-B3DCBB9238B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62BABBC1-A139-4DB2-825C-B3DCBB9238B2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

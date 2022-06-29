@@ -1,0 +1,16 @@
+ARG NODE_BUILD_IMG=node:lts
+
+#2. Prepare client side build image
+FROM $NODE_BUILD_IMG as client-base
+WORKDIR /client
+
+#3. Install client dependecies
+FROM client-base as client-deps
+COPY ./FARO.webclient/package.json ./
+COPY ./FARO.webclient/yarn.lock ./
+
+RUN yarn install --pure-lockfile
+
+#4. Build client-side artifacts
+FROM client-deps as client-build
+COPY ./FARO.webclient/ ./

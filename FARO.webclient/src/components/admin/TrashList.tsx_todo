@@ -1,0 +1,158 @@
+import { appConnector } from 'app-support';
+import * as reducers from '../../reducers';
+import { addMessage } from '../../actions/indexMsg';
+import { TypeMessage } from '../../actions/modelMsg';
+import { trashDelete, trashRestore, trashSearch, trashSearchClear} from '../../actions';
+import { tagsToString } from '../Utils';
+import { TrashModel } from '../../actions/model';
+import { ITBCell, InfinityTableHeader, InfinityTable } from '../lib/InfinityTable';
+
+import * as React from 'react';
+import { ConfirmWidget } from '../shared/DialogWidget';
+import { Button } from 'semantic-ui-react';
+interface TrashListProps {
+    uniqueId: string;
+    root?: string;
+    defaultParms?: any;
+}
+
+interface TrashListState {
+    contextRef: any;
+}
+const conn = appConnector<TrashListProps>()(
+    (s, p) => ({
+        data: reducers.getTrashSearch(s, p.uniqueId),
+        isEmpty: reducers.isTrashSearchEmpty(s, p.uniqueId)
+    }),
+    {
+        trashDelete,
+        trashRestore,
+        trashSearch,
+        trashSearchClear,
+        addMessage
+    }
+);
+
+class TrashListCompo extends conn.StatefulCompo<TrashListState> {
+    pages: { pageIndex: number, pageSize: number } = { pageIndex: 1, pageSize: 20 };
+    state = {
+        contextRef: undefined,
+    };
+ 
+    handleContextRef = (contextRef: any) => {
+        this.setState({ ...this.state, contextRef });
+    }
+    componentWillUnmount(): void {
+        this.props.trashSearchClear(this.props.uniqueId);
+    }
+    componentDidMount() {
+        if (window && window.scrollTo) window.scrollTo(0, 0);
+        this.onSearch();
+    }
+    onSearch = () => {
+        const { defaultParms } = this.props;
+
+        const params: any = {
+            uniqueId: this.props.uniqueId,
+            ...defaultParms,
+            pageIndex: this.pages.pageIndex,
+            pageSize: this.pages.pageSize
+        };
+        this.props.trashSearch(params);
+    }
+
+    addMessage = (error: any, id: string) => {
+        this.props.addMessage({
+            id: id,
+            modal: true,
+            stackable: true,
+            timed: false,
+            typeMessage: TypeMessage.Error,
+            title: 'Error',
+            message: error
+        });
+    }
+
+    callBackResultRestore = (res: any) => {
+        if (res) {
+            if (res.Errors && res.Errors.lenght > 0) {
+                this.addMessage(res.Errors[0], 'restore-trash-item');
+            } else {
+                this.pages.pageIndex = 1;
+                this.onSearch();
+            }
+        }
+    }
+    callBackResultDelete = (res: any) => {
+        if (res) {
+            if (res.Errors && res.Errors.lenght > 0) {
+                this.addMessage(res.Errors[0], 'deleted-trash-item');
+            } else {
+                this.pages.pageIndex = 1;
+                this.onSearch();
+            }
+        }
+    }
+    onRestore = (v: TrashModel) => {
+        if (this.props.trashRestore) {
+            this.props.trashRestore({ trashItem: v, call: this.callBackResultRestore });
+        }
+    }
+
+    onDelete = (v: TrashModel) => {
+        if (this.props.trashDelete) {
+            this.props.trashDelete({ trashItem: v, call: this.callBackResultDelete });
+        }
+    }
+    onChangePage = (pIndex: number, pSize: number) => {
+        this.pages.pageIndex = pIndex;
+        this.onSearch();
+    }
+
+    rowRender = (row: number, data: TrashModel) => {
+        const { root } = this.props;
+        let documentType: any = data && data.documentType || '';
+        let tagsObj: { title: string, value: string } = tagsToString(data && data.tags);
+
+        return (
+            < >
+                <ITBCell width="4">{data.name} </ITBCell>
+                <ITBCell width="4">{data.description}</ITBCell>
+                <ITBCell width="4">{documentType}</ITBCell>
+                <ITBCell width="4">
+                    <span title={tagsObj.title}>{tagsObj.value}</span>
+                </ITBCell>
+                <ITBCell width="4" textAlign="center">
+                    <ConfirmWidget children={`Are you sure you want delete ${data.name} item forever?`} onConfirm={() => this.onDelete(data)} trigger={<Button content="Delete" icon="delete" basic color="red" />} />
+                    <ConfirmWidget children={`Are you sure you want restore ${data.name} item ?`} onConfirm={() => this.onRestore(data)} trigger={<Button content="Restores" icon="undo" basic color="blue" />} />
+                </ITBCell>
+            </  >
+        );
+    }
+
+    render() {
+        const { data } = this.props;
+        let headerColumn: Array<InfinityTableHeader> = [{ name: 'Name' }, { name: 'Description' }, { name: 'Source' }, { name: 'Tags' }];
+        return (
+            <React.Fragment>
+                <InfinityTable
+                    pageIndex={this.pages.pageIndex}
+                    pageSize={this.pages.pageSize}
+                    onChangePage={this.onChangePage}
+                    headerColumn={headerColumn}
+                    tableProp={{
+                        celled: true,
+                        striped: true,
+                        verticalAlign: 'middle'
+                    }}
+                    listData={data as Array<any> || []}
+                    rowrender={this.rowRender}
+                />
+            </React.Fragment >
+        );
+    }
+}
+
+
+
+export const TrashList = conn.connect(TrashListCompo);

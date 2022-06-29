@@ -1,0 +1,29 @@
+.filter{
+    display: flex;
+    border-radius: 0px;
+    height: 55px;
+    -webkit-box-shadow: inset 3px 3px 9px -1px rgba(0,0,0,0.4);
+    -moz-box-shadow: inset 3px 3px 9px -1px rgba(0,0,0,0.4);
+    box-shadow: inset 3px 3px 9px -1px rgba(0,0,0,0.4);
+}
+ 
+.itemfilter{
+    margin : 5px;
+    background-color: white;
+    border-radius: 0px;
+    display: flex;
+    -webkit-box-shadow: 3px 3px 9px -1px rgba(0,0,0,0.4);
+    -moz-box-shadow: 3px 3px 9px -1px rgba(0,0,0,0.4);
+    box-shadow: 3px 3px 9px -1px rgba(0,0,0,0.4);
+}
+
+.viewItem{
+    box-shadow: 2px 2px 4px -1px rgba(0,0,0,0.4);
+}
+.viewItemsLayer{
+    height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+ 
+ 

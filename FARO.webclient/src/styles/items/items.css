@@ -1,0 +1,122 @@
+.inputBox{
+    width: 100%;
+    margin-top: auto; 
+    margin-bottom: auto;
+}
+.labeledContainerBox{
+    display: flex;
+    width: 100%;
+    margin-top: auto; 
+    margin-bottom: auto;
+}
+.label{
+    width: 90px;
+    
+    text-align: right;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-top: auto; 
+    margin-bottom: auto;
+}
+.labelContent{
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.divbox{
+    display: flex;
+    width: 100%;
+    margin-top: auto; 
+    margin-bottom: auto;
+}
+.arrayValueBox{
+    width: 100%;
+}
+.arrayMenuItem{
+    display: flex;
+    padding-left: 5px;
+    margin-top: auto; 
+    margin-bottom: auto;
+}
+.arrayValueItem{
+    width: auto;
+    display: flex;
+    margin-bottom: 2px;
+    margin-top: 2px; 
+}
+  
+.dropValue{
+    width: inherit; 
+    padding-right: 5px; 
+}
+
+
+.keyContainerBox, .layerContainerBox{
+    display: flex;
+    width: 100%;
+}
+ 
+ 
+.headermenuNoStycky {
+    margin: 0px;
+}
+
+.layerContainerBox{
+    border-color:rgb(214, 214, 214);
+    border-width: 1px;
+    border-style: solid;
+    margin-right: 10px;
+}
+ 
+.arrayValueButtonDelete, .arrayValueButtonAdd{
+    margin-left: 5px; 
+    margin-right: 0px; 
+    max-height: 40px;
+} 
+.arrayValueBoxButton{
+    display: flex;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.arrayValueLabel{
+    margin-right: 5px; 
+    margin-left: 5px; 
+    margin-bottom: auto; 
+    margin-top: auto; 
+}
+ 
+#resultImage-content-table > div {
+    width: auto !important;
+}
+#logs-content-table > div {
+    width: auto !important;
+}
+#resultView-content-table > div {
+    width: auto !important;
+}
+
+
+.dropShadow{
+    box-shadow: 10px 10px 5px #aaaaaa;
+}
+
+
+.pop-modal{
+    display: block;  
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    -webkit-box-shadow: 0 10px 6px -6px #777;
+       -moz-box-shadow: 0 10px 6px -6px #777;
+            box-shadow: 0 10px 6px -6px #777;
+}
+.pop-modal-content{
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}

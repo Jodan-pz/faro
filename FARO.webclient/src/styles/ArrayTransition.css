@@ -1,0 +1,30 @@
+ 
+ .array-enter {
+    opacity: 0;
+    transform: translate(-500px, 0);
+    transform: translate3d(-500px, 0, 0);
+	
+}
+
+.array-enter.array-enter-active {
+    opacity: 1;
+    transition: opacity 2s ease-in;
+    transform: translate(0,0);
+    transform: translate3d(0,0,0);
+    transition-property: transform, opacity;
+    transition-duration: 100ms;
+    transition-timing-function: cubic-bezier(0.175, 0.665, 0.320, 1), linear;
+}
+
+.array-leave {
+	opacity: 1;
+	transform: scaleX(1) translateY(0);
+}
+
+.array-leave-active {
+	opacity: 0;
+	transform: scaleX(0) translateY(100px);
+    transition: all 300ms ease-in-out;
+}
+
+ 

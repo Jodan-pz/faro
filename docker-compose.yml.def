@@ -1,0 +1,154 @@
+version: "3.5"
+
+services:
+
+  db:
+    container_name: faro-db-dev
+    image: mongo
+    environment:
+      - MONGO_INITDB_DATABASE=faro
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    volumes:
+      - "${HOST_ROOT_PATH:-.}/FARO.database/mongodb/init-faro.js:/docker-entrypoint-initdb.d/init-mongo.js:ro,cached"
+      - "mongo_data:/data/db:cached"
+
+  db-admin:
+    container_name: faro-db-gui
+    image: mongo-express
+    links:
+      - db:mongo
+    restart: unless-stopped
+    environment:
+      ME_CONFIG_OPTIONS_EDITORTHEME: ambiance
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: admin
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_BASICAUTH_USERNAME: faro
+      ME_CONFIG_BASICAUTH_PASSWORD: faro
+    ports:
+      - "8082:8081"
+
+  batch:
+    container_name: faro-batch
+    hostname: faro
+    build:
+      dockerfile: .tools/Dockerfile
+      target: api-base
+    working_dir: /workspace/FARO.batch
+    volumes:
+      - "${HOST_ROOT_PATH:-.}:/workspace:delegated"
+      - "nuget_cache:/root/.nuget/packages:cached"
+      - "data:/faro_data"
+    command: [ "dotnet", "run" ]
+
+  webapi:
+    container_name: faro-webapi
+    hostname: faro-api
+    build:
+      dockerfile: .tools/Dockerfile
+      target: api-base
+    ports:      
+      - "5073:5000"
+    working_dir: /workspace
+    volumes:
+      - "${HOST_ROOT_PATH:-.}:/workspace:delegated"
+      - "nuget_cache:/root/.nuget/packages:cached"
+      - "data:/faro_data"
+    command: [ "dotnet", "watch", "--project", "./FARO.webapi/FARO.webapi.csproj" ]
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://*:5000
+      DOTNET_USE_POLLING_FILE_WATCHER: true
+
+  client:
+    container_name: faro-client
+    image: node:lts
+    stdin_open: true
+    working_dir: /workspace
+    volumes:
+      - "${HOST_ROOT_PATH:-.}/FARO.webclient:/workspace:delegated"
+    command: [ "yarn", "start" ]
+
+  cache-redis:
+    container_name: faro-cache-redis
+    image: redis
+    volumes:
+      - "cache_service_data:/data:cached"
+
+  db-image-persister:
+    container_name: faro-db-image-persister-dev
+    image: mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=faro
+      - MYSQL_DATABASE=faro
+    volumes:
+      - "${HOST_ROOT_PATH:-.}/FARO.database/imagepersister.mysql/init-faro.sql:/docker-entrypoint-initdb.d/init-faro.sql:ro,cached"
+      - "image_persister_data:/data/db:cached"
+  
+  db-image-persister-admin:
+    container_name: faro-db-image-persister-gui
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8083:80
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=faro-db-image-persister-dev
+    depends_on:
+      - db-image-persister
+
+  mailcatcher:
+    container_name: faro-mailcatcher
+    image: dockage/mailcatcher
+    ports:
+      - "8084:1080"
+
+  proxygen:
+    container_name: faro-client-proxy-generator
+    image: dev-toolkit-create-api-client
+    volumes:
+      - ${HOST_ROOT_PATH:-.}:/workspace:delegated
+
+  yarn:
+    container_name: yarn
+    image: node:lts
+    working_dir: /workspace
+    volumes:
+      - "${HOST_ROOT_PATH:-.}:/workspace:delegated"
+      - "yarn_cache:/usr/local/share/.cache/yarn/v6:cached"
+
+  db-test:
+    container_name: faro-db-test
+    image: mongo
+    environment:
+      - MONGO_INITDB_DATABASE=faro
+      - MONGO_INITDB_ROOT_USERNAME=faro
+      - MONGO_INITDB_ROOT_PASSWORD=farodb
+    volumes:
+      - "${HOST_ROOT_PATH:-.}/FARO.database/mongodb/init-faro.js:/docker-entrypoint-initdb.d/init-mongo.js:ro,cached"
+
+  client-test:
+    container_name: faro-client-test
+    build:
+      dockerfile: .tools/Dockerfile.client
+    working_dir: /client
+    volumes:
+      - "yarn_cache:/usr/local/share/.cache/yarn/v6:cached"
+
+  api-test:
+    depends_on:
+      - db-test
+    container_name: faro-api-test
+    build:
+      dockerfile: .tools/Dockerfile
+    working_dir: /workspace/FARO.test
+    volumes:
+      - "nuget_cache:/root/.nuget/packages:cached"
+
+volumes:
+  data:
+  mongo_data:
+  image_persister_data:
+  yarn_cache:
+  nuget_cache:
+  cache_service_data:
