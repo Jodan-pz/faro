@@ -150,7 +150,7 @@ api-sh: ## Start new shell in api container
 	@$(WEBAPI_EXEC) /bin/bash
 
 api-log: ## Server api log
-	@$(COMPOSE) logs -f --tail 20 webapi
+	@$(COMPOSE) logs -f --tail 30 webapi
 
 .PHONY: api-start api-stop api-restart api-plugs-restore api-plugs-publish api-sh api-log
 
