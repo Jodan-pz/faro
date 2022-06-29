@@ -102,7 +102,7 @@ gen-client-proxy: docker-composer.yml ## Generate client proxy (from swagger)
 	$(COMPOSE) run --rm -w /workspace/FARO.webclient/src/actions proxygen -l ts -s FARO.json -o faro_api_proxy.ts && rm FARO.json
 	@printf $(NOCOLOR)
 
-kill: docker-composer.yml ## Kill and down docker containers
+kill: ## Kill and down docker containers
 	@$(COMPOSE) kill
 	@$(COMPOSE) down --volumes --remove-orphans
 
