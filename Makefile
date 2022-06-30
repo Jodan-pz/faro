@@ -282,11 +282,19 @@ test-client: ## Run client tests
 	$(call logInfo,Testing client...)
 	@$(COMPOSE) build -q client-test && $(COMPOSE) run --rm client-test yarn test:ci
 
-test-api: ## Run api tests
+test-api: start-test-db-mongo ## Run api tests
 	$(call logNotice,Testing api...)
 	@$(COMPOSE) build -q api-test && $(COMPOSE) run --rm api-test dotnet test
 
-.PHONY: test-client test-api
+start-test-db-mongo: ## Start mongo test container
+	$(call logInfo,Starting mongo db test...)
+	@${COMPOSE} up -d db-test
+
+remove-test-db-mongo: ## Remove mongo test container
+	$(call logInfo,Removing mongo db test...)
+	@${COMPOSE} stop db-test && ${COMPOSE} rm -f db-test
+
+.PHONY: test-client test-api start-test-db-mongo remove-test-db-mongo
 
 ##
 ## Snapshot
