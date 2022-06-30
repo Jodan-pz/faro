@@ -79,10 +79,11 @@ init: ## Initialize tools
 	@curl -o- $(DEVTOOLKIT_SCRIPT_SOURCE) | TOOL=create-api-client bash 2> /dev/null
 
 build: docker-compose.yml ## Build images
+	$(call logInfo,Building images...)
 	@$(COMPOSE) pull --parallel --quiet --ignore-pull-failures 2> /dev/null
 	@$(COMPOSE) build --pull
 
-dev: |init build client-deps api-start batch-plugs-publish restart ## Initialize development
+dev: |init build client-deps batch-plugs-publish restart ## Initialize development
 
 start: docker-composer.yml ## Start
 	$(call logSun,Starting app...)
@@ -137,6 +138,7 @@ batch-plugs-restore: ## Restore batch pluggables services
 	@for plug in $(BATCH_PLUGGABLES); do $(DOTNET) restore FARO.$$plug --no-cache ; done
 
 batch-plugs-publish: ## Publish batch pluggables services
+batch-plugs-publish: api-restart ## Publish batch pluggables services
 	@for plug in $(BATCH_PLUGGABLES); do $(DOTNET) publish FARO.$$plug --no-cache ; done
 
 .PHONY: batch-start batch-plugs-restore batch-plugs-publish

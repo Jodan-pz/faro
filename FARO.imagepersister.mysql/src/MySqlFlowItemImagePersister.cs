@@ -153,16 +153,16 @@ namespace FARO.Services.ImagePersister {
             if (!_dataContextInitialized) return;
             var willWrite = (_keys.Count + _layers.Count + _rows.Count + _aggregations.Count) > 0;
             if (willWrite) {
-                _logger?.LogInformation("[{Me}] Finalizing persistence...", nameof(MySqlFlowItemImagePersister));
-                _logger?.LogTrace("[{Me}] Writing keys...         {Count,10}", nameof(MySqlFlowItemImagePersister), _keys.Count);
+                _logger?.LogInformation("Finalizing persistence...");
+                _logger?.LogTrace("Writing keys...         {Count,10}", _keys.Count);
                 BulkWrite(_keys);
-                _logger?.LogTrace("[{Me}] Writing layers...       {Count,10}", nameof(MySqlFlowItemImagePersister), _layers.Count);
+                _logger?.LogTrace("Writing layers...       {Count,10}", _layers.Count);
                 BulkWrite<Layers>(_layers);
-                _logger?.LogTrace("[{Me}] Writing rows...         {Count,10}", nameof(MySqlFlowItemImagePersister), _rows.Count);
+                _logger?.LogTrace("Writing rows...         {Count,10}", _rows.Count);
                 BulkWrite<Rows>(_rows);
-                _logger?.LogTrace("[{Me}] Writing aggregations... {Count,10}", nameof(MySqlFlowItemImagePersister), _aggregations.Count);
+                _logger?.LogTrace("Writing aggregations... {Count,10}", _aggregations.Count);
                 BulkWrite(_aggregations);
-                _logger?.LogInformation("[{Me}] Persister end.", nameof(MySqlFlowItemImagePersister));
+                _logger?.LogInformation("Persister end.", nameof(MySqlFlowItemImagePersister));
             }
         }
 
