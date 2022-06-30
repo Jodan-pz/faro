@@ -2,8 +2,18 @@
 
 ## To run the devstack:
 ```sh
-  make start
+  make init-dev
 ```
+## To load current snapshot:
+```sh
+  make hydrate
+```
+
+## To start gui administration tools:
+```sh
+  make start-admins
+```
+
 ## For all the available commands:
 ```sh
   make help
@@ -11,9 +21,10 @@
 ## Endpoints:
   - FARO app: http://localhost:5073
   - Swagger ui: http://localhost:5073/swagger
-  - Database mgmt: http://localhost:8082/db/faro (user: faro - pwd: faro)
+  - Mail catcher: http://localhost:8084
+  # Administration tools
+  - [OPTIONAL] Database mgmt: http://localhost:8082/db/faro (user: faro - pwd: faro)
   - [OPTIONAL] Image persister database mgmt: http://localhost:8083 (user: root - pwd: faro)
-  - [OPTIONAL] Mail catcher: http://localhost:8084
 ---
 
 ## Sample data

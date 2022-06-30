@@ -20,9 +20,8 @@ DOCKER_COMPOSE=docker-compose
 DOTNET_CLI=dotnet
 COMPOSE=$(DOCKER_COMPOSE) -p faro -f $(ROOT)docker-compose.yml
 YARN=$(COMPOSE) run --rm yarn
-WEBAPI_EXEC=$(DOCKER) exec -it -e FARO_DATA_PATH=$(FARO_DATA_PATH) faro-webapi
-WEBAPI_DOTNET=$(WEBAPI_EXEC) $(DOTNET_CLI)
-BATCH_DOTNET=$(WEBAPI_EXEC) $(DOTNET_CLI)
+DOTNET_EXEC=$(DOCKER) exec -it -e FARO_DATA_PATH=$(FARO_DATA_PATH) faro-webapi
+DOTNET=$(DOTNET_EXEC) $(DOTNET_CLI)
 
 # Colors
 WHITE="\033[0;37m"
@@ -73,11 +72,11 @@ docker-composer.yml: docker-compose.yml.def
 		cp docker-compose.yml.def docker-compose.yml; \
 	fi;
 
+dev: |init build api-start batch-plugs-publish restart ## Initialize development
+
 init: ## Initialize tools
 	$(call logInfo,Installing dev-toolkit (create-api-client)...)
 	@curl -o- $(DEVTOOLKIT_SCRIPT_SOURCE) | TOOL=create-api-client bash 2> /dev/null
-
-init-dev: init|build|batch-plugs-publish ## Initialize development
 
 build: docker-compose.yml ## Build images
 	@$(COMPOSE) pull --parallel --quiet --ignore-pull-failures 2> /dev/null
@@ -93,9 +92,13 @@ stop: docker-composer.yml ## Stop app
 
 restart: stop start ## Restart app
 
-start-admins: docker-composer.yml ## Start administration ui (db, db-image-persister)
-	$(call logNotice,Starting admins...)
+start-admins: docker-composer.yml ## Start administration ui
+	$(call logFun,Starting admins...)
 	@$(COMPOSE) up --build -d db-admin db-image-persister-admin
+
+stop-admins:  ## Stop administration ui
+	$(call logFun,Stopping admins...)
+	@$(COMPOSE) stop db-admin db-image-persister-admin
 
 gen-client-proxy: docker-composer.yml ## Generate client proxy (from swagger)
 	@printf $(LBLUE)"Client proxy generation from swagger file: "$(NOCOLOR)$(YELLOW)"$(SWAGGER_URI)"$(GREEN)"...\n"
@@ -111,7 +114,7 @@ kill: ## Kill and down docker containers
 ls: docker-composer.yml ## List running containers
 	@$(COMPOSE) ps --filter "status=running"
 
-.PHONY: init build start stop restart start-admins gen-client-proxy kill ls
+.PHONY: dev init build start stop restart start-admins stop-admins gen-client-proxy kill ls
 
 ##
 ## The Batch
@@ -123,10 +126,10 @@ batch-start: docker-compose.yml ## Start batch
 	@$(COMPOSE) run -i --rm batch dotnet run -- $(bargs)
 
 batch-plugs-restore: ## Restore api pluggables services
-	@for plug in $(BATCH_PLUGGABLES); do $(BATCH_DOTNET) restore FARO.$$plug --no-cache ; done
+	@for plug in $(BATCH_PLUGGABLES); do $(DOTNET) restore FARO.$$plug --no-cache ; done
 
 batch-plugs-publish: ## Publish all pluggables services
-	@for plug in $(BATCH_PLUGGABLES); do $(BATCH_DOTNET) publish FARO.$$plug --no-cache ; done
+	@for plug in $(BATCH_PLUGGABLES); do $(DOTNET) publish FARO.$$plug --no-cache ; done
 
 .PHONY: batch-start batch-plugs-restore batch-plugs-publish
 
@@ -143,13 +146,13 @@ api-stop: ## Stop server api container
 api-restart: api-stop api-start ## Restart api container
 
 api-plugs-restore: ## Restore api pluggables services
-	@for plug in $(PLUGGABLES); do $(WEBAPI_DOTNET) restore FARO.$$plug --no-cache ; done
+	@for plug in $(PLUGGABLES); do $(DOTNET) restore FARO.$$plug --no-cache ; done
 
 api-plugs-publish: api-restart ## Publish all pluggables services
-	@for plug in $(PLUGGABLES); do $(WEBAPI_DOTNET) publish FARO.$$plug --no-cache ; done
+	@for plug in $(PLUGGABLES); do $(DOTNET) publish FARO.$$plug --no-cache ; done
 
 api-sh: ## Start new shell in api container
-	@$(WEBAPI_EXEC) /bin/bash
+	@$(DOTNET) /bin/bash
 
 api-log: ## Server api log
 	@$(COMPOSE) logs -f --tail 30 webapi
@@ -283,11 +286,11 @@ test-api: ## Run api tests
 ##
 
 hydrate: ## Restore snapshot	
-	@$(WEBAPI_EXEC) ./.tools/hydrate.sh data
+	@$(DOTNET_EXEC) ./.tools/hydrate.sh data
 	@FARO_DB_HOST=$(FARO_DB_HOST) ./.tools/hydrate.sh db
 
 freeze: ## Create snapshot
-	@$(WEBAPI_EXEC) ./.tools/freeze.sh data
+	@$(DOTNET_EXEC) ./.tools/freeze.sh data
 	@FARO_DB_HOST=$(FARO_DB_HOST) ./.tools/freeze.sh db
 
 .PHONY: hydrate freeze
