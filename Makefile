@@ -83,7 +83,7 @@ build: docker-compose.yml ## Build images
 	@$(COMPOSE) pull --parallel --quiet --ignore-pull-failures 2> /dev/null
 	@$(COMPOSE) build --pull
 
-dev: |init build client-deps api-start batch-plugs-publish restart ## Initialize development
+dev: |init build client-deps batch-plugs-publish restart ## Initialize development
 
 start: docker-composer.yml ## Start
 	$(call logSun,Starting app...)
@@ -137,7 +137,7 @@ batch-start: docker-compose.yml ## Start batch
 batch-plugs-restore: ## Restore api pluggables services
 	@for plug in $(BATCH_PLUGGABLES); do $(DOTNET) restore FARO.$$plug --no-cache ; done
 
-batch-plugs-publish: ## Publish all pluggables services
+batch-plugs-publish: api-restart ## Publish all pluggables services
 	@for plug in $(BATCH_PLUGGABLES); do $(DOTNET) publish FARO.$$plug --no-cache ; done
 
 .PHONY: batch-start batch-plugs-restore batch-plugs-publish
