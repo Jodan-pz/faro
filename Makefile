@@ -72,7 +72,6 @@ docker-composer.yml: docker-compose.yml.def
 		cp docker-compose.yml.def docker-compose.yml; \
 	fi;
 
-dev: |init build client-deps api-start batch-plugs-publish restart ## Initialize development
 
 init: ## Initialize tools
 	$(call logInfo,Installing dev-toolkit (create-api-client)...)
@@ -82,15 +81,17 @@ build: docker-compose.yml ## Build images
 	@$(COMPOSE) pull --parallel --quiet --ignore-pull-failures 2> /dev/null
 	@$(COMPOSE) build --pull
 
-start: docker-composer.yml ## Start app
+dev: |init build client-deps api-start batch-plugs-publish restart ## Initialize development
+
+start: docker-composer.yml ## Start
 	$(call logSun,Starting app...)
 	@$(COMPOSE) up --build --quiet-pull -d db db-image-persister $(CACHE_SERVICE) $(MAIL_CATCHER_SERVICE) webapi client
 	
-stop: docker-composer.yml ## Stop app
+stop: docker-composer.yml ## Stop
 	$(call logFun,Stopping FARO containers...)
 	@$(COMPOSE) stop
 
-restart: stop start ## Restart app
+restart: stop start ## Restart
 
 start-admins: docker-composer.yml ## Start administration ui
 	$(call logFun,Starting admins...)
@@ -107,6 +108,12 @@ gen-client-proxy: docker-composer.yml ## Generate client proxy (from swagger)
 	$(COMPOSE) run --rm -w /workspace/FARO.webclient/src/actions proxygen -l ts -s FARO.json -o faro_api_proxy.ts && rm FARO.json
 	@printf $(NOCOLOR)
 
+clear-outputs: ## Force delete all outputs
+	$(call logFun,Clearing .Net outputs...)
+	@find . -type d \( -iname "bin" -o -iname "obj" \) -print0 | xargs -0 rm -rf
+	$(call logFun,Clearing Node outputs...)
+	@rm -rf $(ROOT)FARO.webclient/node_modules
+
 kill: ## Kill and down docker containers
 	@$(COMPOSE) kill
 	@$(COMPOSE) down --volumes --remove-orphans
@@ -114,7 +121,7 @@ kill: ## Kill and down docker containers
 ls: docker-composer.yml ## List running containers
 	@$(COMPOSE) ps --filter "status=running"
 
-.PHONY: dev init build start stop restart start-admins stop-admins gen-client-proxy kill ls
+.PHONY: init build dev start stop restart start-admins stop-admins gen-client-proxy clear-outputs kill ls
 
 ##
 ## The Batch

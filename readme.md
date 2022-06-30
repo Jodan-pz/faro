@@ -2,7 +2,7 @@
 
 ## To initialize and first run devstack:
 ```sh
-  make init-dev
+  make dev
 ```
   ## To run the devstack:
   ```sh
