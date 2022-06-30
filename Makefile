@@ -133,10 +133,10 @@ batch-start: docker-compose.yml ## Start batch
 	@$(COMPOSE) up --build --quiet-pull -d db db-image-persister $(CACHE_SERVICE) $(MAIL_CATCHER_SERVICE) 2>/dev/null
 	@$(COMPOSE) run -i --rm batch dotnet run -- $(bargs)
 
-batch-plugs-restore: ## Restore api pluggables services
+batch-plugs-restore: ## Restore batch pluggables services
 	@for plug in $(BATCH_PLUGGABLES); do $(DOTNET) restore FARO.$$plug --no-cache ; done
 
-batch-plugs-publish: ## Publish all pluggables services
+batch-plugs-publish: ## Publish batch pluggables services
 	@for plug in $(BATCH_PLUGGABLES); do $(DOTNET) publish FARO.$$plug --no-cache ; done
 
 .PHONY: batch-start batch-plugs-restore batch-plugs-publish
@@ -156,7 +156,7 @@ api-restart: api-stop api-start ## Restart api container
 api-plugs-restore: ## Restore api pluggables services
 	@for plug in $(PLUGGABLES); do $(DOTNET) restore FARO.$$plug --no-cache ; done
 
-api-plugs-publish: api-restart ## Publish all pluggables services
+api-plugs-publish: api-restart ## Publish api pluggables services
 	@for plug in $(PLUGGABLES); do $(DOTNET) publish FARO.$$plug --no-cache ; done
 
 api-sh: ## Start new shell in api container
