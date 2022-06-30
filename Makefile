@@ -73,9 +73,11 @@ docker-composer.yml: docker-compose.yml.def
 		cp docker-compose.yml.def docker-compose.yml; \
 	fi;
 
-init: ## Initialize development tools
+init: ## Initialize tools
 	$(call logInfo,Installing dev-toolkit (create-api-client)...)
-	@curl -o- $(DEVTOOLKIT_SCRIPT_SOURCE) | TOOL=create-api-client bash
+	@curl -o- $(DEVTOOLKIT_SCRIPT_SOURCE) | TOOL=create-api-client bash 2> /dev/null
+
+init-dev: init|build|batch-plugs-publish ## Initialize development
 
 build: docker-compose.yml ## Build images
 	@$(COMPOSE) pull --parallel --quiet --ignore-pull-failures 2> /dev/null
