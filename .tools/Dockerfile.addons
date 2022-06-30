@@ -1,0 +1,37 @@
+ARG NETCORE_BUILD_IMG=mcr.microsoft.com/dotnet/sdk
+
+# 1. Prepare server side build image
+FROM $NETCORE_BUILD_IMG as api-base
+WORKDIR /workspace
+
+RUN apt-get update \
+    && export DEBIAN_FRONTEND=noninteractive \
+    # Verify common dependencies and utilities are installed
+    && apt-get -y install --no-install-recommends apt-utils git curl less bzip2 2>&1 \
+    && apt-get autoremove -y \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
+
+# 2. Restore api deps
+FROM api-base as build-deps
+COPY ./NuGet.Config ./NuGet.Config
+COPY ./FARO.common/FARO.common.csproj FARO.common/
+
+# Copy addons
+COPY ./FARO.addons/*/*.csproj FARO.addons/
+RUN for file in $(ls FARO.addons/*.csproj); do mkdir -p ${file%.*}/ && mv $file ${file%.*}/; done
+RUN for i in FARO.addons/*; do mv $i $(echo $i | sed -e 's/FARO.addons\.//' ); done
+
+# Copy addons tests
+COPY ./FARO.addons/_test/*/*.csproj FARO.addons/_test/
+RUN for file in FARO.addons/_test/*.csproj; do mkdir -p ${file%.*}/ && mv $file ${file%.*}/; done
+RUN for i in FARO.addons/_test/*; do mv $i $(echo $i | sed -e 's/FARO.addons\.//' ); done
+
+# Copy and restore tests solution
+COPY ./FARO.addons/_test/FARO.addons.test.sln FARO.addons/_test/
+RUN dotnet restore ./FARO.addons/_test/FARO.addons.test.sln
+
+#3. Copy sources
+FROM build-deps as api-build
+COPY ./FARO.common/ ./FARO.common
+COPY ./FARO.addons/ FARO.addons

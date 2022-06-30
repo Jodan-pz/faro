@@ -18,8 +18,9 @@ MAIL_CATCHER_SERVICE=mailcatcher
 DOCKER=docker
 DOCKER_COMPOSE=docker-compose
 DOTNET_CLI=dotnet
+YARN_CLI=yarn
 COMPOSE=$(DOCKER_COMPOSE) -p faro -f $(ROOT)docker-compose.yml
-YARN=$(COMPOSE) run --rm yarn
+YARN_RUN=$(COMPOSE) run --rm yarn
 DOTNET_EXEC=$(DOCKER) exec -it -e FARO_DATA_PATH=$(FARO_DATA_PATH) faro-webapi
 DOTNET=$(DOTNET_EXEC) $(DOTNET_CLI)
 
@@ -159,7 +160,7 @@ api-plugs-publish: api-restart ## Publish all pluggables services
 	@for plug in $(PLUGGABLES); do $(DOTNET) publish FARO.$$plug --no-cache ; done
 
 api-sh: ## Start new shell in api container
-	@$(DOTNET) /bin/bash
+	@$(DOTNET_EXEC) /bin/bash
 
 api-log: ## Server api log
 	@$(COMPOSE) logs -f --tail 30 webapi
@@ -171,7 +172,7 @@ api-log: ## Server api log
 ##
 
 client-deps: ## Install dependencies
-	@$(YARN) yarn --cwd FARO.webclient --frozen-lockfile
+	@$(YARN_RUN) yarn --cwd FARO.webclient --frozen-lockfile
 
 client-shell: ## Start a bash shell on the client container
 	@$(COMPOSE) run --rm client bash
@@ -188,7 +189,7 @@ client-log: ## Client log
 	@$(COMPOSE) logs -f --tail 30 client
 
 client-yarn-shell: ## Start a bash shell on the yarn container (use it for deps update)
-	@$(YARN) /bin/bash
+	@$(YARN_RUN) /bin/bash
 
 .PHONY: client-deps client-shell client-start client-stop client-restart client-log client-yarn-shell
 
@@ -280,11 +281,16 @@ mail-catcher-stop: ## Stop mail catcher service
 
 test-client: ## Run client tests
 	$(call logInfo,Testing client...)
-	@$(COMPOSE) build -q client-test && $(COMPOSE) run --rm client-test yarn test:ci
+	@$(COMPOSE) build -q client-test && $(COMPOSE) run --rm client-test $(YARN_CLI) test:ci
 
 test-api: start-test-db-mongo ## Run api tests
 	$(call logNotice,Testing api...)
-	@$(COMPOSE) build -q api-test && $(COMPOSE) run --rm api-test dotnet test
+	@$(COMPOSE) build -q api-test && $(COMPOSE) run --rm api-test $(DOTNET_CLI) test 
+
+test-addons: ## Run api tests
+	$(call logNotice,Testing addons...)
+	@$(COMPOSE) build -q addons-test && $(COMPOSE) run --rm addons-test $(DOTNET_CLI) test _test
+
 
 start-test-db-mongo: ## Start mongo test container
 	$(call logInfo,Starting mongo db test...)

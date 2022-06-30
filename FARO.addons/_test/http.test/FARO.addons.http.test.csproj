@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\http\FARO.addons.http.csproj" />
-    <ProjectReference Include="..\base\FARO.addons.basetest.csproj" />
+    <ProjectReference Include="..\base.test\FARO.addons.base.test.csproj" />
   </ItemGroup>
 
 </Project>
