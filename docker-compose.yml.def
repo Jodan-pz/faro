@@ -33,6 +33,7 @@ services:
     container_name: faro-batch
     hostname: faro
     build:
+      context: .
       dockerfile: .tools/Dockerfile.core
       target: api-base
     working_dir: /workspace/FARO.batch
@@ -46,6 +47,7 @@ services:
     container_name: faro-webapi
     hostname: faro-api
     build:
+      context: .
       dockerfile: .tools/Dockerfile.core
       target: api-base
     ports:
@@ -65,7 +67,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://*:5000
-      DOTNET_USE_POLLING_FILE_WATCHER: true
+      DOTNET_USE_POLLING_FILE_WATCHER: 1
 
   client:
     container_name: faro-client
@@ -136,6 +138,7 @@ services:
   client-test:
     container_name: faro-client-test
     build:
+      context: .
       dockerfile: .tools/Dockerfile.client
     working_dir: /client
     volumes:
@@ -144,6 +147,7 @@ services:
   api-test:
     container_name: faro-api-test
     build:
+      context: .
       dockerfile: .tools/Dockerfile.core
     working_dir: /workspace/FARO.test
     volumes:
@@ -152,6 +156,7 @@ services:
   addons-test:
     container_name: faro-addons-test
     build:
+      context: .
       dockerfile: .tools/Dockerfile.addons
     working_dir: /workspace/FARO.addons
     volumes:

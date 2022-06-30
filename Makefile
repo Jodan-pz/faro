@@ -79,6 +79,7 @@ init: ## Initialize tools
 	@curl -o- $(DEVTOOLKIT_SCRIPT_SOURCE) | TOOL=create-api-client bash 2> /dev/null
 
 build: docker-compose.yml ## Build images
+	$(call logInfo,Building images...)
 	@$(COMPOSE) pull --parallel --quiet --ignore-pull-failures 2> /dev/null
 	@$(COMPOSE) build --pull
 
