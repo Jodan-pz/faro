@@ -72,7 +72,7 @@ docker-composer.yml: docker-compose.yml.def
 		cp docker-compose.yml.def docker-compose.yml; \
 	fi;
 
-dev: |init build api-start batch-plugs-publish restart ## Initialize development
+dev: |init build client-deps api-start batch-plugs-publish restart ## Initialize development
 
 init: ## Initialize tools
 	$(call logInfo,Installing dev-toolkit (create-api-client)...)
