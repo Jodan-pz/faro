@@ -33,7 +33,7 @@ services:
     container_name: faro-batch
     hostname: faro
     build:
-      dockerfile: .tools/Dockerfile
+      dockerfile: .tools/Dockerfile.core
       target: api-base
     working_dir: /workspace/FARO.batch
     volumes:
@@ -46,20 +46,26 @@ services:
     container_name: faro-webapi
     hostname: faro-api
     build:
-      dockerfile: .tools/Dockerfile
+      dockerfile: .tools/Dockerfile.core
       target: api-base
-    ports:      
+    ports:
       - "5073:5000"
     working_dir: /workspace
     volumes:
       - "${HOST_ROOT_PATH:-.}:/workspace:delegated"
       - "nuget_cache:/root/.nuget/packages:cached"
       - "data:/faro_data"
-    command: [ "dotnet", "watch", "--project", "./FARO.webapi/FARO.webapi.csproj" ]
+    command:
+      [
+        "dotnet",
+        "watch",
+        "--project",
+        "./FARO.webapi/FARO.webapi.csproj"
+      ]
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://*:5000
-      DOTNET_USE_POLLING_FILE_WATCHER: 1
+      DOTNET_USE_POLLING_FILE_WATCHER: true
 
   client:
     container_name: faro-client
@@ -85,7 +91,7 @@ services:
     volumes:
       - "${HOST_ROOT_PATH:-.}/FARO.database/imagepersister.mysql/init-faro.sql:/docker-entrypoint-initdb.d/init-faro.sql:ro,cached"
       - "image_persister_data:/data/db:cached"
-  
+
   db-image-persister-admin:
     container_name: faro-db-image-persister-gui
     image: phpmyadmin/phpmyadmin
@@ -136,12 +142,18 @@ services:
       - "yarn_cache:/usr/local/share/.cache/yarn/v6:cached"
 
   api-test:
-    depends_on:
-      - db-test
     container_name: faro-api-test
     build:
-      dockerfile: .tools/Dockerfile
+      dockerfile: .tools/Dockerfile.core
     working_dir: /workspace/FARO.test
+    volumes:
+      - "nuget_cache:/root/.nuget/packages:cached"
+
+  addons-test:
+    container_name: faro-addons-test
+    build:
+      dockerfile: .tools/Dockerfile.addons
+    working_dir: /workspace/FARO.addons
     volumes:
       - "nuget_cache:/root/.nuget/packages:cached"
 
