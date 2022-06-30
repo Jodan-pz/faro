@@ -163,7 +163,7 @@ api-log: ## Server api log
 ## Client
 ##
 
-client-clean: ## Clean client, install dependencies
+client-deps: ## Install dependencies
 	@$(YARN) yarn --cwd FARO.webclient --frozen-lockfile
 
 client-shell: ## Start a bash shell on the client container
@@ -183,7 +183,7 @@ client-log: ## Client log
 client-yarn-shell: ## Start a bash shell on the yarn container (use it for deps update)
 	@$(YARN) /bin/bash
 
-.PHONY: client-clean client-shell client-start client-stop client-restart client-log client-yarn-shell
+.PHONY: client-deps client-shell client-start client-stop client-restart client-log client-yarn-shell
 
 ##
 ## Database
