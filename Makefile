@@ -137,7 +137,6 @@ batch-start: docker-compose.yml ## Start batch
 batch-plugs-restore: ## Restore batch pluggables services
 	@for plug in $(BATCH_PLUGGABLES); do $(DOTNET) restore FARO.$$plug --no-cache ; done
 
-batch-plugs-publish: ## Publish batch pluggables services
 batch-plugs-publish: api-restart ## Publish batch pluggables services
 	@for plug in $(BATCH_PLUGGABLES); do $(DOTNET) publish FARO.$$plug --no-cache ; done
 
