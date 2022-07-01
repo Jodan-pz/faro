@@ -1,0 +1,74 @@
+# 1. Prepare server side build image
+FROM mcr.microsoft.com/dotnet/aspnet as base
+WORKDIR /app
+
+RUN apt-get update \
+    && export DEBIAN_FRONTEND=noninteractive \
+    # Verify common dependencies and utilities are installed
+    && apt-get -y install --no-install-recommends apt-utils git curl less bzip2 2>&1 \
+    && apt-get autoremove -y \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
+
+# 2. Restore api deps
+FROM mcr.microsoft.com/dotnet/sdk AS build
+WORKDIR /workspace
+COPY ./NuGet.Config ./NuGet.Config
+
+COPY ["FARO.webapi/FARO.webapi.csproj", "FARO.webapi/"]
+RUN dotnet restore "FARO.webapi/FARO.webapi.csproj"
+
+COPY FARO.common FARO.common/
+COPY FARO.servicelayer FARO.servicelayer/
+COPY FARO.expression.flee FARO.expression.flee/
+COPY FARO.support FARO.support/
+
+WORKDIR /workspace
+COPY FARO.datalayer.mongodb FARO.datalayer.mongodb/
+WORKDIR "/workspace/FARO.datalayer.mongodb"
+RUN dotnet build "FARO.datalayer.mongodb.csproj" -c Release -o /app/datalayer-build
+
+WORKDIR /workspace
+COPY FARO.imagepersister.mysql FARO.imagepersister.mysql/
+WORKDIR "/workspace/FARO.imagepersister.mysql"
+RUN dotnet build "FARO.imagepersister.mysql.csproj" -c Release -o /app/persister-build
+
+WORKDIR /workspace
+COPY FARO.addons FARO.addons/
+WORKDIR "/workspace/FARO.addons"
+RUN dotnet build "FARO.addons.sln" -c Release -o /app/addons-build
+
+WORKDIR "/workspace/FARO.datalayer.mongodb"
+RUN dotnet publish "FARO.datalayer.mongodb.csproj" -c Release -o /app/publish/datalayer
+
+WORKDIR "/workspace/FARO.imagepersister.mysql"
+RUN dotnet publish "FARO.imagepersister.mysql.csproj" -c Release -o /app/publish/persister
+
+WORKDIR "/workspace/FARO.addons"
+RUN dotnet publish "FARO.addons.sln" -c Release -o /app/publish/addons
+
+WORKDIR /workspace
+COPY FARO.webapi FARO.webapi/
+WORKDIR "/workspace/FARO.webapi"
+RUN dotnet build "FARO.webapi.csproj" -c Release -o /app/build
+
+FROM build AS publish
+WORKDIR "/workspace/FARO.webapi"
+RUN dotnet publish "FARO.webapi.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+
+WORKDIR /app/datalayer
+COPY --from=publish /app/publish/datalayer .
+
+WORKDIR /app/persister
+COPY --from=publish /app/publish/persister .
+
+WORKDIR /app/addons
+COPY FARO.addons.scan/faro-api-all.yaml ./scan/scan.yaml
+COPY --from=publish /app/publish/addons .
+
+WORKDIR /app
+ENTRYPOINT ["dotnet", "FARO.webapi.dll"]

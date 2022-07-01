@@ -8,8 +8,6 @@ FARO_SERVER=localhost:5073
 FARO_DATA_PATH?=/faro_data
 FARO_DB_HOST?=faro-db-dev
 SWAGGER_URI=http://$(FARO_SERVER)/swagger/v1/swagger.json
-PLUGGABLES=datalayer.mongodb imagepersister.mysql addons
-BATCH_PLUGGABLES=$(PLUGGABLES) niceflowrunner
 CACHE_SERVICE=cache-redis
 CACHE_SERVICE_SHELL_STARTUP="redis-cli -h faro-$(CACHE_SERVICE)"
 MAIL_CATCHER_SERVICE=mailcatcher
@@ -21,8 +19,8 @@ DOTNET_CLI=dotnet
 YARN_CLI=yarn
 COMPOSE=$(DOCKER_COMPOSE) -p faro -f $(ROOT)docker-compose.yml
 YARN_RUN=$(COMPOSE) run --rm yarn
-DOTNET_EXEC=$(DOCKER) exec -it -e FARO_DATA_PATH=$(FARO_DATA_PATH) faro-webapi
-DOTNET=$(DOTNET_EXEC) $(DOTNET_CLI)
+DOTNET_WEBAPI_EXEC=$(DOCKER) exec -it -e FARO_DATA_PATH=$(FARO_DATA_PATH) faro-webapi
+DOTNET_WEBAPI_RUN=$(DOCKER) run --rm -it -e FARO_DATA_PATH=$(FARO_DATA_PATH) -v $(ROOT):/workspace -v faro_data:$(FARO_DATA_PATH) -w /workspace --entrypoint ""  faro_webapi
 
 # Colors
 WHITE="\033[0;37m"
@@ -83,7 +81,7 @@ build: docker-compose.yml ## Build images
 	@$(COMPOSE) pull --parallel --quiet --ignore-pull-failures 2> /dev/null
 	@$(COMPOSE) build --pull
 
-dev: |init build client-deps batch-plugs-publish restart ## Initialize development
+dev: |init build client-deps start ## Initialize development
 
 start: docker-composer.yml ## Start
 	$(call logSun,Starting app...)
@@ -134,13 +132,7 @@ batch-start: docker-compose.yml ## Start batch
 	@$(COMPOSE) up --build --quiet-pull -d db db-image-persister $(CACHE_SERVICE) $(MAIL_CATCHER_SERVICE) 2>/dev/null
 	@$(COMPOSE) run -i --rm batch dotnet run -- $(bargs)
 
-batch-plugs-restore: ## Restore batch pluggables services
-	@for plug in $(BATCH_PLUGGABLES); do $(DOTNET) restore FARO.$$plug --no-cache ; done
-
-batch-plugs-publish: api-restart ## Publish batch pluggables services
-	@for plug in $(BATCH_PLUGGABLES); do $(DOTNET) publish FARO.$$plug --no-cache ; done
-
-.PHONY: batch-start batch-plugs-restore batch-plugs-publish
+.PHONY: batch-start
 
 ##
 ## Server API
@@ -154,19 +146,13 @@ api-stop: ## Stop server api container
 
 api-restart: api-stop api-start ## Restart api container
 
-api-plugs-restore: ## Restore api pluggables services
-	@for plug in $(PLUGGABLES); do $(DOTNET) restore FARO.$$plug --no-cache ; done
-
-api-plugs-publish: api-restart ## Publish api pluggables services
-	@for plug in $(PLUGGABLES); do $(DOTNET) publish FARO.$$plug --no-cache ; done
-
 api-sh: ## Start new shell in api container
-	@$(DOTNET_EXEC) /bin/bash
+	@$(DOTNET_WEBAPI_EXEC) /bin/bash
 
 api-log: ## Server api log
 	@$(COMPOSE) logs -f --tail 30 webapi
 
-.PHONY: api-start api-stop api-restart api-plugs-restore api-plugs-publish api-sh api-log
+.PHONY: api-start api-stop api-restart api-sh api-log
 
 ## 
 ## Client
@@ -307,12 +293,12 @@ remove-test-db-mongo: ## Remove mongo test container
 ## Snapshot
 ##
 
-hydrate: ## Restore snapshot	
-	@$(DOTNET_EXEC) ./.tools/hydrate.sh data
+hydrate: db-start ## Restore snapshot	
+	@$(DOTNET_WEBAPI_RUN) ./.tools/hydrate.sh data
 	@FARO_DB_HOST=$(FARO_DB_HOST) ./.tools/hydrate.sh db
 
-freeze: ## Create snapshot
-	@$(DOTNET_EXEC) ./.tools/freeze.sh data
+freeze: db-start ## Create snapshot
+	@$(DOTNET_WEBAPI_RUN) ./.tools/freeze.sh data
 	@FARO_DB_HOST=$(FARO_DB_HOST) ./.tools/freeze.sh db
 
 .PHONY: hydrate freeze
