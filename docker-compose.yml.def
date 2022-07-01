@@ -39,7 +39,6 @@ services:
     volumes:
       - "nuget_cache:/root/.nuget/packages:cached"
       - "data:/faro_data"
-      - ~/.vsdbg:/remote_debugger:rw
 
   webapi:
     container_name: faro-webapi
