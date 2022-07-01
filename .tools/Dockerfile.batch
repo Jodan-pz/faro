@@ -1,0 +1,74 @@
+# 1. Prepare server side build image
+FROM mcr.microsoft.com/dotnet/sdk as base
+WORKDIR /app
+
+# 2. Restore api deps
+FROM mcr.microsoft.com/dotnet/sdk AS build
+WORKDIR /workspace
+COPY ./NuGet.Config ./NuGet.Config
+
+COPY ["FARO.batch/FARO.batch.csproj", "FARO.batch/"]
+RUN dotnet restore "FARO.batch/FARO.batch.csproj"
+
+COPY FARO.common FARO.common/
+COPY FARO.servicelayer FARO.servicelayer/
+COPY FARO.expression.flee FARO.expression.flee/
+COPY FARO.support FARO.support/
+
+WORKDIR /workspace
+COPY FARO.datalayer.mongodb FARO.datalayer.mongodb/
+WORKDIR "/workspace/FARO.datalayer.mongodb"
+RUN dotnet build "FARO.datalayer.mongodb.csproj" -c Release -o /app/datalayer-build
+
+WORKDIR /workspace
+COPY FARO.niceflowrunner FARO.niceflowrunner/
+WORKDIR "/workspace/FARO.niceflowrunner"
+RUN dotnet build "FARO.niceflowrunner.csproj" -c Release -o /app/niceflowrunner-build
+
+WORKDIR /workspace
+COPY FARO.imagepersister.mysql FARO.imagepersister.mysql/
+WORKDIR "/workspace/FARO.imagepersister.mysql"
+RUN dotnet build "FARO.imagepersister.mysql.csproj" -c Release -o /app/persister-build
+
+WORKDIR /workspace
+COPY FARO.addons FARO.addons/
+WORKDIR "/workspace/FARO.addons"
+RUN dotnet build "FARO.addons.sln" -c Release -o /app/addons-build
+
+WORKDIR "/workspace/FARO.datalayer.mongodb"
+RUN dotnet publish "FARO.datalayer.mongodb.csproj" -c Release -o /app/publish/datalayer
+
+WORKDIR "/workspace/FARO.niceflowrunner"
+RUN dotnet publish "FARO.niceflowrunner.csproj" -c Release -o /app/publish/niceflowrunner
+
+WORKDIR "/workspace/FARO.imagepersister.mysql"
+RUN dotnet publish "FARO.imagepersister.mysql.csproj" -c Release -o /app/publish/persister
+
+WORKDIR "/workspace/FARO.addons"
+RUN dotnet publish "FARO.addons.sln" -c Release -o /app/publish/addons
+
+WORKDIR /workspace
+COPY FARO.batch FARO.batch/
+WORKDIR "/workspace/FARO.batch"
+RUN dotnet build "FARO.batch.csproj" -c Release -o /app/build
+
+FROM build AS publish
+WORKDIR "/workspace/FARO.batch"
+RUN dotnet publish "FARO.batch.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+
+WORKDIR /app/datalayer
+COPY --from=publish /app/publish/datalayer .
+
+WORKDIR /app/niceflowrunner
+COPY --from=publish /app/publish/niceflowrunner .
+
+WORKDIR /app/persister
+COPY --from=publish /app/publish/persister .
+
+WORKDIR /app/addons
+COPY FARO.addons.scan/faro.yaml ./scan/scan.yaml
+COPY --from=publish /app/publish/addons .

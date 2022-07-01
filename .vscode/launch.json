@@ -3,18 +3,54 @@
     // Hover to view descriptions of existing attributes.
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
+    "inputs": [
+        {
+            "id": "testProcessId",
+            "description": "VS Test debugging process id",
+            "type": "promptString"
+        }
+    ],
     "configurations": [
         {
-            "name": "Docker .NET Core Attach",
+            "name": "Docker .NET Core Attach - Webapi",
             "type": "docker",
             "request": "attach",
             "platform": "netCore",
+            "containerName": "faro-webapi",
             "netCore": {
                 "debuggerPath": "/remote_debugger/vsdbg"
             },
             "sourceFileMap": {
                 "/workspace": "${workspaceFolder}"
+            }
+        },
+        {
+            "name": "Docker .NET Core Attach - Test core",
+            "type": "docker",
+            "request": "attach",
+            "platform": "netCore",
+            "containerName": "faro-core-test-vscode-dbg",
+            "processId": "${input:testProcessId}",
+            "netCore": {
+                "debuggerPath": "/remote_debugger/vsdbg"
             },
+            "sourceFileMap": {
+                "/workspace": "${workspaceFolder}"
+            }
+        },
+        {
+            "name": "Docker .NET Core Attach - Test addons",
+            "type": "docker",
+            "request": "attach",
+            "platform": "netCore",
+            "containerName": "faro-addons-test-vscode-dbg",
+            "processId": "${input:testProcessId}",
+            "netCore": {
+                "debuggerPath": "/remote_debugger/vsdbg"
+            },
+            "sourceFileMap": {
+                "/workspace": "${workspaceFolder}"
+            }
         }
     ]
 }

@@ -34,40 +34,28 @@ services:
     hostname: faro
     build:
       context: .
-      dockerfile: .tools/Dockerfile.core
-      target: api-base
-    working_dir: /workspace/FARO.batch
+      dockerfile: .tools/Dockerfile.batch
+    working_dir: /app
     volumes:
-      - "${HOST_ROOT_PATH:-.}:/workspace:delegated"
       - "nuget_cache:/root/.nuget/packages:cached"
       - "data:/faro_data"
-    command: [ "dotnet", "run" ]
+      - ~/.vsdbg:/remote_debugger:rw
 
   webapi:
     container_name: faro-webapi
     hostname: faro-api
     build:
       context: .
-      dockerfile: .tools/Dockerfile.core
-      target: api-base
+      dockerfile: .tools/Dockerfile.api
     ports:
       - "5073:5000"
-    working_dir: /workspace
     volumes:
-      - "${HOST_ROOT_PATH:-.}:/workspace:delegated"
       - "nuget_cache:/root/.nuget/packages:cached"
       - "data:/faro_data"
-    command:
-      [
-        "dotnet",
-        "watch",
-        "--project",
-        "./FARO.webapi/FARO.webapi.csproj"
-      ]
+      - ~/.vsdbg:/remote_debugger:rw
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ASPNETCORE_URLS: http://*:5000
-      DOTNET_USE_POLLING_FILE_WATCHER: 1
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5000
 
   client:
     container_name: faro-client
@@ -144,14 +132,15 @@ services:
     volumes:
       - "yarn_cache:/usr/local/share/.cache/yarn/v6:cached"
 
-  api-test:
-    container_name: faro-api-test
+  core-test:
+    container_name: faro-core-test
     build:
       context: .
       dockerfile: .tools/Dockerfile.core
     working_dir: /workspace/FARO.test
     volumes:
       - "nuget_cache:/root/.nuget/packages:cached"
+      - ~/.vsdbg:/remote_debugger:rw
 
   addons-test:
     container_name: faro-addons-test
@@ -161,6 +150,7 @@ services:
     working_dir: /workspace/FARO.addons
     volumes:
       - "nuget_cache:/root/.nuget/packages:cached"
+      - ~/.vsdbg:/remote_debugger:rw
 
 volumes:
   data:

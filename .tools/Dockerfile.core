@@ -1,7 +1,5 @@
-ARG NETCORE_BUILD_IMG=mcr.microsoft.com/dotnet/sdk
-
 # 1. Prepare server side build image
-FROM $NETCORE_BUILD_IMG as base
+FROM mcr.microsoft.com/dotnet/sdk as base
 WORKDIR /workspace
 
 # 2. Restore api deps

@@ -129,8 +129,8 @@ ls: docker-composer.yml ## List running containers
 bargs:=--help
 batch-start: docker-compose.yml ## Start batch
 	$(call logNotice,FARO...)
-	@$(COMPOSE) up --build --quiet-pull -d db db-image-persister $(CACHE_SERVICE) $(MAIL_CATCHER_SERVICE) 2>/dev/null
-	@$(COMPOSE) run -i --rm batch dotnet run -- $(bargs)
+	@$(COMPOSE) up --build --quiet-pull -d db db-image-persister $(CACHE_SERVICE) $(MAIL_CATCHER_SERVICE) batch 2>/dev/null
+	@$(COMPOSE) run -i --rm batch ./FARO $(bargs)
 
 .PHONY: batch-start
 
@@ -270,13 +270,27 @@ test-client: ## Run client tests
 	$(call logInfo,Testing client...)
 	@$(COMPOSE) build -q client-test && $(COMPOSE) run --rm client-test $(YARN_CLI) test:ci
 
-test-api: start-test-db-mongo ## Run api tests
-	$(call logNotice,Testing api...)
-	@$(COMPOSE) build -q api-test && $(COMPOSE) run --rm api-test $(DOTNET_CLI) test 
+test-core: start-test-db-mongo ## Run core tests
+	$(call logNotice,Testing core...)
+	@$(COMPOSE) build -q core-test && $(COMPOSE) run --rm core-test $(DOTNET_CLI) test 
 
-test-addons: ## Run api tests
+test-addons: ## Run addons tests
 	$(call logNotice,Testing addons...)
 	@$(COMPOSE) build -q addons-test && $(COMPOSE) run --rm addons-test $(DOTNET_CLI) test _test
+
+targs=
+test-core-vscode-dbg: start-test-db-mongo ## Debug vscode core tests. Pass targs as classname.methodname.
+	$(call logFun,Testing core with vscode debugging (use process id in debug task)...)
+	$(DOCKER) kill faro-core-test-vscode-dbg || true 2> /dev/null
+	$(COMPOSE) build -q core-test && $(COMPOSE) run --rm --name faro-core-test-vscode-dbg --detach --entrypoint 'tail -f /dev/null' core-test
+	$(DOCKER) exec -it -e VSTEST_HOST_DEBUG=1 faro-core-test-vscode-dbg $(DOTNET_CLI) test --filter "FullyQualifiedName=FARO.Test.$(targs)" -l "console;verbosity=detailed"
+
+tsuite=
+test-addons-vscode-dbg: ## Debug vscode addons tests. Pass tsuite as suite name (common,http) and pass targs as (classname without FARO.Addons.).methodname.
+	$(call logFun,Testing addons with vscode debugging (use process id in debug task)...)
+	@$(DOCKER) kill faro-addons-test-vscode-dbg || true 2> /dev/null
+	@$(COMPOSE) build -q addons-test && $(COMPOSE) run --rm --name faro-addons-test-vscode-dbg --detach --entrypoint 'tail -f /dev/null' addons-test
+	@$(DOCKER) exec -it -e VSTEST_HOST_DEBUG=1 faro-addons-test-vscode-dbg $(DOTNET_CLI) test _test/$(tsuite).test --filter "FullyQualifiedName=FARO.Addons.$(targs)" -l "console;verbosity=detailed"
 
 
 start-test-db-mongo: ## Start mongo test container
@@ -287,7 +301,7 @@ remove-test-db-mongo: ## Remove mongo test container
 	$(call logInfo,Removing mongo db test...)
 	@${COMPOSE} stop db-test && ${COMPOSE} rm -f db-test
 
-.PHONY: test-client test-api start-test-db-mongo remove-test-db-mongo
+.PHONY: test-client test-core test-core-vscode-dbg test-addons-vscode-dbg start-test-db-mongo remove-test-db-mongo
 
 ##
 ## Snapshot
