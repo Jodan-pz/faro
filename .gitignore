@@ -6,7 +6,7 @@ appsettings.*.json
 !appsettings.faro.json
 dharma*.*.yaml
 docker-compose.yml
-!.devconainer/*
+!.devcontainer/*
 
 .DS_Store
 
