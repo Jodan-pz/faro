@@ -66,7 +66,7 @@ help: ## Display this help message
 ## Development
 ##
 
-docker-composer.yml: docker-compose.yml.def
+docker-compose.yml: docker-compose.yml.def
 	@if [ ! -f "./docker-compose.yml" ]; then \
 		cp docker-compose.yml.def docker-compose.yml; \
 	fi;
@@ -83,17 +83,17 @@ build: docker-compose.yml ## Build images
 
 dev: |init build client-deps start ## Initialize development
 
-start: docker-composer.yml ## Start
+start: docker-compose.yml ## Start
 	$(call logSun,Starting app...)
 	@$(COMPOSE) up --build --quiet-pull -d db db-image-persister $(CACHE_SERVICE) $(MAIL_CATCHER_SERVICE) webapi client
 	
-stop: docker-composer.yml ## Stop
+stop: docker-compose.yml ## Stop
 	$(call logFun,Stopping FARO containers...)
 	@$(COMPOSE) stop
 
 restart: stop start ## Restart
 
-start-admins: docker-composer.yml ## Start administration ui
+start-admins: docker-compose.yml ## Start administration ui
 	$(call logFun,Starting admins...)
 	@$(COMPOSE) up --build -d db-admin db-image-persister-admin
 
@@ -101,7 +101,7 @@ stop-admins:  ## Stop administration ui
 	$(call logFun,Stopping admins...)
 	@$(COMPOSE) stop db-admin db-image-persister-admin
 
-gen-client-proxy: docker-composer.yml ## Generate client proxy (from swagger)
+gen-client-proxy: docker-compose.yml ## Generate client proxy (from swagger)
 	@printf $(LBLUE)"Client proxy generation from swagger file: "$(NOCOLOR)$(YELLOW)"$(SWAGGER_URI)"$(GREEN)"...\n"
 	@cd $(ROOT)FARO.webclient/src/actions; \
 	curl -k $(SWAGGER_URI) -o FARO.json && \
@@ -118,7 +118,7 @@ kill: ## Kill and down docker containers
 	@$(COMPOSE) kill
 	@$(COMPOSE) down --volumes --remove-orphans
 
-ls: docker-composer.yml ## List running containers
+ls: docker-compose.yml ## List running containers
 	@$(COMPOSE) ps --filter "status=running"
 
 .PHONY: init build dev start stop restart start-admins stop-admins gen-client-proxy clear-outputs kill ls
