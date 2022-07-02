@@ -12,6 +12,18 @@
     ],
     "configurations": [
         {
+            "name": ".NET Core Launch (web)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/FARO.webapi/bin/Debug/net6.0/FARO.webapi.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/FARO.webapi",
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        {
             "name": "Docker .NET Core Attach - Webapi",
             "type": "docker",
             "request": "attach",
