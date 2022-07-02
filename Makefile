@@ -78,7 +78,7 @@ init: ## Initialize tools
 
 build: docker-compose.yml ## Build images
 	$(call logInfo,Building images...)
-	@$(COMPOSE) pull --parallel --quiet --ignore-pull-failures 2> /dev/null
+	@$(COMPOSE) pull --quiet --ignore-pull-failures || true 2> /dev/null
 	@$(COMPOSE) build --pull
 
 dev: |init build client-deps start ## Initialize development
