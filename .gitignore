@@ -3,7 +3,7 @@
 *NuGet.Config
 appsettings.*.json
 !appsettings.*.faro-api.json
-!appsettings.*.scode-dev.json
+!appsettings.*.vscode-dev.json
 !appsettings.faro.json
 dharma*.*.yaml
 docker-compose.yml
