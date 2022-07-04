@@ -1,8 +1,8 @@
 #!/bin/bash
 set -eu
 
-FARO_DATA_PATH=${FARO_DATA_PATH:-$HOME/Sviluppo/Net/faro_data}
-FARO_DB_HOST=${FARO_DB_HOST:-host.docker.internal:27073}
+FARO_DATA_PATH=${FARO_DATA_PATH:-$HOME/faro_data}
+FARO_DB_HOST=${FARO_DB_HOST:-faro-db-dev}
 
 function data(){
     cd FARO.snapshot
