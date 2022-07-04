@@ -34,17 +34,17 @@
         },
         "Support": {
             "FARODB": {
-                "server": "faro-db-dev",
+                "server": "localhost",
                 "database": "faro",
                 "user": "root",
                 "password": "admin"
             },
             "CACHEDB": {
-                "server": "faro-cache-redis",
+                "server": "localhost",
                 "database": "FARO"
             },
             "IMAGEPERSISTERDB": {
-                "server": "faro-db-image-persister-dev",
+                "server": "localhost",
                 "database": "faro",
                 "user": "root",
                 "password": "faro"
