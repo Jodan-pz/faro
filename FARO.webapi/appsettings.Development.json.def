@@ -49,12 +49,12 @@
                 "user": "root",
                 "password": "faro"
             },
-            "KeysIteratorsDataRootPath": "/home/vscode/faro_data/keysiterators",
-            "DecoratorsDataRootPath": "/home/vscode/faro_data/decorators",
-            "ValidatorsDataRootPath": "/home/vscode/faro_data/validators",
-            "AggregatorsDataRootPath": "/home/vscode/faro_data/aggregators",
-            "WritersDataRootPath": "/home/vscode/faro_data/writers",
-            "JsonFileDefinitionDataRootPath": "/home/vscode/faro_data/defs"
+            "KeysIteratorsDataRootPath": "/home/codespace/faro_data/keysiterators",
+            "DecoratorsDataRootPath": "/home/codespace/faro_data/decorators",
+            "ValidatorsDataRootPath": "/home/codespace/faro_data/validators",
+            "AggregatorsDataRootPath": "/home/codespace/faro_data/aggregators",
+            "WritersDataRootPath": "/home/codespace/faro_data/writers",
+            "JsonFileDefinitionDataRootPath": "/home/codespace/faro_data/defs"
         }
     },
     "Logging": {
