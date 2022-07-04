@@ -27,7 +27,7 @@ services:
       ME_CONFIG_BASICAUTH_USERNAME: faro
       ME_CONFIG_BASICAUTH_PASSWORD: faro
     ports:
-      - "8082:8081"
+      - 8082:8081
 
   batch:
     container_name: faro-batch
@@ -47,7 +47,7 @@ services:
       context: .
       dockerfile: .tools/Dockerfile.api
     ports:
-      - "5073:5000"
+      - 5073:5000
     volumes:
       - "nuget_cache:/root/.nuget/packages:cached"
       - "data:/faro_data"
@@ -96,7 +96,7 @@ services:
     container_name: faro-mailcatcher
     image: dockage/mailcatcher
     ports:
-      - "8084:1080"
+      - 8084:1080
 
   proxygen:
     container_name: faro-client-proxy-generator

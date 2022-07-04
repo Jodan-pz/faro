@@ -1,7 +1,7 @@
 faro-addons:
   - multi:
       id: MULTI
-      assembly: /workspace/FARO.addons/multi/bin/Debug/net6.0/publish/FARO.addons.multi.dll
+      assembly: /Users/jodan/Sviluppo/faro/FARO.addons/multi/bin/Debug/net6.0/publish/FARO.addons.multi.dll
       rootnamespace: FARO.Addons.Multi
       writers:
         - engine: Writers.Engine.MultiWriterEngine
