@@ -23,9 +23,9 @@ COPY ./FARO.test ./FARO.test
 #4. Mongo config
 FROM build as mongo-configured
 RUN echo '{\
-    "Current": "LOCAL_TEST",\
+    "Current": "DOCKER_TEST",\
     "Connections": {\
-    "LOCAL_TEST": {\
+    "DOCKER_TEST": {\
     "Host": "faro-db-test",\
     "Port": "27017",\
     "User": "faro",\
