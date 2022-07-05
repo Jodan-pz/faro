@@ -5,7 +5,7 @@
         "Addons": {
             "enabled": true,
             "paths": [
-                "/workspaces/faro/FARO.addons.scan/vsc-container"
+                "/workspaces/faro/FARO.addons.scan/detailed"
             ]
         },
         "CacheEngine": {
