@@ -1,0 +1,68 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],    
+	"settings": {
+        "files.exclude": {
+            "**/.git": true,
+            "**/.svn": true,
+            "**/bin": true,
+            "**/obj": true,
+            "**/.hg": true,
+            "**/CVS": true,
+            "**/.DS_Store": true,
+            "**/Thumbs.db": true
+        },
+		"workbench.colorCustomizations": {
+			"activityBar.activeBackground": "#2580b5",
+			"activityBar.activeBorder": "#6a2862",
+			"activityBar.background": "#2580b5",
+			"activityBar.foreground": "#e7e7e7",
+			"activityBar.inactiveForeground": "#e7e7e799",
+			"activityBarBadge.background": "#841b5e",
+			"activityBarBadge.foreground": "#e7e7e7",
+			"statusBar.background": "#1c628b",
+			"statusBar.foreground": "#e7e7e7",
+			"statusBarItem.hoverBackground": "#2580b5",
+			"titleBar.activeBackground": "#2580b5",
+			"titleBar.activeForeground": "#e7e7e7",
+			"titleBar.inactiveBackground": "#1c628b99",
+			"titleBar.inactiveForeground": "#e7e7e799",
+			"sideBar.background": "#011a39"
+		},
+        
+        "terminal.integrated.defaultProfile.linux":"zsh",
+        "terminal.integrated.profiles.linux": {
+            "bash": {
+                "path": "bash",
+                "icon": "terminal-bash"
+            },
+            "zsh": {
+                "path": "zsh"
+            }
+        },
+        "terminal.integrated.profiles.osx": {
+            "bash": {
+                "path": "bash",
+                "icon": "terminal-bash"
+            },
+            "zsh": {
+                "path": "zsh"
+            }
+        }
+	},
+	"extensions": {
+		"recommendations": [
+			"fudge.auto-using",
+			"ms-dotnettools.csharp",
+			"redhat.vscode-yaml",
+			"editorconfig.editorconfig",
+			"redhat.vscode-xml",
+			"eamodio.gitlens",
+			"jongrant.csharpsortusings",
+			"nadim-vscode.infinity-dark-theme"
+		]
+	}
+}
