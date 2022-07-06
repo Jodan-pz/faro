@@ -12,6 +12,100 @@
                 "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish: addons",
+            "command": "dotnet",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}/FARO.addons"
+            },
+            "args": [
+                "publish",
+                "--no-restore"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish: nice flow runner",
+            "command": "dotnet",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}/FARO.niceflowrunner"
+            },
+            "args": [
+                "publish",
+                "--no-restore"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish: image persister (mysql)",
+            "command": "dotnet",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}/FARO.imagepersister.mysql"
+            },
+            "args": [
+                "publish",
+                "--no-restore"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish: definition datalayer (mongo)",
+            "command": "dotnet",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}/FARO.datalayer.mongodb"
+            },
+            "args": [
+                "publish",
+                "--no-restore"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish all",
+            "dependsOn": [
+                "publish: addons",
+                "publish: definition datalayer (mongo)",
+                "publish: image persister (mysql)",
+                "publish: nice flow runner"
+            ],
+            "problemMatcher": "$msCompile"
         }
     ]
 }
