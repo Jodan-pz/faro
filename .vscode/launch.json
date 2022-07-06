@@ -8,6 +8,29 @@
             "id": "testProcessId",
             "description": "VS Test debugging process id",
             "type": "promptString"
+        },
+        {
+            "id": "batchFlowName",
+            "description": "Batch flow name",
+            "type": "promptString"
+        },
+        {
+            "id": "batchInputArgs",
+            "description": "Batch input args",
+            "type": "promptString",
+            "default": "{}"
+        },
+        {
+            "id": "batchOutputArgs",
+            "description": "Batch output args",
+            "type": "promptString",
+            "default": "{}"
+        },
+        {
+            "id": "batchPersisterStep",
+            "description": "Batch persister step",
+            "type": "promptString",
+            "default": ""
         }
     ],
     "configurations": [
@@ -22,6 +45,25 @@
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
             }
+        },
+        {
+            "name": ".NET Core Launch (batch)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/FARO.batch/bin/Debug/net6.0/FARO.dll",
+            "args": [
+                "${input:batchFlowName}",
+                "-c",
+                "-p",
+                "-s",
+                "${input:batchPersisterStep}",
+                "-i",
+                "${input:batchInputArgs}",
+                "-o",
+                "${input:batchOutputArgs}"
+            ],
+            "cwd": "${workspaceFolder}/FARO.batch",
         },
         {
             "name": "Docker .NET Core Attach - Webapi",
