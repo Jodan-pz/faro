@@ -1,0 +1,98 @@
+{
+  "decorators": {},
+  "keys": {
+    "simple": {
+      "source": {
+        "type": "RANGE",
+        "args": {
+          "start": "1",
+          "step": "1",
+          "end": "20"
+        }
+      },
+      "fields": [
+        {
+          "name": "Number"
+        }
+      ]
+    }
+  },
+  "images": {
+    "simple": {
+      "keys": [
+        {
+          "keyId": "simple"
+        }
+      ],
+      "layers": {
+        "1": [
+          {
+            "Field": "Numero",
+            "Config": "#key:Number"
+          },
+          {
+            "Field": "TS",
+            "Config": "#expr:Now.ToString('HH:mm:ss.ffffff')"
+          },
+          {
+            "Field": "Caso",
+            "Config": "#expr:Random(1;1000000)"
+          }
+        ]
+      }
+    }
+  },
+  "validators": {
+    "simple": {
+      "kind": "DEFAULT",
+      "config": {
+        "value": {
+          "rules": [
+            {
+              "name": "rule1",
+              "expression": "NOT IsNullOrEmpty({Numero})"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "aggregators": {
+    "simple": {
+      "image": "simple",
+      "kind": "DEFAULT",
+      "config": {
+        "value": {
+          "fields": [
+            {
+              "name": "#key:Number",
+              "function": "Count"
+            },
+            {
+              "name": "Numero",
+              "function": "Sum"
+            },
+            {
+              "name": "Caso",
+              "function": "Max"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "writers": {
+    "console": {
+      "description": "Console Standard Output Writer",
+      "kind": "CONSOLE"
+    }
+  },
+  "flows": {
+    "Simple flow": {
+      "image": "simple",
+      "validator": "simple",
+      "aggregator": "simple",
+      "writer": "console"
+    }
+  }
+}
