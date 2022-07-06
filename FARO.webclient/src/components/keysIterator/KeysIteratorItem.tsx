@@ -46,7 +46,7 @@ export class KeysIteratorItem extends React.PureComponent<KeysIteratorItemProps>
                 description: '',
                 args: [],
                 fields: [],
-                source: { type: KeysIteratorSourceType.WEBAPI, args: {} }
+                source: { type: 'RANGE', args: {} }
             } as KeysIteratorModel;
 
 
