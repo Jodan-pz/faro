@@ -11,6 +11,7 @@ using Microsoft.Extensions.Options;
 
 using FARO.Common;
 using FARO.Common.Domain;
+using FARO.Expression;
 using FARO.Extensions.DependencyInjection;
 using FARO.Services;
 using FARO.Services.Aggregators.Engine;
@@ -24,7 +25,6 @@ using FARO.Services.Writers.Engine;
 using Lamar;
 
 using static FARO.Common.Constants;
-using FARO.Expression;
 
 namespace FARO.Batch.Extensions.DependecyInjection {
 

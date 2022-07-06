@@ -6,6 +6,7 @@ using System.Text;
 using FARO.Common;
 using FARO.Common.Domain;
 using FARO.Services.Aggregators.Engine.Default;
+
 using static FARO.Services.Helpers.DynamicConfigValueHelper;
 
 namespace FARO.Services.Aggregators.Engine {

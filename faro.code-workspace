@@ -72,8 +72,8 @@
             "editorconfig.editorconfig",
             "redhat.vscode-xml",
             "eamodio.gitlens",
-            "jongrant.csharpsortusings",
-            "nadim-vscode.infinity-dark-theme"
+            "nadim-vscode.infinity-dark-theme",
+            "gaoshan0621.csharp-format-usings"
         ]
     }
 }
