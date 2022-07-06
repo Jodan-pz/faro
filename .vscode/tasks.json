@@ -5,6 +5,11 @@
             "label": "build",
             "command": "dotnet",
             "type": "process",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "isBuildCommand": true,
             "args": [
                 "build",
                 "${workspaceFolder}/FARO.sln",
