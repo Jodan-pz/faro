@@ -76,10 +76,11 @@ init: ## Initialize tools
 	$(call logInfo,Installing dev-toolkit (create-api-client)...)
 	@curl -o- $(DEVTOOLKIT_SCRIPT_SOURCE) | TOOL=create-api-client bash 2> /dev/null
 
-build: docker-compose.yml ## Build images
-	$(call logInfo,Building images...)
-	@$(COMPOSE) pull --quiet --ignore-pull-failures || true 2> /dev/null
-	@$(COMPOSE) build --pull
+build: docker-compose.yml ## Update & build images
+	$(call logInfo,Updating images...)
+	@$(COMPOSE) pull --ignore-pull-failures || true 2> /dev/null
+	$(call logNotice,Building images...)
+	@$(COMPOSE) build --quiet --progress plain
 
 dev: |init build client-deps start ## Initialize development
 
