@@ -5,7 +5,7 @@ WORKDIR /app
 # 2. Restore api deps
 FROM mcr.microsoft.com/dotnet/sdk AS build
 WORKDIR /workspace
-COPY ./NuGet.Config ./NuGet.Config
+COPY ./NuGet*.Config ./NuGet.Config
 
 COPY ["FARO.batch/FARO.batch.csproj", "FARO.batch/"]
 RUN dotnet restore "FARO.batch/FARO.batch.csproj"

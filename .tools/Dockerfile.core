@@ -4,7 +4,7 @@ WORKDIR /workspace
 
 # 2. Restore api deps
 FROM base as build-deps
-COPY ./NuGet.Config ./NuGet.Config
+COPY ./NuGet*.Config ./NuGet.Config
 COPY ./FARO.common/FARO.common.csproj FARO.common/
 COPY ./FARO.datalayer.mongodb/FARO.datalayer.mongodb.csproj FARO.datalayer.mongodb/
 COPY ./FARO.servicelayer/FARO.servicelayer.csproj FARO.servicelayer/

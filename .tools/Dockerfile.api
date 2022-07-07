@@ -13,7 +13,7 @@ RUN apt-get update \
 # 2. Restore api deps
 FROM mcr.microsoft.com/dotnet/sdk AS build
 WORKDIR /workspace
-COPY ./NuGet.Config ./NuGet.Config
+COPY ./NuGet*.Config ./NuGet.Config
 
 COPY ["FARO.webapi/FARO.webapi.csproj", "FARO.webapi/"]
 RUN dotnet restore "FARO.webapi/FARO.webapi.csproj"
