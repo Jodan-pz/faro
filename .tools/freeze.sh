@@ -2,7 +2,7 @@
 set -eu
 
 FARO_DATA_PATH=${FARO_DATA_PATH:-$HOME/faro_data}
-FARO_DB_HOST=${FARO_DB_HOST:-faro-db-dev}
+FARO_DB_HOST=${FARO_DB_HOST:-faro-definition-db}
 
 function data(){
     mkdir -p FARO.snapshot

@@ -3,7 +3,7 @@ version: "3.5"
 services:
 
   db:
-    container_name: faro-db-dev
+    container_name: faro-definition-db
     image: mongo
     environment:
       - MONGO_INITDB_DATABASE=faro
@@ -14,7 +14,7 @@ services:
       - "mongo_data:/data/db:cached"
 
   db-admin:
-    container_name: faro-db-gui
+    container_name: faro-definition-db-gui
     image: mongo-express
     links:
       - db:mongo
@@ -72,7 +72,7 @@ services:
       - "cache_service_data:/data:cached"
 
   db-image-persister:
-    container_name: faro-db-image-persister-dev
+    container_name: faro-image-persister-db
     image: mariadb
     environment:
       - MYSQL_ROOT_PASSWORD=faro
@@ -82,13 +82,13 @@ services:
       - "image_persister_data:/data/db:cached"
 
   db-image-persister-admin:
-    container_name: faro-db-image-persister-gui
+    container_name: faro-image-persister-db-gui
     image: phpmyadmin/phpmyadmin
     ports:
       - 8083:80
     environment:
       - PMA_ARBITRARY=1
-      - PMA_HOST=faro-db-image-persister-dev
+      - PMA_HOST=faro-image-persister-db
     depends_on:
       - db-image-persister
 
