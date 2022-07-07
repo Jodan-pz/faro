@@ -86,7 +86,7 @@ dev: |init build client-deps start ## Initialize development
 
 start: docker-compose.yml ## Start
 	$(call logSun,Starting app...)
-	@$(COMPOSE) up --build --quiet-pull -d db db-image-persister $(CACHE_SERVICE) $(MAIL_CATCHER_SERVICE) webapi client
+	@$(COMPOSE) up --build -d db db-image-persister $(CACHE_SERVICE) $(MAIL_CATCHER_SERVICE) webapi client
 	
 stop: docker-compose.yml ## Stop
 	$(call logFun,Stopping FARO containers...)
@@ -130,7 +130,7 @@ ls: docker-compose.yml ## List running containers
 bargs:=--help
 faro: docker-compose.yml ## Start faro. Pass "bargs" for batch arguments (default --help)
 	$(call logSun,....)
-	@$(COMPOSE) up --build --quiet-pull -d db db-image-persister $(CACHE_SERVICE) $(MAIL_CATCHER_SERVICE) batch 2>/dev/null
+	@$(COMPOSE) up --build -d db db-image-persister $(CACHE_SERVICE) $(MAIL_CATCHER_SERVICE) 2>/dev/null
 	@$(COMPOSE) run --rm batch $(bargs)
 
 .PHONY: faro
