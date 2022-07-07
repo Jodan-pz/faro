@@ -1,22 +1,24 @@
-# FARO
+# FARO 
+
+Flows Are Really Odd!
 
 ## To initialize and first run devstack:
 ```sh
   make dev
 ```
-  ## To run the devstack:
-  ```sh
-    make start
-  ```
-  ## To load current snapshot:
-  ```sh
-    make hydrate
-  ```
+## To run the devstack:
+```sh
+  make start
+```
+## To load current snapshot:
+```sh
+  make hydrate
+```
 
-  ## To start gui administration tools:
-  ```sh
-    make start-admins
-  ```
+## To start gui administration tools:
+```sh
+  make start-admins
+```
 
 ## For all the available commands:
 ```sh
