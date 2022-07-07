@@ -131,7 +131,7 @@ bargs:=--help
 faro: docker-compose.yml ## Start faro. Pass "bargs" for batch arguments (default --help)
 	$(call logSun,....)
 	@$(COMPOSE) up --build --quiet-pull -d db db-image-persister $(CACHE_SERVICE) $(MAIL_CATCHER_SERVICE) batch 2>/dev/null
-	@$(COMPOSE) run --rm batch ./FARO $(bargs)
+	@$(COMPOSE) run --rm batch $(bargs)
 
 .PHONY: faro
 

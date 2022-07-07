@@ -72,3 +72,6 @@ COPY --from=publish /app/publish/persister .
 WORKDIR /app/addons
 COPY FARO.addons.scan/faro.yaml ./scan/scan.yaml
 COPY --from=publish /app/publish/addons .
+
+WORKDIR /app
+ENTRYPOINT [ "./FARO" ]
