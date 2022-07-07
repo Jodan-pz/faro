@@ -1,6 +1,4 @@
-# FARO 
-
-Flows Are Really Odd!
+# FARO - Flows Are Really Odd!
 
 ## To initialize and first run devstack:
 ```sh
