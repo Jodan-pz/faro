@@ -193,7 +193,7 @@ db-stop: ## Stop dev database
 
 db-remove: db-stop
 	@$(COMPOSE) rm -f db
-	@docker volume rm -f faro_mongo_data 
+	@docker volume rm -f faro_definition_data 
 
 db-reset: | db-remove db-start ## Reset dev database
 
@@ -214,7 +214,7 @@ cache-srv-stop: ## Stop cache service
 
 cache-srv-remove: cache-srv-stop
 	@$(COMPOSE) rm -f $(CACHE_SERVICE)
-	@docker volume rm -f "faro_cache_service_data"
+	@docker volume rm -f faro_cache_data
 
 cache-srv-reset: | cache-srv-remove cache-srv-start ## Reset cache service
 
