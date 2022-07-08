@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FARO.imagepersister.mysql",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FARO.support", "FARO.support\FARO.support.csproj", "{4D65120D-C735-4411-B35E-881E9583290E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FARO.niceflowrunner", "FARO.niceflowrunner\FARO.niceflowrunner.csproj", "{5D2E5172-CCC9-444D-B0B3-72A22497E4E9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -153,7 +155,7 @@ Global
 		{E8CEA554-E4DC-4264-9F4D-529D95A15E95}.Release|x64.ActiveCfg = Release|Any CPU
 		{E8CEA554-E4DC-4264-9F4D-529D95A15E95}.Release|x64.Build.0 = Release|Any CPU
 		{E8CEA554-E4DC-4264-9F4D-529D95A15E95}.Release|x86.ActiveCfg = Release|Any CPU
-		{E8CEA554-E4DC-4264-9F4D-529D95A15E95}.Release|x86.Build.0 = Release|Any CPU		
+		{E8CEA554-E4DC-4264-9F4D-529D95A15E95}.Release|x86.Build.0 = Release|Any CPU
 		{7FC20174-85D9-4DBD-81C4-B457B346E091}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7FC20174-85D9-4DBD-81C4-B457B346E091}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FC20174-85D9-4DBD-81C4-B457B346E091}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -178,5 +180,17 @@ Global
 		{4D65120D-C735-4411-B35E-881E9583290E}.Release|x64.Build.0 = Release|Any CPU
 		{4D65120D-C735-4411-B35E-881E9583290E}.Release|x86.ActiveCfg = Release|Any CPU
 		{4D65120D-C735-4411-B35E-881E9583290E}.Release|x86.Build.0 = Release|Any CPU
+		{5D2E5172-CCC9-444D-B0B3-72A22497E4E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D2E5172-CCC9-444D-B0B3-72A22497E4E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D2E5172-CCC9-444D-B0B3-72A22497E4E9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5D2E5172-CCC9-444D-B0B3-72A22497E4E9}.Debug|x64.Build.0 = Debug|Any CPU
+		{5D2E5172-CCC9-444D-B0B3-72A22497E4E9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5D2E5172-CCC9-444D-B0B3-72A22497E4E9}.Debug|x86.Build.0 = Debug|Any CPU
+		{5D2E5172-CCC9-444D-B0B3-72A22497E4E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D2E5172-CCC9-444D-B0B3-72A22497E4E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D2E5172-CCC9-444D-B0B3-72A22497E4E9}.Release|x64.ActiveCfg = Release|Any CPU
+		{5D2E5172-CCC9-444D-B0B3-72A22497E4E9}.Release|x64.Build.0 = Release|Any CPU
+		{5D2E5172-CCC9-444D-B0B3-72A22497E4E9}.Release|x86.ActiveCfg = Release|Any CPU
+		{5D2E5172-CCC9-444D-B0B3-72A22497E4E9}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
