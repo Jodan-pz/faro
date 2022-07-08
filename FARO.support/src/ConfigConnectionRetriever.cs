@@ -1,4 +1,5 @@
 using System.Net;
+
 using FARO.Common;
 
 namespace FARO.Support {

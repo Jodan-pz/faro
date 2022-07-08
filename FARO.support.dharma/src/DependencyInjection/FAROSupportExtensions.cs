@@ -1,15 +1,15 @@
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
+using DHARMA.Dave.Configurable;
 using DHARMA.Dave.Extensions.DependencyInjection;
 using DHARMA.Extensions.DependencyInjection;
 
 using FARO.Common;
 using FARO.Dharma.Support;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Hosting;
-using DHARMA.Dave.Configurable;
 
 namespace FARO.Extensions.DependencyInjection {
 

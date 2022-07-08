@@ -1,4 +1,5 @@
 using CommandLine;
+
 using FARO.Common;
 
 namespace FARO.Support {

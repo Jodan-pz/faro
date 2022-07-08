@@ -1,5 +1,6 @@
-using FARO.Common;
 using Microsoft.Extensions.Configuration;
+
+using FARO.Common;
 
 namespace FARO.Support {
 
