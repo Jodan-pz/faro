@@ -1,6 +1,6 @@
 faro-addons:
   - http:
-      assembly: /Users/jodan/Sviluppo/faro/FARO.addons/http/bin/Debug/net6.0/publish/FARO.addons.http.dll
+      assembly: /app/addons/FARO.addons.http.dll
       rootnamespace: FARO.Addons.Http
 
       keysiterators:

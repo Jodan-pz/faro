@@ -1,6 +1,6 @@
 faro-addons:
   - mail:
       id: MAIL
-      assembly: /Users/jodan/Sviluppo/faro/FARO.addons/mail/bin/Debug/net6.0/publish/FARO.addons.mail.dll
+      assembly: /app/addons/FARO.addons.mail.dll
       writers:
         - engine: FARO.Addons.Mail.Writers.Engine.MailWriterEngine

@@ -1,6 +1,6 @@
 faro-addons:
   - stream:
-      assembly: /Users/jodan/Sviluppo/faro/FARO.addons/stream/bin/Debug/net6.0/publish/FARO.addons.stream.dll
+      assembly: /app/addons/FARO.addons.stream.dll
       rootnamespace: FARO.Addons.Stream
       writers:
         - id: STREAM

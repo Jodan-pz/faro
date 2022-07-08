@@ -1,6 +1,6 @@
 faro-addons:
   - rdb:
-      assembly: /Users/jodan/Sviluppo/faro/FARO.addons/rdb/bin/Debug/net6.0/publish/FARO.addons.rdb.dll
+      assembly: /app/addons/FARO.addons.rdb.dll
       rootnamespace: FARO.Addons.Rdb
 
       keysiterators:
