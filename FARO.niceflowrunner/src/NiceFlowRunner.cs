@@ -5,10 +5,10 @@ using FARO.Common;
 using FARO.Common.Domain;
 using FARO.Common.Helpers;
 
+using Spectre.Console;
+
 using static FARO.Common.Constants;
 using static FARO.Services.Runners.NiceFlowTables;
-
-using Spectre.Console;
 
 namespace FARO.Services.Runners {
     public class NiceFlowRunner : IFlowRunner {

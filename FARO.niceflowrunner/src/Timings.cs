@@ -1,16 +1,16 @@
 namespace FARO.Services.Runners {
     class Timings {
-        Dictionary<string, TimeSpan?> timings = new();
+        readonly Dictionary<string, TimeSpan?> _timings = new();
 
-        public void AddCheck(TimeSpan? time) => timings["check"] = time;
-        public void AddPersister(TimeSpan? time) => timings["persister"] = time;
-        public void AddSchema(TimeSpan? time) => timings["schema"] = time;
-        public void AddKeys(TimeSpan? time) => timings["keys"] = time;
-        public void AddImage(TimeSpan? time) => timings["image"] = time;
-        public void OnValidator(TimeSpan? time) => timings["validator"] = time - timings["image"];
-        public void OnAggregator(TimeSpan? time) => timings["aggregator"] = time - (timings["image"] + timings["validator"]);
-        public void OnWriter(TimeSpan? time) => timings["writer"] = time - (timings["image"] + timings["validator"] + timings["aggregator"]);
+        public void AddCheck(TimeSpan? time) => _timings["check"] = time;
+        public void AddPersister(TimeSpan? time) => _timings["persister"] = time;
+        public void AddSchema(TimeSpan? time) => _timings["schema"] = time;
+        public void AddKeys(TimeSpan? time) => _timings["keys"] = time;
+        public void AddImage(TimeSpan? time) => _timings["image"] = time;
+        public void OnValidator(TimeSpan? time) => _timings["validator"] = time - _timings["image"];
+        public void OnAggregator(TimeSpan? time) => _timings["aggregator"] = time - (_timings["image"] + _timings["validator"]);
+        public void OnWriter(TimeSpan? time) => _timings["writer"] = time - (_timings["image"] + _timings["validator"] + _timings["aggregator"]);
 
-        public IDictionary<string, TimeSpan?> Values => timings;
+        public IDictionary<string, TimeSpan?> Values => _timings;
     }
 }

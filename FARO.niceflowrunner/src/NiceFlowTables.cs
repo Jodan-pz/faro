@@ -59,8 +59,10 @@ namespace FARO.Services.Runners {
         }
 
         internal static IRenderable CheckResultTable(CheckResultCollection checkResult) {
-            var tableCheck = new Table();
-            tableCheck.Title = new TableTitle("Check", new Style(Color.Yellow2));
+            var tableCheck = new Table
+            {
+                Title = new TableTitle("Check", new Style(Color.Yellow2))
+            };
             tableCheck.AddColumn("Area", c => c.Centered());
             tableCheck.AddColumn("Message", c => c.Centered());
             tableCheck.AddColumn("Value", c => c.Centered());
@@ -82,8 +84,10 @@ namespace FARO.Services.Runners {
 
         internal static IRenderable ValidationTable(ValidatorResult validate) {
             var firstTen = validate.Count() > 10;
-            var tableValidator = new Table();
-            tableValidator.Title = new TableTitle($"Validation {(firstTen ? "(first 10)" : "")}", new Style(Color.Yellow2));
+            var tableValidator = new Table
+            {
+                Title = new TableTitle($"Validation {(firstTen ? "(first 10)" : "")}", new Style(Color.Yellow2))
+            };
             tableValidator.AddColumn("Validator", c => c.Centered());
             tableValidator.AddColumn("Context", c => c.Centered());
             tableValidator.AddColumn("Key", c => c.Centered());
