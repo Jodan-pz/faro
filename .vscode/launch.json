@@ -30,7 +30,7 @@
             "id": "batchPersisterStep",
             "description": "Batch persister step",
             "type": "promptString",
-            "default": ""
+            "default": " "
         }
     ],
     "configurations": [

@@ -42,7 +42,7 @@ namespace FARO.Common {
         }
 
         public FlowConfiguration WithImagePersister(bool? enabled, string buildStep = null) {
-            _persisterOptions = new ImagePersisterOptions { Enabled = enabled ?? false, BuildStep = buildStep };
+            _persisterOptions = new ImagePersisterOptions { Enabled = enabled ?? false, BuildStep = buildStep?.Trim() };
             return this;
         }
 
