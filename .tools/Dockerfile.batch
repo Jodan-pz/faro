@@ -1,5 +1,5 @@
 # 1. Prepare server side build image
-FROM mcr.microsoft.com/dotnet/aspnet as base
+FROM mcr.microsoft.com/dotnet/runtime as base
 WORKDIR /app
 
 # 2. Restore api deps
