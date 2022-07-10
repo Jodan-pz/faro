@@ -86,7 +86,7 @@ dev: |init build client-deps start ## Initialize development
 
 start: docker-compose.yml ## Start
 	$(call logSun,Starting app...)
-	@$(COMPOSE) up --build -d db db-image-persister $(CACHE_SERVICE) $(MAIL_CATCHER_SERVICE) webapi client
+	@$(COMPOSE) up --build -d client db db-image-persister $(CACHE_SERVICE) $(MAIL_CATCHER_SERVICE) webapi
 	
 stop: docker-compose.yml ## Stop
 	$(call logFun,Stopping FARO containers...)
