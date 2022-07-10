@@ -19,7 +19,7 @@ DOTNET_CLI=dotnet
 YARN_CLI=yarn
 COMPOSE=$(DOCKER_COMPOSE) -p faro -f $(ROOT)docker-compose.yml
 YARN_RUN=$(COMPOSE) run --rm yarn
-DOTNET_WEBAPI_EXEC=$(DOCKER) exec -it -e FARO_DATA_PATH=$(FARO_DATA_PATH) faro-webapi
+DOTNET_WEBAPI_EXEC=$(DOCKER) exec -it faro-webapi
 DOTNET_WEBAPI_RUN=$(DOCKER) run --rm -it -e FARO_DATA_PATH=$(FARO_DATA_PATH) -v $(ROOT):/workspace -v faro_data:$(FARO_DATA_PATH) -w /workspace --entrypoint ""  faro_webapi
 
 # Colors
