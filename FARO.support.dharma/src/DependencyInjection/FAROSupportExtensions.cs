@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,14 +16,15 @@ namespace FARO.Extensions.DependencyInjection {
 
         public static IServiceCollection AddFAROSupport(this IServiceCollection services,
                                                         IConfiguration config,
-                                                        IWebHostEnvironment? webHostEnvironment = null) {
+                                                        IHostEnvironment? hostEnvironment = null,
+                                                        bool? isWebContext = false) {
             // Add Dave services
             services.AddDave(config);
 
             // Add Dave logging
             services.AddDaveLoggerSerilog(lb => {
                 // if (webHostEnvironment)
-                if (webHostEnvironment?.IsDevelopment() ?? false) {
+                if (hostEnvironment?.IsDevelopment() ?? false) {
                     lb.DiagnoticDebug = config.GetValue("AddDiagnosticDebug", false);
                 }
             });
@@ -41,13 +41,13 @@ namespace FARO.Extensions.DependencyInjection {
                        .Map("IMAGEPERSISTERDB")
                        .ToProperty("DHARMA_IMAGEPERSISTERDB");
 
-                if (webHostEnvironment is null) {
+                if (!(isWebContext ?? false)) {
                     builder.Arguments
                         .UseNamingStrategy(SnakeCaseNamingStrategy.Instance)
                         .MapToProperty("Arguments");
                 }
             });
-            var retrieverScope = webHostEnvironment is not null ? ServiceLifetime.Scoped : ServiceLifetime.Singleton;
+            var retrieverScope = hostEnvironment is not null ? ServiceLifetime.Scoped : ServiceLifetime.Singleton;
             services.Add(new ServiceDescriptor(typeof(DharmaConnectionRetriever), typeof(DharmaConnectionRetriever), retrieverScope));
             services.Add(new ServiceDescriptor(typeof(IConnectionRetriever), sp => {
                 var dharmaRetriever = sp.GetRequiredService<DharmaConnectionRetriever>();
@@ -70,10 +70,10 @@ namespace FARO.Extensions.DependencyInjection {
             return serviceProvider;
         }
 
-        public static IApplicationBuilder UseFAROSupport(this IApplicationBuilder appBuilder, IConfiguration config, IWebHostEnvironment? webHostEnvironment = null) {
+        public static IApplicationBuilder UseFAROSupport(this IApplicationBuilder appBuilder, IConfiguration config, IHostEnvironment? hostEnvironment = null) {
             // use Dave
             var identity = config.GetValue<string>("FakeIdentity");
-            if (webHostEnvironment?.IsDevelopment() ?? false) {
+            if (hostEnvironment?.IsDevelopment() ?? false) {
                 if (identity is not null) {
                     appBuilder.UseFakeIdentity(identity);
                 }

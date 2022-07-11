@@ -34,7 +34,7 @@ namespace FARO.WebApi {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureContainer(ServiceRegistry services) {
-            services.AddFAROSupport(Configuration, HostingEnvironment);
+            services.AddFAROSupport(Configuration, HostingEnvironment, true);
             services.AddFARO(Configuration);
             services.AddControllers(m => m.AddFAROFilters())
                     .AddNewtonsoftJson(j => j.SerializerSettings.ContractResolver = new DefaultContractResolver());

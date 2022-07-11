@@ -14,7 +14,8 @@ namespace FARO.Extensions.DependencyInjection {
 
         public static IServiceCollection AddFAROSupport(this IServiceCollection services,
                                                         IConfiguration configuration,
-                                                        IHostEnvironment? webHostEnvironment = null) {
+                                                        IHostEnvironment? hostEnvironment = null,
+                                                        bool? isWebContext = false) {
             // configure console logging
             services.AddLogging(lb => {
                 lb.AddConfiguration(configuration.GetSection("Logging"))
@@ -23,7 +24,7 @@ namespace FARO.Extensions.DependencyInjection {
                     lb.AddDebug();
             });
             services.AddSingleton(configuration);
-            if (webHostEnvironment is null) {
+            if (hostEnvironment is null) {
                 services.AddSingleton<IAppArguments, AppArguments>();
             }
             services.AddSingleton<IAppSupport, AppSupport>();
@@ -37,7 +38,7 @@ namespace FARO.Extensions.DependencyInjection {
             return serviceProvider;
         }
 
-        public static IApplicationBuilder UseFAROSupport(this IApplicationBuilder appBuilder, IConfiguration configuration, IHostEnvironment? webHostEnvironment = null) => appBuilder;
+        public static IApplicationBuilder UseFAROSupport(this IApplicationBuilder appBuilder, IConfiguration configuration, IHostEnvironment? hostEnvironment = null) => appBuilder;
     }
 
 }
