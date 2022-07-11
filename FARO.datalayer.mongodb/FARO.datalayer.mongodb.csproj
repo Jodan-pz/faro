@@ -9,7 +9,7 @@
   <ItemGroup>
     <PackageReference Include="LinqKit.Core" Version="1.2.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Yoda.MongoDb" Version="6.0.4" />
+    <PackageReference Include="Yoda.MongoDb" Version="6.0.5" />
   </ItemGroup>
 
   <ItemGroup>
