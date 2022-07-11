@@ -48,6 +48,7 @@ services:
       dockerfile: .tools/Dockerfile.api
     ports:
       - 5073:5000
+    restart: unless-stopped
     volumes:
       - "nuget_cache:/root/.nuget/packages:cached"
       - "data:/faro_data"
