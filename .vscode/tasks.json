@@ -10,7 +10,8 @@
                 "begin",
                 "/k:\"FARO\"",
                 "/d:sonar.host.url=\"http://localhost:9000\"",
-                "/d:sonar.login=\"sqp_54b4c1a89b0064b5b2ef90fee2f1f1fa2f29be4e\""
+                // "/d:sonar.login=\"sqp_54b4c1a89b0064b5b2ef90fee2f1f1fa2f29be4e\""
+                "/d:sonar.login=\"7ff50978a14cacd16d465613acada6a24c76e999\""
             ],
             "problemMatcher": []
         },
@@ -21,11 +22,13 @@
                 "Sonar (start)",
                 "build"
             ],
+            "dependsOrder": "sequence",
             "command": "dotnet",
             "args": [
                 "sonarscanner",
                 "end",
-                "/d:sonar.login=\"sqp_54b4c1a89b0064b5b2ef90fee2f1f1fa2f29be4e\""
+                "/d:sonar.login=\"7ff50978a14cacd16d465613acada6a24c76e999\"",
+                // "/d:sonar.login=\"sqp_54b4c1a89b0064b5b2ef90fee2f1f1fa2f29be4e\""
             ],
             "problemMatcher": []
         },
