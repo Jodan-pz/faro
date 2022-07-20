@@ -83,8 +83,8 @@ namespace FARO.Common {
                                                         TagsMatchMode tagsMatchMode = TagsMatchMode.Any,
                                                         int? pageIndex = null, int? pageSize = null);
         ValidatorDefinition GetValidator(string id);
-        ValidatorDefinition CreateValidator(ValidatorDefinition aggregator);
-        ValidatorDefinition UpdateValidator(string id, ValidatorDefinition aggregator);
+        ValidatorDefinition CreateValidator(ValidatorDefinition validator);
+        ValidatorDefinition UpdateValidator(string id, ValidatorDefinition validator);
         bool DeleteValidator(string id);
     }
 }

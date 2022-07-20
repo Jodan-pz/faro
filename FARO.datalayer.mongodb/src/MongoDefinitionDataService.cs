@@ -61,19 +61,19 @@ namespace FARO.DataLayer.MongoDb {
 
         public bool DeleteKeysIterator(string id) {
             var images = ListImagesByKeysIterator(id);
-            if (images?.Any() ?? false) throw new ObjectDefinitionException(id, images.Aggregate("Cannot delete keys iterator. These images are using it: ", (c, o) => c += $"'{o.Name}' ").Trim(' '));
+            if (images?.Any() ?? false) throw new ObjectDefinitionException(id, images.Aggregate("Cannot delete keys iterator. These images are using it: ", (c, o) => c + $"'{o.Name}' ").Trim(' '));
             return _uow.DeleteById(DOC_KEYS_ITERATORS, id) == 1;
         }
 
         public bool DeleteDecorator(string id) {
             var images = ListImagesByDecorator(id);
-            if (images.Any()) throw new ObjectDefinitionException(id, images.Aggregate("Cannot delete decorator. These images are using it: ", (c, o) => c += $"'{o.Name}' ").Trim(' '));
+            if (images.Any()) throw new ObjectDefinitionException(id, images.Aggregate("Cannot delete decorator. These images are using it: ", (c, o) => c + $"'{o.Name}' ").Trim(' '));
             return _uow.DeleteById(DOC_DECORATORS, id) == 1;
         }
 
         public bool DeleteImage(string id) {
             var flows = ListFlowItemsByImage(id);
-            if (flows?.Any() ?? false) throw new ObjectDefinitionException(id, flows.Aggregate("Cannot delete image. These flows are using it: ", (c, o) => c += $"'{o.Name}' ").Trim(' '));
+            if (flows?.Any() ?? false) throw new ObjectDefinitionException(id, flows.Aggregate("Cannot delete image. These flows are using it: ", (c, o) => c + $"'{o.Name}' ").Trim(' '));
             var ret = _uow.DeleteById(DOC_IMAGES, id) == 1;
             if (ret) {
                 _uow.DeleteAll<AggregatorDefinition>(DOC_AGGREGATORS, v => v.ImageId == id);
@@ -83,19 +83,19 @@ namespace FARO.DataLayer.MongoDb {
 
         public bool DeleteValidator(string id) {
             var flows = ListFlowItemsByValidator(id);
-            if (flows?.Any() ?? false) throw new ObjectDefinitionException(id, flows.Aggregate("Cannot delete validator. These flows are using it: ", (c, o) => c += $"'{o.Name}' ").Trim(' '));
+            if (flows?.Any() ?? false) throw new ObjectDefinitionException(id, flows.Aggregate("Cannot delete validator. These flows are using it: ", (c, o) => c + $"'{o.Name}' ").Trim(' '));
             return _uow.DeleteById(DOC_VALIDATORS, id) == 1;
         }
 
         public bool DeleteAggregator(string id) {
             var flows = ListFlowItemsByAggregator(id);
-            if (flows?.Any() ?? false) throw new ObjectDefinitionException(id, flows.Aggregate("Cannot delete aggregator. These flows are using it: ", (c, o) => c += $"'{o.Name}' ").Trim(' '));
+            if (flows?.Any() ?? false) throw new ObjectDefinitionException(id, flows.Aggregate("Cannot delete aggregator. These flows are using it: ", (c, o) => c + $"'{o.Name}' ").Trim(' '));
             return _uow.DeleteById(DOC_AGGREGATORS, id) == 1;
         }
 
         public bool DeleteWriter(string id) {
             var flows = ListFlowItemsByWriter(id);
-            if (flows?.Any() ?? false) throw new ObjectDefinitionException(id, flows.Aggregate("Cannot delete writer. These flows are using it: ", (c, o) => c += $"'{o.Name}' ").Trim(' '));
+            if (flows?.Any() ?? false) throw new ObjectDefinitionException(id, flows.Aggregate("Cannot delete writer. These flows are using it: ", (c, o) => c + $"'{o.Name}' ").Trim(' '));
             return _uow.DeleteById(DOC_WRITERS, id) == 1;
         }
 

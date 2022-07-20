@@ -17,10 +17,10 @@ namespace FARO.Expression {
 
         public static bool operator ==(NullVariable left, NullVariable right) => left._value == right._value;
         public static bool operator !=(NullVariable left, NullVariable right) => left._value != right._value;
-        public static bool operator >(NullVariable left, NullVariable right) => NotNull(left, right) ? left._value > right._value : false;
-        public static bool operator <(NullVariable left, NullVariable right) => NotNull(left, right) ? left._value < right._value : false;
-        public static bool operator >=(NullVariable left, NullVariable right) => NotNull(left, right) ? left._value >= right._value : false;
-        public static bool operator <=(NullVariable left, NullVariable right) => NotNull(left, right) ? left._value <= right._value : false;
+        public static bool operator >(NullVariable left, NullVariable right) => NotNull(left, right) && left._value > right._value;
+        public static bool operator <(NullVariable left, NullVariable right) => NotNull(left, right) && left._value < right._value;
+        public static bool operator >=(NullVariable left, NullVariable right) => NotNull(left, right) && left._value >= right._value;
+        public static bool operator <=(NullVariable left, NullVariable right) => NotNull(left, right) && left._value <= right._value;
 
         public static dynamic operator +(NullVariable left, NullVariable right) => NotNull(left, right) ? left._value + right._value : null;
         public static dynamic operator -(NullVariable left, NullVariable right) => NotNull(left, right) ? left._value - right._value : null;
