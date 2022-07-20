@@ -38,9 +38,11 @@ namespace FARO.Common.Exceptions {
                     sb.AppendLine($"{new string(' ', 4)}{argOpt} {arg.Name}: {argValue}");
                 }
             }
-            sb.AppendLine($"[DEC] Fields that uses the decorator{argExistsMess}");
-            foreach (var field in fieldItems) {
-                sb.AppendLine($"[DEC] {new string(' ', 4)}{field.Field}");
+            if (fieldItems is not null) {
+                sb.AppendLine($"[DEC] Fields that uses the decorator{argExistsMess}");
+                foreach (var field in fieldItems) {
+                    sb.AppendLine($"[DEC] {new string(' ', 4)}{field.Field}");
+                }
             }
             sb.AppendLine($"[DEC] MESSAGE: {innerException.Message}");
             sb.AppendLine(new string('-', 80));

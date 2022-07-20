@@ -68,7 +68,7 @@ namespace FARO.Batch.Extensions.DependecyInjection {
                             .Use(clazz)
                             .Singleton();
                     break;
-                case ExpressionEvaluatorConfigKind.Default:
+                // case ExpressionEvaluatorConfigKind.Default:
                 default:
                     registry.AddSingleton<IExpressionEvaluator, FleeExpressionEvaluator>();
                     break;
@@ -93,7 +93,7 @@ namespace FARO.Batch.Extensions.DependecyInjection {
                     break;
                 case DefinitionDataServiceConfigKind.None:
                     break;
-                case DefinitionDataServiceConfigKind.Default:
+                // case DefinitionDataServiceConfigKind.Default:
                 default:
                     registry.AddSingleton<IDefinitionDataService, JsonFileDefinitionDataService>();
                     break;
