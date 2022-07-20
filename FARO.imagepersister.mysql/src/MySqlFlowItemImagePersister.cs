@@ -418,7 +418,7 @@ namespace FARO.Services.ImagePersister {
                                                                      .Select(l => l.Name)
                                                                      .Cast<object>();
                 if (layersToDelete.Any()) {
-                    var placeholders = string.Join(",", layersToDelete.Select((_, idx) => "{" + (idx+1) + "}"));
+                    var placeholders = string.Join(",", layersToDelete.Select((_, idx) => "{" + (idx + 1) + "}"));
                     _dataContext.Database.ExecuteSqlRaw(
                         DeleteTableByImage("Layers", preserveFragment: $"t.Name NOT IN ({placeholders})"),
                         layersToDelete.Prepend(_currentImage.Id)
