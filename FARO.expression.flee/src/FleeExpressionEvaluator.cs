@@ -17,16 +17,17 @@ namespace FARO.Expression {
         const string KEY_FIELD_EVAL_PREFIX = "_____FARO_KEY_FIELD_EVAL_____";
         static readonly Regex matchCurlyBraces = new(@"\{([\w#:\- ]*)\}", RegexOptions.Compiled);
 
-        static readonly ExpressionContext expressionContext;
+        static readonly ExpressionContext expressionContext = InitExpressionContext();
 
-        static FleeExpressionEvaluator() {
-            expressionContext = new ExpressionContext();
-            expressionContext.ParserOptions.FunctionArgumentSeparator = PARSER_FUNC_ARG_SEPA;
-            expressionContext.ParserOptions.DecimalSeparator = PARSER_DECIMAL_POINT;
-            expressionContext.Imports.AddType(typeof(CustomExpressionFunctions));
-            expressionContext.Imports.AddType(typeof(Math));
-            expressionContext.Imports.AddType(typeof(DateTime));
-            expressionContext.ParserOptions.RecreateParser();
+        static ExpressionContext InitExpressionContext() {
+            var ret = new ExpressionContext();
+            ret.ParserOptions.FunctionArgumentSeparator = PARSER_FUNC_ARG_SEPA;
+            ret.ParserOptions.DecimalSeparator = PARSER_DECIMAL_POINT;
+            ret.Imports.AddType(typeof(CustomExpressionFunctions));
+            ret.Imports.AddType(typeof(Math));
+            ret.Imports.AddType(typeof(DateTime));
+            ret.ParserOptions.RecreateParser();
+            return ret;
         }
 
         public void ForEachField(string expression, Action<string, string, object[]> action, params object[] args) {
