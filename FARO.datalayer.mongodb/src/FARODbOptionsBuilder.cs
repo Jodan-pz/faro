@@ -16,7 +16,7 @@ namespace FARO.DataLayer.MongoDb {
                 var (server, database, user, password) = db.Value;
                 if (server is null) return ret;
                 string mongoServer;
-                if ((server ?? "").ToLower().StartsWith("mongodb://", StringComparison.OrdinalIgnoreCase)) {
+                if (server.ToLower().StartsWith("mongodb://", StringComparison.OrdinalIgnoreCase)) {
                     mongoServer = server;
                 } else {
                     var mb = new MongoUrlBuilder
