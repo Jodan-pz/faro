@@ -193,27 +193,26 @@ namespace FARO.Services.ImagePersister {
             _aggregationsDataTable.Columns.Add("Values", typeof(string));
         }
 
-        private bool BulkWrite<T>(IEnumerable<object[]> rows) where T : class {
+        private void BulkWrite<T>(IEnumerable<object[]> rows) where T : class {
             var firstItem = rows?.FirstOrDefault();
-            if (firstItem is null) return true;
+            if (firstItem is null) return;
             DataTable dataTable = null;
             if (typeof(T) == typeof(Keys)) dataTable = _keysDataTable;
             else if (typeof(T) == typeof(Layers)) dataTable = _layersDataTable;
             else if (typeof(T) == typeof(Rows)) dataTable = _rowsDataTable;
             else if (typeof(T) == typeof(Aggregations)) dataTable = _aggregationsDataTable;
-            return BulkWrite(rows.Select(row => {
+            BulkWrite(rows.Select(row => {
                 var toWrite = dataTable.NewRow();
                 toWrite.ItemArray = row;
                 return toWrite;
             }));
         }
 
-        private bool BulkWrite(IEnumerable<DataRow> rows) {
+        private void BulkWrite(IEnumerable<DataRow> rows) {
             try {
                 var firstItem = rows?.FirstOrDefault();
-                if (firstItem is null) return true;
+                if (firstItem is null) return;
                 var dataTable = firstItem.Table;
-                var result = true;
                 var connection = _dataContext.Database.GetDbConnection();
                 var bulkCopy = new MySqlBulkCopy((MySqlConnection)connection)
                 {
@@ -224,11 +223,9 @@ namespace FARO.Services.ImagePersister {
                                                 .Select((c, i) => new MySqlBulkCopyColumnMapping(i, c.ColumnName));
                 bulkCopy.ColumnMappings.AddRange(bukCols);
                 bulkCopy.WriteToServer(rows, dataTable.Columns.Count);
-                return result;
             } catch (Exception ex) {
                 _logger?.LogError(ex, "Bulk error");
             }
-            return false;
         }
 
         private static string DeleteTableByImage(string tableName, string preserveFragment = null) {
@@ -421,7 +418,7 @@ namespace FARO.Services.ImagePersister {
                                                                      .Select(l => l.Name)
                                                                      .Cast<object>();
                 if (layersToDelete.Any()) {
-                    var placeholders = string.Join(",", layersToDelete.Select((_, idx) => "{" + (++idx) + "}"));
+                    var placeholders = string.Join(",", layersToDelete.Select((_, idx) => "{" + (idx+1) + "}"));
                     _dataContext.Database.ExecuteSqlRaw(
                         DeleteTableByImage("Layers", preserveFragment: $"t.Name NOT IN ({placeholders})"),
                         layersToDelete.Prepend(_currentImage.Id)
@@ -480,8 +477,6 @@ namespace FARO.Services.ImagePersister {
                     });
                     break;
             }
-            // Console.WriteLine(
-            //     $"EVT: {changeOutputEventArgs.ChangeType} - {changeOutputEventArgs.Row?.ToString()} - {changeOutputEventArgs.Layer?.Name}");
         }
     }
 }
