@@ -53,10 +53,8 @@ namespace FARO.Common {
         public void IterateRows(Func<ImageOutputRow, bool> rowPredicate) {
             foreach (var row in _rows) {
                 OnIterate?.Invoke(row);
-                if (!(row.Discard ?? false)) {
-                    if (!rowPredicate(row)) {
-                        break;
-                    }
+                if (!(row.Discard ?? false) && !rowPredicate(row)) {
+                    break;
                 }
             }
         }

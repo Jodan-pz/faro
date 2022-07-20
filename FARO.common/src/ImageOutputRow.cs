@@ -17,8 +17,9 @@ namespace FARO.Common {
             _row = new Dictionary<string, object>();
         }
 
-        public ImageOutputRow(IImageOutput imageOutput) : this() {
+        public ImageOutputRow(IImageOutput imageOutput, IDictionary<string, object> initRowValues = null) : this() {
             ImageOutput = imageOutput;
+            _row = initRowValues ?? _row;
         }
 
         public ImageOutputRow(IImageOutput imageOutput, ImageOutputRow row) : this(imageOutput) {
@@ -26,10 +27,6 @@ namespace FARO.Common {
         }
 
         public ImageOutputRow(ImageOutputRow row) : this(null, row) { }
-
-        public ImageOutputRow(IImageOutput imageOutput, IDictionary<string, object> initRowValues = null) : this(imageOutput) {
-            _row = initRowValues ?? _row;
-        }
 
         public void SetValue(string name, object value) {
             if (!_row.ContainsKey(name))

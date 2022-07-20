@@ -26,6 +26,7 @@ namespace FARO.Common {
                     try {
                         return AssemblyLoadContext.Default.LoadFromAssemblyPath(path);
                     } catch {
+                        /* ignore wrong assembly load */
                     }
                 }
             }
