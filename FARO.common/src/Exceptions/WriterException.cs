@@ -2,15 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace FARO.Common.Exceptions {
+
+    [Serializable]
     public class WriterException : Exception {
+        public WriterException() {
+        }
+
         public WriterException(string message) : base(message) { }
         public WriterException(string message, Exception innerException) : base(message, innerException) { }
 
         public WriterException(IWriter writer, IDictionary<string, object> args, Exception innerException)
         : this(BuildMessage(writer, args, innerException)) { }
+
+        protected WriterException(SerializationInfo info, StreamingContext context) : base(info, context) {
+        }
 
         private static string BuildMessage(IWriter writer, IDictionary<string, object> args, Exception innerException) {
             var sb = new StringBuilder();

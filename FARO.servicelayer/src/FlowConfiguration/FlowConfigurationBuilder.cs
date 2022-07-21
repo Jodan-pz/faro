@@ -4,7 +4,7 @@ using System.Linq;
 
 using FARO.Common;
 using FARO.Common.Domain;
-
+using FARO.Common.Exceptions;
 using static FARO.Common.Helpers.PrefixHelper;
 
 namespace FARO.Services {
@@ -66,7 +66,7 @@ namespace FARO.Services {
 
             var item = new FlowItem(flowDefinition);
             if (flowDefinition.ImageId != null) {
-                var imageDefinition = _definitionDataService.GetImage(flowDefinition.ImageId) ?? throw new NullReferenceException($"Cannot find image with id: {flowDefinition.ImageId}");
+                var imageDefinition = _definitionDataService.GetImage(flowDefinition.ImageId) ?? throw new FlowItemException($"Cannot find image with id: {flowDefinition.ImageId}");
                 // add key-iterators
                 foreach (var keyIter in imageDefinition.KeysIterators.Select(keyIter => keyIter.KeyId)) {
                     if (keysIteratorDefinitions.ContainsKey(keyIter)) continue;
@@ -107,7 +107,7 @@ namespace FARO.Services {
 
             if (flowDefinition.AggregatorId != null) {
                 var aggregatorDef = _definitionDataService.GetAggregator(flowDefinition.AggregatorId) ?? throw new NullReferenceException($"Cannot find aggregator with id: {flowDefinition.AggregatorId}");
-                if (aggregatorDef.ImageId != item.Image.Definition.Id) throw new ApplicationException($"Aggregator image mismatch! Found {aggregatorDef.ImageId}, needed {item.Image.Definition.Id}");
+                if (aggregatorDef.ImageId != item.Image.Definition.Id) throw new FlowItemException($"Aggregator image mismatch! Found {aggregatorDef.ImageId}, needed {item.Image.Definition.Id}");
                 item.Aggregator = _elementFactory.Engined.CreateAggregator(aggregatorDef);
             }
 

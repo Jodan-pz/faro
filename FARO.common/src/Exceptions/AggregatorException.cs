@@ -1,15 +1,21 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace FARO.Common.Exceptions {
+
+    [Serializable]
     public class AggregatorException : Exception {
+        public AggregatorException() { }
         public AggregatorException(string message) : base(message) { }
         public AggregatorException(string message, Exception innerException) : base(message, innerException) { }
 
         public AggregatorException(IAggregator aggregator, IImageOutput output, Exception innerException)
         : this(BuildMessage(aggregator, output, innerException)) { }
+
+        protected AggregatorException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
         private static string BuildMessage(IAggregator aggregator, IImageOutput output, Exception innerException) {
             var sb = new StringBuilder();

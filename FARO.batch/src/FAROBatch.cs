@@ -53,7 +53,7 @@ namespace FARO.Batch {
                 onError = true;
                 _log?.LogError(ex.Message);
             }
-            if (onError) throw new ApplicationException("Run completed with errors.");
+            if (onError) throw new FlowRunException("Run completed with errors.");
         }
     }
 }

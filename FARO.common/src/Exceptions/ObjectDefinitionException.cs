@@ -1,6 +1,9 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace FARO.Common.Exceptions {
+
+    [Serializable]
     public class ObjectDefinitionException : Exception {
         public IObjectDefinition Definition { get; set; }
 
@@ -10,5 +13,17 @@ namespace FARO.Common.Exceptions {
         }
         public ObjectDefinitionException(string definitionId, string message)
         : base($"{message} - (Def. id:{definitionId})") { }
+
+        public ObjectDefinitionException() {
+        }
+
+        protected ObjectDefinitionException(SerializationInfo info, StreamingContext context) : base(info, context) {
+        }
+
+        public ObjectDefinitionException(string message) : base(message) {
+        }
+
+        public ObjectDefinitionException(string message, Exception innerException) : base(message, innerException) {
+        }
     }
 }

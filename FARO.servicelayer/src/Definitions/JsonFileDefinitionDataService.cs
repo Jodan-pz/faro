@@ -7,6 +7,7 @@ using FARO.Common;
 using FARO.Common.Domain;
 using FARO.Common.Exceptions;
 using FARO.Common.Helpers;
+
 using Newtonsoft.Json;
 
 namespace FARO.Services {
@@ -57,7 +58,7 @@ namespace FARO.Services {
 
         static T CreateObject<T>(dynamic objWithid, string itemScope, string rootPath, string prefix) {
             var fileToCreate = Path.Combine(rootPath, $"{prefix}{objWithid.Id}.json");
-            if (File.Exists(fileToCreate)) throw new ApplicationException($"{itemScope ?? "Item"} already exists!");
+            if (File.Exists(fileToCreate)) throw new FlowItemException($"{itemScope ?? "Item"} already exists!");
 
             objWithid.Id = NewId();
             fileToCreate = Path.Combine(rootPath, $"{prefix}{objWithid.Id}.json");
@@ -73,7 +74,7 @@ namespace FARO.Services {
 
         static T UpdateObject<T>(string id, dynamic objWithId, string itemScope, string rootPath, string prefix) {
             var fileToUpdate = Path.Combine(rootPath, $"{prefix}{id}.json");
-            if (!File.Exists(fileToUpdate)) throw new ApplicationException($"Missing {itemScope}. Cannot update decorator with id: {id}.");
+            if (!File.Exists(fileToUpdate)) throw new FlowItemException($"Missing {itemScope}. Cannot update decorator with id: {id}.");
             if (DeleteObject(id, rootPath, prefix)) {
                 objWithId.Id = id;
                 File.WriteAllText(fileToUpdate, JsonConvert.SerializeObject(objWithId, Formatting.Indented));

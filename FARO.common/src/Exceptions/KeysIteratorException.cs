@@ -2,15 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace FARO.Common.Exceptions {
+
+    [Serializable]
     public class KeysIteratorException : Exception {
+        public KeysIteratorException() {
+        }
+
         public KeysIteratorException(string message) : base(message) { }
         public KeysIteratorException(string message, Exception innerException) : base(message, innerException) { }
 
         public KeysIteratorException(IKeysIterator keysIterator, IDictionary<string, object> args, Exception innerException, int? level)
         : this(BuildMessage(keysIterator, args, innerException, level)) { }
+
+        protected KeysIteratorException(SerializationInfo info, StreamingContext context) : base(info, context) {
+        }
 
         private static string BuildMessage(IKeysIterator keysIterator, IDictionary<string, object> args, Exception innerException, int? level) {
             var isSourceError = innerException is not KeysIteratorException;

@@ -3,6 +3,7 @@ using System.Reflection;
 
 using FARO.Common;
 using FARO.Common.Domain;
+using FARO.Common.Exceptions;
 using FARO.Common.Helpers;
 
 using Spectre.Console;
@@ -107,7 +108,7 @@ namespace FARO.Services.Runners {
                                    var validate = item.Validator?.Validate(output);
                                    if (validate != null && !validate.Valid) {
                                        AnsiConsole.Write(ValidationTable(validate));
-                                       throw new ApplicationException("Flow validator error(s) occoured!");
+                                       throw new FlowRunException("Flow validator error(s) occoured!");
                                    }
                                    timings.OnValidator(task.ElapsedTime);
 
@@ -148,7 +149,7 @@ namespace FARO.Services.Runners {
                 Thread.Sleep(DEFAULT_STATUS_SLEEP);
                 if (checkResult?.HasErrors ?? false) {
                     AnsiConsole.Write(CheckResultTable(checkResult));
-                    throw new ApplicationException("Flow check error(s) occoured!");
+                    throw new FlowRunException("Flow check error(s) occoured!");
                 }
             }
         }

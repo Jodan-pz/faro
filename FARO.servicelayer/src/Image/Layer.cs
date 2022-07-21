@@ -1,8 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Text;
+
 using FARO.Common;
 using FARO.Common.Domain;
+using FARO.Common.Exceptions;
 using FARO.Common.Helpers;
 
 namespace FARO.Services {
@@ -28,7 +29,7 @@ namespace FARO.Services {
                                                                                   fieldConfig.args.ToObject<IDictionary<string, object>>())
                             ));
                     } else {
-                        throw new ApplicationException($"Cannot parse decorator for field name: {item.Field}");
+                        throw new FlowItemException($"Cannot parse decorator for field name: {item.Field}");
                     }
                 }
             }

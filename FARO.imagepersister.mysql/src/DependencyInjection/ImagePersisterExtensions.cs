@@ -18,7 +18,7 @@ namespace FARO.Extensions.DependencyInjection {
                 var scope = webApiScoped ? ServiceLifetime.Scoped : ServiceLifetime.Singleton;
                 services.AddDbContext<ImagePersisterDbContext>((sp, builder) => {
                     var support = sp.GetRequiredService<IAppSupport>();
-                    if (support.IMAGEPERSISTERDB is null) throw new ApplicationException("Missing required connection");
+                    if (support.IMAGEPERSISTERDB is null) throw new ArgumentException("Missing required connection");
                     var cs = GetConnectionString(support);
                     var serverVersion = ServerVersion.AutoDetect(cs);
                     builder.UseMySql(cs, serverVersion);

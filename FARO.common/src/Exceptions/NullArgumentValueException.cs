@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace FARO.Common.Exceptions {
+    [Serializable]
     public class NullArgumentValueException : ArgumentNullException {
         public NullArgumentValueException() { }
 
@@ -19,6 +21,9 @@ namespace FARO.Common.Exceptions {
         }
 
         public NullArgumentValueException(string message, Exception innerException) : base(message, innerException) {
+        }
+
+        protected NullArgumentValueException(SerializationInfo info, StreamingContext context) : base(info, context) {
         }
 
         static string GetValues(IEnumerable<KeyValuePair<string, object>> values) => values?.Aggregate(string.Empty, (a, v) => a + $" {v.Key}:{v.Value},").TrimEnd(',') ?? string.Empty;

@@ -133,7 +133,7 @@ namespace FARO.WebApi.Controllers.V1 {
                 var aggExMess = new StringBuilder();
                 foreach (var aggEx in ae.Flatten().InnerExceptions)
                     aggExMess.AppendLine(aggEx.Message);
-                throw new ApplicationException(aggExMess.ToString());
+                throw new FlowRunException(aggExMess.ToString());
             } catch (ValidateResultException vex) {
                 var validationErrorMessage = new StringBuilder();
                 validationErrorMessage.AppendLine($"Error building image '{imageBuildDefinition.Image.Name}' - {vex.Message} ");
@@ -145,7 +145,7 @@ namespace FARO.WebApi.Controllers.V1 {
                             validationErrorMessage.AppendLine($"[{err.Key}] {err.Message}");
                     }
                 }
-                throw new ApplicationException(validationErrorMessage.ToString());
+                throw new FlowRunException(validationErrorMessage.ToString());
             }
             return ret;
         }

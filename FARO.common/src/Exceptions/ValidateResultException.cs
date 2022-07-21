@@ -1,6 +1,9 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace FARO.Common.Exceptions {
+
+    [Serializable]
     public class ValidateResultException : Exception {
         public IValidator Validator { get; set; }
         public ValidatorResult Result { get; set; }
@@ -9,6 +12,18 @@ namespace FARO.Common.Exceptions {
         : base($"Validation error using: {validator.Definition.Name}") {
             Validator = validator;
             Result = result;
+        }
+
+        public ValidateResultException() {
+        }
+
+        protected ValidateResultException(SerializationInfo info, StreamingContext context) : base(info, context) {
+        }
+
+        public ValidateResultException(string message) : base(message) {
+        }
+
+        public ValidateResultException(string message, Exception innerException) : base(message, innerException) {
         }
     }
 }

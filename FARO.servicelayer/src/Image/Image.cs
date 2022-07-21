@@ -63,7 +63,7 @@ namespace FARO.Services {
 
         public void IterateKeys(IDictionary<string, object> args, Func<IDictionary<string, object>, bool> key) {
             if (!(KeysIterators?.Any() ?? false)) return;
-            if (KeysIterators.Count > 5) throw new ApplicationException($"Found {KeysIterators.Count} iterators. Max number of nested iterators is 5!");
+            if (KeysIterators.Count > 5) throw new FlowItemException($"Found {KeysIterators.Count} iterators. Max number of nested iterators is 5!");
             var loop = true;
             KeysIterators[0].Iterate(args, k => {
                 if (!loop) return false;

@@ -2,10 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace FARO.Common.Exceptions {
+    [Serializable]
     public class DecoratorException : Exception {
+        public DecoratorException() {
+        }
+
         public DecoratorException(string message) : base(message) { }
         public DecoratorException(string message, Exception innerException) : base(message, innerException) { }
 
@@ -14,6 +19,9 @@ namespace FARO.Common.Exceptions {
 
         public DecoratorException(IDecorator decorator, ImageOutputRow row, ILayer layer, Exception innerException)
         : this(BuildMessage(decorator, row, layer, innerException)) { }
+
+        protected DecoratorException(SerializationInfo info, StreamingContext context) : base(info, context) {
+        }
 
         private static string BuildMessage(IDecorator decorator, ImageOutputRow row, ILayer layer, Exception innerException) {
             var fieldItems = layer.Items.Where(DecoratorHashKeyComparer.Compare(decorator));
@@ -50,6 +58,5 @@ namespace FARO.Common.Exceptions {
             sb.AppendLine(new string('-', 80));
             return sb.ToString();
         }
-
     }
 }

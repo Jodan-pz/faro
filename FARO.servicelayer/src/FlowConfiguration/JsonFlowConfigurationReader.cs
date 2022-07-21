@@ -4,7 +4,7 @@ using System.IO;
 
 using FARO.Common;
 using FARO.Common.Domain;
-
+using FARO.Common.Exceptions;
 using Newtonsoft.Json;
 
 namespace FARO.Services {
@@ -64,7 +64,7 @@ namespace FARO.Services {
                 itemDef.Id = itemDef.Name = flowItem.Name;
 
                 string imageId = flowItem.Value.image.Value;
-                if (!images.ContainsKey(imageId)) throw new NullReferenceException($"Cannot find image with name: {imageId}!");
+                if (!images.ContainsKey(imageId)) throw new FlowItemException($"Cannot find image with name: {imageId}!");
 
                 var imgConfig = images[imageId];
                 var item = new FlowItem(itemDef)
@@ -91,7 +91,7 @@ namespace FARO.Services {
                 if (aggregatorId != null) {
                     var aggregatorValue = currentConfig.aggregators[aggregatorId];
                     if (aggregatorValue != null) {
-                        if (aggregatorValue.image.Value != item.Image.Definition.Id) throw new ApplicationException($"Aggregator image mismatch! Found {aggregatorValue.image}, needed {item.Image.Definition.Id}");
+                        if (aggregatorValue.image.Value != item.Image.Definition.Id) throw new FlowItemException($"Aggregator image mismatch! Found {aggregatorValue.image}, needed {item.Image.Definition.Id}");
                         var aggregatorDefinition = aggregatorValue.ToObject<AggregatorDefinition>();
                         aggregatorDefinition.Name = aggregatorDefinition.Id = aggregatorId;
                         item.Aggregator = _elementFactory.Engined.CreateAggregator(aggregatorDefinition);

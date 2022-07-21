@@ -14,7 +14,7 @@ namespace FARO.Batch {
     /// <summary>
     /// FARO implementation
     /// </summary>
-    public class Program {
+    public static class Program {
         public static void Main(string[] args) {
             var exitCode = 0;
             try {
@@ -30,7 +30,7 @@ namespace FARO.Batch {
         }
 
         #region Private
-        static ILogger<Program> log;
+        static ILogger log;
 
         static void ShowError(Exception exception) {
             if (log != null)
@@ -67,7 +67,7 @@ namespace FARO.Batch {
             var serviceProvider = container.ServiceProvider;
 
             // Set current Program Logger
-            log = serviceProvider.GetService<ILogger<Program>>();
+            log = serviceProvider.GetService<ILogger<T>>();
 
             // configure support
             try {
