@@ -22,7 +22,7 @@ namespace FARO.Services.Runners {
             _checkService = checkService;
         }
 
-        public WriterStreamInfo? Run(FlowItem item, Stream? outputStream, IDictionary<string, object> imageArgs, IDictionary<string, object> writerArgs, int? keysLimit) {
+        public WriterStreamInfo? Run(FlowItem item, Stream? outputStream, IDictionary<string, object> imageArgs, IDictionary<string, object> writerArgs, int? keysLimit = null) {
             try {
                 return InternalRun(item, outputStream, imageArgs, writerArgs, keysLimit);
             } catch (Exception ex) {
@@ -34,7 +34,7 @@ namespace FARO.Services.Runners {
             }
         }
 
-        public void Run(FlowItem item, IDictionary<string, object> imageArgs, IDictionary<string, object> writerArgs, int? keysLimit) {
+        public void Run(FlowItem item, IDictionary<string, object> imageArgs, IDictionary<string, object> writerArgs, int? keysLimit = null) {
             try {
                 InternalRun(item, null, imageArgs, writerArgs, keysLimit);
             } catch (Exception ex) {
@@ -64,46 +64,9 @@ namespace FARO.Services.Runners {
             AnsiConsole.Status().Start($"Warming up...", ctx => {
                 Thread.Sleep(DEFAULT_STATUS_SLEEP);
 
-                if (item.RunOptions.Check) {
-                    CheckResultCollection? checkResult = null;
-                    ctx.Spinner(Spinner.Known.Dots);
-                    ctx.SpinnerStyle(Style.Parse("yellow"));
-                    ctx.Status("[white]Checking...[/]");
-                    Thread.Sleep(DEFAULT_STATUS_SLEEP);
-                    sw.Start();
-                    checkResult = _checkService?.CheckFlowItem(item.Definition.Id);
-                    sw.Stop();
-                    timings.AddCheck(sw.Elapsed);
-                    var res = (checkResult?.HasErrors ?? false) ? "[red]KO[/]" : "[green]OK[/]";
-                    ctx.Status($"Checking {res}");
-                    Thread.Sleep(DEFAULT_STATUS_SLEEP);
-                    if (checkResult?.HasErrors ?? false) {
-                        AnsiConsole.Write(CheckResultTable(checkResult));
-                        throw new ApplicationException("Flow check error(s) occoured!");
-                    }
-                }
-
-                ctx.Status("Persister...");
-                ctx.Spinner(Spinner.Known.Bounce);
-                ctx.SpinnerStyle(Style.Parse("yellow"));
-                Thread.Sleep(DEFAULT_STATUS_SLEEP);
-                sw.Restart();
-                output = _imagePersister?.Init(item, imageArgs) ?? new ImageOutput();
-                sw.Stop();
-                timings.AddPersister(sw.Elapsed);
-                output.OnIterate = onIterate;
-                ctx.Status("Persister [green]" + Emoji.Known.CheckMark + "[/]");
-                Thread.Sleep(DEFAULT_STATUS_SLEEP);
-
-                ctx.Status("Schema...");
-                ctx.Spinner(Spinner.Known.Default);
-                Thread.Sleep(DEFAULT_STATUS_SLEEP);
-                sw.Restart();
-                item.Image?.BuildSchema();
-                sw.Stop();
-                timings.AddSchema(sw.Elapsed);
-                ctx.Status("Schema [green]" + Emoji.Known.CheckMark + "[/]");
-                Thread.Sleep(DEFAULT_STATUS_SLEEP);
+                DoCheck(item, ctx, timings, sw);
+                output = DoPersister(item, imageArgs, ctx, timings, sw, onIterate);
+                DoSchema(item, ctx, timings, sw);
 
                 ctx.Status("Keys...");
                 ctx.Spinner(Spinner.Known.Dots);
@@ -168,6 +131,53 @@ namespace FARO.Services.Runners {
             AnsiConsole.Write(SummaryTable(timings.Values));
 
             return ret;
+        }
+
+        private void DoCheck(FlowItem item, StatusContext ctx, Timings timings, Stopwatch sw) {
+            if (item.RunOptions.Check) {
+                ctx.Spinner(Spinner.Known.Dots);
+                ctx.SpinnerStyle(Style.Parse("yellow"));
+                ctx.Status("[white]Checking...[/]");
+                Thread.Sleep(DEFAULT_STATUS_SLEEP);
+                sw.Start();
+                var checkResult = _checkService?.CheckFlowItem(item.Definition.Id);
+                sw.Stop();
+                timings.AddCheck(sw.Elapsed);
+                var res = (checkResult?.HasErrors ?? false) ? "[red]KO[/]" : "[green]OK[/]";
+                ctx.Status($"Checking {res}");
+                Thread.Sleep(DEFAULT_STATUS_SLEEP);
+                if (checkResult?.HasErrors ?? false) {
+                    AnsiConsole.Write(CheckResultTable(checkResult));
+                    throw new ApplicationException("Flow check error(s) occoured!");
+                }
+            }
+        }
+
+        private static void DoSchema(FlowItem item, StatusContext ctx, Timings timings, Stopwatch sw) {
+            ctx.Status("Schema...");
+            ctx.Spinner(Spinner.Known.Default);
+            Thread.Sleep(DEFAULT_STATUS_SLEEP);
+            sw.Restart();
+            item.Image?.BuildSchema();
+            sw.Stop();
+            timings.AddSchema(sw.Elapsed);
+            ctx.Status("Schema [green]" + Emoji.Known.CheckMark + "[/]");
+            Thread.Sleep(DEFAULT_STATUS_SLEEP);
+        }
+
+        private IImageOutput DoPersister(FlowItem item, IDictionary<string, object> imageArgs, StatusContext ctx, Timings timings, Stopwatch sw, Action<ImageOutputRow> onIterate) {
+            ctx.Status("Persister...");
+            ctx.Spinner(Spinner.Known.Bounce);
+            ctx.SpinnerStyle(Style.Parse("yellow"));
+            Thread.Sleep(DEFAULT_STATUS_SLEEP);
+            sw.Restart();
+            var output = _imagePersister?.Init(item, imageArgs) ?? new ImageOutput();
+            sw.Stop();
+            timings.AddPersister(sw.Elapsed);
+            output.OnIterate = onIterate;
+            ctx.Status("Persister [green]" + Emoji.Known.CheckMark + "[/]");
+            Thread.Sleep(DEFAULT_STATUS_SLEEP);
+            return output;
         }
     }
 }

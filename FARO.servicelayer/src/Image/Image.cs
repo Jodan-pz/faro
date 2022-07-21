@@ -59,25 +59,25 @@ namespace FARO.Services {
             _imageWatcher?.Clear(Definition);
         }
 
-        public void IterateKeys(IDictionary<string, object> args, Action<IDictionary<string, object>> keyPredicate) => IterateKeys(args, (dic) => { keyPredicate(dic); return true; });
+        public void IterateKeys(IDictionary<string, object> args, Action<IDictionary<string, object>> key) => IterateKeys(args, (dic) => { key(dic); return true; });
 
-        public void IterateKeys(IDictionary<string, object> args, Func<IDictionary<string, object>, bool> keyPredicate) {
+        public void IterateKeys(IDictionary<string, object> args, Func<IDictionary<string, object>, bool> key) {
             if (!(KeysIterators?.Any() ?? false)) return;
             if (KeysIterators.Count > 5) throw new ApplicationException($"Found {KeysIterators.Count} iterators. Max number of nested iterators is 5!");
             var loop = true;
             KeysIterators[0].Iterate(args, k => {
                 if (!loop) return false;
-                if (KeysIterators.Count == 1) loop = keyPredicate(k);
+                if (KeysIterators.Count == 1) loop = key(k);
                 else KeysIterators[1].Iterate(k, k1 => {
                     if (!loop) return false;
-                    if (KeysIterators.Count == 2) loop = keyPredicate(k1);
+                    if (KeysIterators.Count == 2) loop = key(k1);
                     else KeysIterators[2].Iterate(k1, k2 => {
                         if (!loop) return false;
-                        if (KeysIterators.Count == 3) loop = keyPredicate(k2);
+                        if (KeysIterators.Count == 3) loop = key(k2);
                         else KeysIterators[3].Iterate(k2, k3 => {
                             if (!loop) return false;
-                            if (KeysIterators.Count == 4) loop = keyPredicate(k3);
-                            else KeysIterators[4].Iterate(k3, k4 => loop = keyPredicate(k4), 5);
+                            if (KeysIterators.Count == 4) loop = key(k3);
+                            else KeysIterators[4].Iterate(k3, k4 => loop = key(k4), 5);
                             return loop;
                         }
                         , 4);
@@ -146,7 +146,7 @@ namespace FARO.Services {
             // dump image infos.
             sb.AppendLine();
             sb.AppendLine(new string('-', 80));
-            var keys = _definition.KeysIterators?.Aggregate("", (a, c) => a += c + " > ")
+            var keys = _definition.KeysIterators?.Aggregate("", (a, c) => a + c + " > ")
                                                  .TrimEnd(" > ".ToCharArray()) ?? "None";
             sb.AppendLine($"Image {_definition.Id} ({_definition.Name}), using iterators: {keys}");
             sb.AppendLine(new string('-', 80));
@@ -165,7 +165,7 @@ namespace FARO.Services {
         static string IndentLayer(int count, string layerLines) {
             if (count == 0) return layerLines;
             return layerLines.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)
-                    .Aggregate(string.Empty, (a, c) => a += new string(' ', count) + c + Environment.NewLine);
+                    .Aggregate(string.Empty, (a, c) => a + new string(' ', count) + c + Environment.NewLine);
         }
     }
 }

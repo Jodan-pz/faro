@@ -18,7 +18,7 @@ namespace FARO.Services {
             _elementFactory = elementFactory ?? throw new ArgumentNullException(nameof(elementFactory));
         }
 
-        public FlowConfiguration Build(string flowId, string flowName) {
+        public FlowConfiguration Build(string flowId = null, string flowName = null) {
             FlowItemDefinition flowItemDef = null;
             if (flowId != null) flowItemDef = _definitionDataService.GetFlowItem(flowId);
             if (flowItemDef == null && flowName != null) flowItemDef = _definitionDataService.GetFlowItemByName(flowName);
@@ -68,18 +68,17 @@ namespace FARO.Services {
             if (flowDefinition.ImageId != null) {
                 var imageDefinition = _definitionDataService.GetImage(flowDefinition.ImageId) ?? throw new NullReferenceException($"Cannot find image with id: {flowDefinition.ImageId}");
                 // add key-iterators
-                foreach (var keyIter in imageDefinition.KeysIterators) {
-                    if (keysIteratorDefinitions.ContainsKey(keyIter.KeyId)) continue;
-                    var dataKey = _definitionDataService.GetKeysIterator(keyIter.KeyId);
-                    keysIteratorDefinitions.Add(keyIter.KeyId, dataKey);
+                foreach (var keyIter in imageDefinition.KeysIterators.Select(keyIter => keyIter.KeyId)) {
+                    if (keysIteratorDefinitions.ContainsKey(keyIter)) continue;
+                    var dataKey = _definitionDataService.GetKeysIterator(keyIter);
+                    keysIteratorDefinitions.Add(keyIter, dataKey);
                 }
                 // add decorators
                 var allItems = imageDefinition.Layers?.Select(l => l.Items);
                 var decoratorsToInclude = new HashSet<string>();
                 if (allItems != null) {
-                    foreach (var layerItem in allItems) {
-                        foreach (var layerItemDef in layerItem) {
-                            var fieldConfig = layerItemDef.Config;
+                    foreach (var layerItems in allItems) {
+                        foreach (var fieldConfig in layerItems.Select(layerItem => layerItem.Config)) {
                             if (fieldConfig == null || fieldConfig.GetType().IsPrimitive) continue;
                             string toAdd = null;
                             if (fieldConfig is string) {

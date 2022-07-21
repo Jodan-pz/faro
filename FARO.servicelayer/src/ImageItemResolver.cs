@@ -36,7 +36,7 @@ namespace FARO.Services {
             return null;
         }
 
-        public IDecorator ResolveDecorator(object nameToResolve, IDictionary<string, object> args) {
+        public IDecorator ResolveDecorator(object nameToResolve, IDictionary<string, object> args = null) {
             if (nameToResolve is string name) {
                 if (IsKeyName(name, out var key)) {
                     return _engineFactory.CreateDecorator(SystemDecoratorKind.Key, key);

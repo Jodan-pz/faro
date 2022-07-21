@@ -19,7 +19,7 @@ namespace FARO.Services.Validators.Engine {
         public ValidatorResult Validate(IValidator validator, IImageOutput imageOutput, IDataResourceService dataResource) {
             var result = new ValidatorResult();
             if (validator == null) return result;
-            if ((imageOutput?.Size ?? 0) == 0) return result;
+            if (imageOutput == null || imageOutput.Size == 0) return result;
             var config = GetConfig<DefaultValidatorConfig>(validator.Definition.Config);
             if (!(config.Rules?.Any() ?? false)) return result;
             imageOutput.IterateRows(row => {
@@ -37,7 +37,7 @@ namespace FARO.Services.Validators.Engine {
                     }
 
                     if (!evalResult) {
-                        var rawValuesAsStringMessage = row.Aggregate(string.Empty, (a, c) => a += $"{c.Key}={c.Value}\t").TrimEnd('\t');
+                        var rawValuesAsStringMessage = row.Aggregate(string.Empty, (a, c) => a + $"{c.Key}={c.Value}\t").TrimEnd('\t');
                         result.AddError(row, validator, rule.Name, rawValuesAsStringMessage, GENERIC_ERROR_RAW_VALUES);
 
                         var validatorExpressionValues = new Dictionary<string, object>();

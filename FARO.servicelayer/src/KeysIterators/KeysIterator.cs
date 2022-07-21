@@ -40,7 +40,7 @@ namespace FARO.Services.KeysIterators {
                 if (_expressionEvaluator?.EvalCondition(Definition.When, args) ?? true) {
                     var keys = _engine?.GetKeys(this, args, _dataResourceService);
 
-                    if (nested == true && (keys == null || !keys.Any())) {
+                    if (nested && (keys == null || !keys.Any())) {
                         // create empty nested iterator result if nothing was found by the engine
                         keys = new IDictionary<string, object>[] { emptyKeys };
                     }

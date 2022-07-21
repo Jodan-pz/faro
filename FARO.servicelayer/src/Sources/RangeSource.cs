@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+
 using FARO.Common;
 using FARO.Common.Domain;
 
@@ -23,15 +24,9 @@ namespace FARO.Services {
 
         public static RangeSource CreateFromDefinition(SourceDefinition source) {
             int start = 1, end = 10, step = 1;
-            if (source.Arguments.ContainsKey(ARG_START)) {
-                if (!int.TryParse(source.Arguments[ARG_START], out start)) start = 1;
-            }
-            if (source.Arguments.ContainsKey(ARG_END)) {
-                if (!int.TryParse(source.Arguments[ARG_END], out end)) end = 10;
-            }
-            if (source.Arguments.ContainsKey(ARG_STEP)) {
-                if (!int.TryParse(source.Arguments[ARG_STEP], out step)) step = 1;
-            }
+            if (source.Arguments.ContainsKey(ARG_START) && !int.TryParse(source.Arguments[ARG_START], out start)) start = 1;
+            if (source.Arguments.ContainsKey(ARG_END) && !int.TryParse(source.Arguments[ARG_END], out end)) end = 10;
+            if (source.Arguments.ContainsKey(ARG_STEP) && !int.TryParse(source.Arguments[ARG_STEP], out step)) step = 1;
             return new RangeSource
             {
                 Start = start,

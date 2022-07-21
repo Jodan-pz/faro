@@ -135,31 +135,59 @@ namespace FARO.DataLayer.MongoDb {
             return _uow.GetById<ValidatorDefinition>(DOC_VALIDATORS, id);
         }
 
-        public IEnumerable<DecoratorDefinition> ListDecorators(string filter, FilterMatchMode filterMode, string[] tags, TagsMatchMode tagsMatchMode, int? pageIndex, int? pageSize) {
+        public IEnumerable<DecoratorDefinition> ListDecorators(string filter = null,
+                                                               FilterMatchMode filterMode = FilterMatchMode.Contains,
+                                                               string[] tags = null,
+                                                               TagsMatchMode tagsMatchMode = TagsMatchMode.Any,
+                                                               int? pageIndex = null, int? pageSize = null) {
             return _uow.FindAll<DecoratorDefinition>(DOC_DECORATORS, CommonListPredicate<DecoratorDefinition>(filter, filterMode, tags, tagsMatchMode), o => o.OrderBy(f => f.Name), pageIndex, pageSize);
         }
 
-        public IEnumerable<FlowItemDefinition> ListFlowItems(string filter, FilterMatchMode filterMode, string[] tags, TagsMatchMode tagsMatchMode, int? pageIndex, int? pageSize) {
+        public IEnumerable<FlowItemDefinition> ListFlowItems(string filter = null,
+                                                             FilterMatchMode filterMode = FilterMatchMode.Contains,
+                                                             string[] tags = null,
+                                                             TagsMatchMode tagsMatchMode = TagsMatchMode.Any,
+                                                             int? pageIndex = null, int? pageSize = null) {
             return _uow.FindAll<FlowItemDefinition>(DOC_FLOWS, CommonListPredicate<FlowItemDefinition>(filter, filterMode, tags, tagsMatchMode), o => o.OrderBy(f => f.Name), pageIndex, pageSize);
         }
 
-        public IEnumerable<ImageDefinition> ListImages(string filter, FilterMatchMode filterMode, string[] tags, TagsMatchMode tagsMatchMode, int? pageIndex, int? pageSize) {
+        public IEnumerable<ImageDefinition> ListImages(string filter = null,
+                                                       FilterMatchMode filterMode = FilterMatchMode.Contains,
+                                                       string[] tags = null,
+                                                       TagsMatchMode tagsMatchMode = TagsMatchMode.Any,
+                                                       int? pageIndex = null, int? pageSize = null) {
             return _uow.FindAll<ImageDefinition>(DOC_IMAGES, CommonListPredicate<ImageDefinition>(filter, filterMode, tags, tagsMatchMode), o => o.OrderBy(f => f.Name), pageIndex, pageSize);
         }
 
-        public IEnumerable<KeysIteratorDefinition> ListKeysIterators(string filter, FilterMatchMode filterMode, string[] tags, TagsMatchMode tagsMatchMode, int? pageIndex, int? pageSize) {
+        public IEnumerable<KeysIteratorDefinition> ListKeysIterators(string filter = null,
+                                                                     FilterMatchMode filterMode = FilterMatchMode.Contains,
+                                                                     string[] tags = null,
+                                                                     TagsMatchMode tagsMatchMode = TagsMatchMode.Any,
+                                                                     int? pageIndex = null, int? pageSize = null) {
             return _uow.FindAll<KeysIteratorDefinition>(DOC_KEYS_ITERATORS, CommonListPredicate<KeysIteratorDefinition>(filter, filterMode, tags, tagsMatchMode), o => o.OrderBy(f => f.Name), pageIndex, pageSize);
         }
 
-        public IEnumerable<WriterDefinition> ListWriters(string filter, FilterMatchMode filterMode, string[] tags, TagsMatchMode tagsMatchMode, int? pageIndex, int? pageSize) {
+        public IEnumerable<WriterDefinition> ListWriters(string filter = null,
+                                                         FilterMatchMode filterMode = FilterMatchMode.Contains,
+                                                         string[] tags = null,
+                                                         TagsMatchMode tagsMatchMode = TagsMatchMode.Any,
+                                                         int? pageIndex = null, int? pageSize = null) {
             return _uow.FindAll<WriterDefinition>(DOC_WRITERS, CommonListPredicate<WriterDefinition>(filter, filterMode, tags, tagsMatchMode), o => o.OrderBy(f => f.Name), pageIndex, pageSize);
         }
 
-        public IEnumerable<AggregatorDefinition> ListAggregators(string filter, FilterMatchMode filterMode, string[] tags, TagsMatchMode tagsMatchMode, int? pageIndex, int? pageSize) {
+        public IEnumerable<AggregatorDefinition> ListAggregators(string filter = null,
+                                                                 FilterMatchMode filterMode = FilterMatchMode.Contains,
+                                                                 string[] tags = null,
+                                                                 TagsMatchMode tagsMatchMode = TagsMatchMode.Any,
+                                                                 int? pageIndex = null, int? pageSize = null) {
             return _uow.FindAll<AggregatorDefinition>(DOC_AGGREGATORS, CommonListPredicate<AggregatorDefinition>(filter, filterMode, tags, tagsMatchMode), o => o.OrderBy(f => f.Name), pageIndex, pageSize);
         }
 
-        public IEnumerable<ValidatorDefinition> ListValidators(string filter, FilterMatchMode filterMode, string[] tags, TagsMatchMode tagsMatchMode, int? pageIndex, int? pageSize) {
+        public IEnumerable<ValidatorDefinition> ListValidators(string filter = null,
+                                                               FilterMatchMode filterMode = FilterMatchMode.Contains,
+                                                               string[] tags = null,
+                                                               TagsMatchMode tagsMatchMode = TagsMatchMode.Any,
+                                                               int? pageIndex = null, int? pageSize = null) {
             return _uow.FindAll<ValidatorDefinition>(DOC_VALIDATORS, CommonListPredicate<ValidatorDefinition>(filter, filterMode, tags, tagsMatchMode), o => o.OrderBy(f => f.Name), pageIndex, pageSize);
         }
 

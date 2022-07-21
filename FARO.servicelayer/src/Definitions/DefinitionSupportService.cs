@@ -93,7 +93,6 @@ namespace FARO.Services {
             {
                 Subject = ObjectDefinitionDescriptor.Create(decorator)
             };
-            var items = new List<DecoratorUsageItem>();
             var imagesByDecorator = _definitionDataService.ListImagesByDecorator(id);
             if (imagesByDecorator == null) return ret;
             foreach (var image in imagesByDecorator) {
@@ -192,7 +191,6 @@ namespace FARO.Services {
                         Validators = new ObjectDefinitionDescriptor[]{ObjectDefinitionDescriptor.Create(_definitionDataService.GetValidator(flow.ValidatorId)) }
                     }});
             }
-            // ret.AddAll(new ValidatorUsageItem[] { new ValidatorUsageItem { Flows = flows } });
             return ret;
         }
 
@@ -235,8 +233,8 @@ namespace FARO.Services {
             return ret;
         }
 
-        public IEnumerable<ValidatorDefinition> ListImageCompatibleValidators(string id) {
-            var (checker, _) = _integrityCheckService.CreateChecker(id);
+        public IEnumerable<ValidatorDefinition> ListImageCompatibleValidators(string imageId) {
+            var (checker, _) = _integrityCheckService.CreateChecker(imageId);
             foreach (var valDef in _definitionDataService.ListValidators()) {
                 if (!checker(valDef.Id).HasErrors) {
                     yield return valDef;
@@ -244,8 +242,8 @@ namespace FARO.Services {
             }
         }
 
-        public IEnumerable<WriterDefinition> ListImageCompatibleWriters(string id, string aggregatorId = null) {
-            var (_, checker) = _integrityCheckService.CreateChecker(id, aggregatorId);
+        public IEnumerable<WriterDefinition> ListImageCompatibleWriters(string imageId, string aggregatorId = null) {
+            var (_, checker) = _integrityCheckService.CreateChecker(imageId, aggregatorId);
             foreach (var wriDef in _definitionDataService.ListWriters()) {
                 if (!checker(wriDef.Id).HasErrors) {
                     yield return wriDef;

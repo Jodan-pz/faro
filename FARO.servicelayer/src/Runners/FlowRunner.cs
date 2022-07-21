@@ -26,8 +26,8 @@ namespace FARO.Services.Runners {
             _log = log;
         }
 
-        public WriterStreamInfo Run(FlowItem item, Stream outputStream, IDictionary<string, object> imageArgs, IDictionary<string, object> writerArgs, int? keysLimit) => InternalRun(item, outputStream, imageArgs, writerArgs, keysLimit);
-        public void Run(FlowItem item, IDictionary<string, object> imageArgs, IDictionary<string, object> writerArgs, int? keysLimit) => InternalRun(item, null, imageArgs, writerArgs, keysLimit);
+        public WriterStreamInfo Run(FlowItem item, Stream outputStream, IDictionary<string, object> imageArgs, IDictionary<string, object> writerArgs, int? keysLimit = null) => InternalRun(item, outputStream, imageArgs, writerArgs, keysLimit);
+        public void Run(FlowItem item, IDictionary<string, object> imageArgs, IDictionary<string, object> writerArgs, int? keysLimit = null) => InternalRun(item, null, imageArgs, writerArgs, keysLimit);
 
         private WriterStreamInfo InternalRun(FlowItem item, Stream outputStream, IDictionary<string, object> imageArgs, IDictionary<string, object> writerArgs, int? keysLimit = null) {
             if (item == null) return null;

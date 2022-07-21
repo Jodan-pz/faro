@@ -5,6 +5,6 @@ namespace FARO.Common {
     public interface IAggregatorEngine {
         IEnumerable<FieldDescription> GetFields(AggregatorDefinition aggregatorDefinition);
         IEnumerable<string> GetAggregatedFields(AggregatorDefinition aggregatorDefinition);
-        IImageOutput Aggregate(IAggregator aggregator, IImageOutput output, IDataResourceService dataResource);
+        IImageOutput Aggregate(IAggregator aggregator, IImageOutput imageOutput, IDataResourceService dataResource);
     }
 }

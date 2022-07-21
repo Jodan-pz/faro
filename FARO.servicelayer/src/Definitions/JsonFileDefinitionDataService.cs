@@ -86,18 +86,46 @@ namespace FARO.Services {
             if (!File.Exists(fileToDelete)) return false;
             try {
                 File.Delete(fileToDelete);
-            } catch { }
+            } catch { /* ignore errors */}
             return !File.Exists(fileToDelete);
         }
         #endregion
 
-        public IEnumerable<DecoratorDefinition> ListDecorators(string filter, FilterMatchMode filterMode, string[] tags, TagsMatchMode tagsMatchMode, int? pageIndex, int? pageSize) => ListObjects<DecoratorDefinition>(_decoratorsPath, DECORATORS_PREFIX, pageIndex, pageSize);
-        public IEnumerable<KeysIteratorDefinition> ListKeysIterators(string filter, FilterMatchMode filterMode, string[] tags, TagsMatchMode tagsMatchMode, int? pageIndex, int? pageSize) => ListObjects<KeysIteratorDefinition>(_keysIteratorsPath, KEYS_PREFIX, pageIndex, pageSize);
-        public IEnumerable<ImageDefinition> ListImages(string filter, FilterMatchMode filterMode, string[] tags, TagsMatchMode tagsMatchMode, int? pageIndex, int? pageSize) => ListObjects<ImageDefinition>(_imagesPath, IMAGES_PREFIX, pageIndex, pageSize);
-        public IEnumerable<WriterDefinition> ListWriters(string filter, FilterMatchMode filterMode, string[] tags, TagsMatchMode tagsMatchMode, int? pageIndex, int? pageSize) => ListObjects<WriterDefinition>(_writersPath, WRITERS_PREFIX, pageIndex, pageSize);
-        public IEnumerable<FlowItemDefinition> ListFlowItems(string filter, FilterMatchMode filterMode, string[] tags, TagsMatchMode tagsMatchMode, int? pageIndex, int? pageSize) => ListObjects<FlowItemDefinition>(_flowItemsPath, FLOW_ITEMS_PREFIX, pageIndex, pageSize);
-        public IEnumerable<AggregatorDefinition> ListAggregators(string filter, FilterMatchMode filterMode, string[] tags, TagsMatchMode tagsMatchMode, int? pageIndex, int? pageSize) => ListObjects<AggregatorDefinition>(_aggregatorsPath, AGGREGATORS_PREFIX, pageIndex, pageSize);
-        public IEnumerable<ValidatorDefinition> ListValidators(string filter, FilterMatchMode filterMode, string[] tags, TagsMatchMode tagsMatchMode, int? pageIndex, int? pageSize) => ListObjects<ValidatorDefinition>(_validatorsPath, VALIDATOR_PREFIX, pageIndex, pageSize);
+        public IEnumerable<DecoratorDefinition> ListDecorators(string filter = null,
+                                                               FilterMatchMode filterMode = FilterMatchMode.Contains,
+                                                               string[] tags = null,
+                                                               TagsMatchMode tagsMatchMode = TagsMatchMode.Any,
+                                                               int? pageIndex = null, int? pageSize = null) => ListObjects<DecoratorDefinition>(_decoratorsPath, DECORATORS_PREFIX, pageIndex, pageSize);
+        public IEnumerable<KeysIteratorDefinition> ListKeysIterators(string filter = null,
+                                                               FilterMatchMode filterMode = FilterMatchMode.Contains,
+                                                               string[] tags = null,
+                                                               TagsMatchMode tagsMatchMode = TagsMatchMode.Any,
+                                                               int? pageIndex = null, int? pageSize = null) => ListObjects<KeysIteratorDefinition>(_keysIteratorsPath, KEYS_PREFIX, pageIndex, pageSize);
+        public IEnumerable<ImageDefinition> ListImages(string filter = null,
+                                                               FilterMatchMode filterMode = FilterMatchMode.Contains,
+                                                               string[] tags = null,
+                                                               TagsMatchMode tagsMatchMode = TagsMatchMode.Any,
+                                                               int? pageIndex = null, int? pageSize = null) => ListObjects<ImageDefinition>(_imagesPath, IMAGES_PREFIX, pageIndex, pageSize);
+        public IEnumerable<WriterDefinition> ListWriters(string filter = null,
+                                                               FilterMatchMode filterMode = FilterMatchMode.Contains,
+                                                               string[] tags = null,
+                                                               TagsMatchMode tagsMatchMode = TagsMatchMode.Any,
+                                                               int? pageIndex = null, int? pageSize = null) => ListObjects<WriterDefinition>(_writersPath, WRITERS_PREFIX, pageIndex, pageSize);
+        public IEnumerable<FlowItemDefinition> ListFlowItems(string filter = null,
+                                                               FilterMatchMode filterMode = FilterMatchMode.Contains,
+                                                               string[] tags = null,
+                                                               TagsMatchMode tagsMatchMode = TagsMatchMode.Any,
+                                                               int? pageIndex = null, int? pageSize = null) => ListObjects<FlowItemDefinition>(_flowItemsPath, FLOW_ITEMS_PREFIX, pageIndex, pageSize);
+        public IEnumerable<AggregatorDefinition> ListAggregators(string filter = null,
+                                                               FilterMatchMode filterMode = FilterMatchMode.Contains,
+                                                               string[] tags = null,
+                                                               TagsMatchMode tagsMatchMode = TagsMatchMode.Any,
+                                                               int? pageIndex = null, int? pageSize = null) => ListObjects<AggregatorDefinition>(_aggregatorsPath, AGGREGATORS_PREFIX, pageIndex, pageSize);
+        public IEnumerable<ValidatorDefinition> ListValidators(string filter = null,
+                                                               FilterMatchMode filterMode = FilterMatchMode.Contains,
+                                                               string[] tags = null,
+                                                               TagsMatchMode tagsMatchMode = TagsMatchMode.Any,
+                                                               int? pageIndex = null, int? pageSize = null) => ListObjects<ValidatorDefinition>(_validatorsPath, VALIDATOR_PREFIX, pageIndex, pageSize);
 
         public DecoratorDefinition CreateDecorator(DecoratorDefinition decorator) => CreateObject<DecoratorDefinition>(decorator, "Decorator", _decoratorsPath, DECORATORS_PREFIX);
         public KeysIteratorDefinition CreateKeysIterator(KeysIteratorDefinition keysIterator) => CreateObject<KeysIteratorDefinition>(keysIterator, "Keys iterator", _keysIteratorsPath, KEYS_PREFIX);
@@ -129,12 +157,12 @@ namespace FARO.Services {
         public bool DeleteDecorator(string id) => DeleteObject(id, _decoratorsPath, DECORATORS_PREFIX);
         public bool DeleteKeysIterator(string id) {
             var images = ListObjects<ImageDefinition>(_imagesPath, IMAGES_PREFIX, null, null).Where(image => image.KeysIterators != null && image.KeysIterators.Any(ki => ki.KeyId == id));
-            if (images.Any()) throw new ObjectDefinitionException(id, images.Aggregate("Cannot delete keys iterator. These images are using it: ", (c, o) => c += $"'{o.Name}' ").Trim(' '));
+            if (images.Any()) throw new ObjectDefinitionException(id, images.Aggregate("Cannot delete keys iterator. These images are using it: ", (c, o) => c + $"'{o.Name}' ").Trim(' '));
             return DeleteObject(id, _keysIteratorsPath, KEYS_PREFIX);
         }
         public bool DeleteImage(string id) {
             var flows = ListObjects<FlowItemDefinition>(_flowItemsPath, FLOW_ITEMS_PREFIX, null, null).Where(a => a.ImageId == id);
-            if (flows.Any()) throw new ObjectDefinitionException(id, flows.Aggregate("Cannot delete image. These flows are using it: ", (c, o) => c += $"'{o.Name}' ").Trim(' '));
+            if (flows.Any()) throw new ObjectDefinitionException(id, flows.Aggregate("Cannot delete image. These flows are using it: ", (c, o) => c + $"'{o.Name}' ").Trim(' '));
             var ret = DeleteObject(id, _imagesPath, IMAGES_PREFIX);
             if (ret) {
                 var aggregators = ListObjects<AggregatorDefinition>(_aggregatorsPath, AGGREGATORS_PREFIX, null, null).Where(a => a.ImageId == id);
@@ -144,19 +172,19 @@ namespace FARO.Services {
         }
         public bool DeleteWriter(string id) {
             var flows = ListObjects<FlowItemDefinition>(_flowItemsPath, FLOW_ITEMS_PREFIX, null, null).Where(a => a.WriterId == id);
-            if (flows.Any()) throw new ObjectDefinitionException(id, flows.Aggregate("Cannot delete writer. These flows are using it: ", (c, o) => c += $"'{o.Name}' ").Trim(' '));
+            if (flows.Any()) throw new ObjectDefinitionException(id, flows.Aggregate("Cannot delete writer. These flows are using it: ", (c, o) => c + $"'{o.Name}' ").Trim(' '));
             return DeleteObject(id, _writersPath, WRITERS_PREFIX);
         }
         public bool DeleteFlowItem(string id) => DeleteObject(id, _flowItemsPath, FLOW_ITEMS_PREFIX);
         public bool DeleteAggregator(string id) {
             var flows = ListObjects<FlowItemDefinition>(_flowItemsPath, FLOW_ITEMS_PREFIX, null, null).Where(a => a.AggregatorId == id);
-            if (flows.Any()) throw new ObjectDefinitionException(id, flows.Aggregate("Cannot delete aggregator. These flows are using it: ", (c, o) => c += $"'{o.Name}' ").Trim(' '));
+            if (flows.Any()) throw new ObjectDefinitionException(id, flows.Aggregate("Cannot delete aggregator. These flows are using it: ", (c, o) => c + $"'{o.Name}' ").Trim(' '));
 
             return DeleteObject(id, _aggregatorsPath, AGGREGATORS_PREFIX);
         }
         public bool DeleteValidator(string id) {
             var flows = ListObjects<FlowItemDefinition>(_flowItemsPath, FLOW_ITEMS_PREFIX, null, null).Where(a => a.ValidatorId == id);
-            if (flows.Any()) throw new ObjectDefinitionException(id, flows.Aggregate("Cannot delete validator. These flows are using it: ", (c, o) => c += $"'{o.Name}' ").Trim(' '));
+            if (flows.Any()) throw new ObjectDefinitionException(id, flows.Aggregate("Cannot delete validator. These flows are using it: ", (c, o) => c + $"'{o.Name}' ").Trim(' '));
 
             return DeleteObject(id, _validatorsPath, VALIDATOR_PREFIX);
         }

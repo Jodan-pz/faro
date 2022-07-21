@@ -11,8 +11,8 @@ namespace FARO.Services.Decorators.Engine {
             _expressionEvaluator = expressionEvaluator;
         }
 
-        public Task<IDictionary<string, object>> GetValuesAsync(IDecorator decoratorDefinition, ImageOutputRow imageOutputRow, IDataResourceService dataResource) {
-            var kval = decoratorDefinition.Arguments.First();
+        public Task<IDictionary<string, object>> GetValuesAsync(IDecorator decorator, ImageOutputRow imageOutputRow, IDataResourceService dataResource) {
+            var kval = decorator.Arguments.First();
             IDictionary<string, object> ret = new Dictionary<string, object>();
             var value = _expressionEvaluator.EvalExpression(kval.Value, imageOutputRow);
             ret.Add(kval.Name, value);

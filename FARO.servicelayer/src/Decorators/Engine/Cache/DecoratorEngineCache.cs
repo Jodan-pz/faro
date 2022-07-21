@@ -21,9 +21,9 @@ namespace FARO.Services.Decorators.Engine.Cache {
             return value;
         }
 
-        public Task SetAsync(string key, DecoratorCachedValue cachedValue) {
+        public Task SetAsync(string key, DecoratorCachedValue cacheValue) {
             if (_distributedCache == null) return Task.CompletedTask;
-            var valueToCache = SerializeResult(cachedValue);
+            var valueToCache = SerializeResult(cacheValue);
             var opts = new DistributedCacheEntryOptions();
             if (_config?.AbsoluteExpiration != null)
                 opts.SetAbsoluteExpiration(_config.AbsoluteExpiration.Value);

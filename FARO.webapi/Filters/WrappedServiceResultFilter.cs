@@ -1,12 +1,11 @@
 using System.Linq;
-using System.Net.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace FARO.WebApi.Filters {
     class WrappedServiceResultFilter : IResultFilter {
-        public void OnResultExecuted(ResultExecutedContext context) { }
+        public void OnResultExecuted(ResultExecutedContext context) { /* Nothing to do here */}
 
         public void OnResultExecuting(ResultExecutingContext context) {
             if (!context.Cancel) {
@@ -18,9 +17,7 @@ namespace FARO.WebApi.Filters {
                 }
 
                 if (context.Result is ObjectResult controllerResult) {
-                    if (controllerResult.Value is HttpResponseMessage) {
-                        return;
-                    } else if (controllerResult.Value is IWrappedServiceResult) {
+                    if (controllerResult.Value is IWrappedServiceResult) {
                         context.Result = new OkObjectResult(controllerResult.Value);
                     } else {
                         // create result

@@ -14,7 +14,7 @@ namespace FARO.Services {
             _elementFactory = elementFactory ?? throw new ArgumentNullException(nameof(elementFactory));
         }
 
-        public FlowConfiguration Read(FileInfo configurationFile) => Read(File.ReadAllText(configurationFile.FullName));
+        public FlowConfiguration Read(FileInfo configuration) => Read(File.ReadAllText(configuration.FullName));
 
         public FlowConfiguration Read(string configuration) {
             dynamic currentConfig = JsonConvert.DeserializeObject(configuration);

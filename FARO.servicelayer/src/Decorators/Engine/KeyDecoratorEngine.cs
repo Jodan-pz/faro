@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace FARO.Services.Decorators.Engine {
     public class KeyDecoratorEngine : IDecoratorEngine {
-        public Task<IDictionary<string, object>> GetValuesAsync(IDecorator decoratorDefinition, ImageOutputRow imageOutputRow, IDataResourceService dataResource) {
-            var kval = decoratorDefinition.Arguments.First();
+        public Task<IDictionary<string, object>> GetValuesAsync(IDecorator decorator, ImageOutputRow imageOutputRow, IDataResourceService dataResource) {
+            var kval = decorator.Arguments.First();
             var keyName = PrefixHelper.KeyName(kval.Value);
             IDictionary<string, object> ret = new Dictionary<string, object>
             {

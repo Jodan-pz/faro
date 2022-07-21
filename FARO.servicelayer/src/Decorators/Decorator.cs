@@ -29,7 +29,7 @@ namespace FARO.Services.Decorators {
 
         public IEnumerable<ArgumentValue> Arguments => _arguments.Value;
         public DecoratorDefinition Definition => _definition;
-        public string HashKey => Arguments.Aggregate($"{Definition.Id}_DECARGS_", (a, c) => a += "|" + c.Name + "|" + c.Value);
+        public string HashKey => Arguments.Aggregate($"{Definition.Id}_DECARGS_", (a, c) => a + "|" + c.Name + "|" + c.Value);
         public string Map => _map;
         public Task<IDictionary<string, object>> GetValuesAsync(ImageOutputRow imageOutputRow) => _engine?.GetValuesAsync(this, imageOutputRow, _dataResourceService);
 

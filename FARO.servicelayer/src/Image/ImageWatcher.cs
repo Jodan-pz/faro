@@ -56,10 +56,8 @@ namespace FARO.Services {
             if (!_decorators.ContainsKey(image.Id)) return;
             if (_decorators.TryGetValue(image.Id, out var watchers)) {
                 var itemKey = GetItemKey(layer, decorator);
-                if (watchers.ContainsKey(itemKey)) {
-                    if (watchers.TryGetValue(itemKey, out var watcher)) {
-                        watcher.Stop = DateTime.UtcNow;
-                    }
+                if (watchers.ContainsKey(itemKey) && watchers.TryGetValue(itemKey, out var watcher)) {
+                    watcher.Stop = DateTime.UtcNow;
                 }
             }
         }

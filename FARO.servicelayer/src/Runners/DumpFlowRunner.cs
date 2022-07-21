@@ -13,11 +13,11 @@ namespace FARO.Services.Runners {
             _log = log ?? throw new System.ArgumentNullException(nameof(log));
         }
 
-        public WriterStreamInfo Run(FlowItem item, Stream outputStream, IDictionary<string, object> imageArgs, IDictionary<string, object> writerArgs, int? keysLimit) {
+        public WriterStreamInfo Run(FlowItem item, Stream outputStream, IDictionary<string, object> imageArgs, IDictionary<string, object> writerArgs, int? keysLimit = null) {
             throw new System.NotImplementedException();
         }
 
-        public void Run(FlowItem item, IDictionary<string, object> imageArgs, IDictionary<string, object> writerArgs, int? keysLimit) {
+        public void Run(FlowItem item, IDictionary<string, object> imageArgs, IDictionary<string, object> writerArgs, int? keysLimit = null) {
             _log.LogInformation($"Dump - Flow item: {item.Definition.Name}");
             _log.LogInformation(item.RunOptions.ImagePersister?.ToString());
             item.Image?.BuildSchema();

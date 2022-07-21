@@ -6,6 +6,6 @@ namespace FARO.Common {
         KeysIteratorDefinition GetKeysIteratorDefinition(string id);
         DecoratorDefinition GetDecoratorDefinition(string id);
         IDecorator ResolveDecorator(object nameToResolve, IDictionary<string, object> args = null);
-        IKeysIterator ResolveKeysIterator(ImageKeysIteratorsDefinition keysDef);
+        IKeysIterator ResolveKeysIterator(ImageKeysIteratorsDefinition imageKeysDef);
     };
 }

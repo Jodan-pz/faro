@@ -19,9 +19,7 @@ namespace FARO.Services.Aggregators.Engine {
 
         public IImageOutput Aggregate(IAggregator aggregator, IImageOutput imageOutput, IDataResourceService dataResource) {
             if (aggregator == null) return imageOutput;
-
-            if ((imageOutput?.Size ?? 0) == 0) return imageOutput;
-
+            if (imageOutput == null || imageOutput.Size == 0) return imageOutput;
             var config = GetConfig<DefaultAggregatorConfig>(aggregator.Definition.Config);
             var distinctFields = config.Fields.Where(f => f.Function == DefaultAggregatorFunction.Distinct);
             var functionFields = config.Fields.Except(distinctFields);

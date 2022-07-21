@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,14 +55,15 @@ namespace FARO.Services {
             _expressionEvaluator = expressionEvaluator ?? throw new ArgumentNullException(nameof(expressionEvaluator));
         }
 
-        public CheckResultCollection CheckFlowItem(string flowItemId) {
+        public CheckResultCollection CheckFlowItem(string flowId) {
             var ret = new CheckResultCollection();
-            ret.AddInfo(CheckArea.Flow, "Resolving", flowItemId);
-            var flow = _definitionDataService.GetFlowItem(flowItemId);
+            ret.AddInfo(CheckArea.Flow, "Resolving", flowId);
+            var flow = _definitionDataService.GetFlowItem(flowId);
             if (flow == null) {
-                ret.AddError(CheckArea.Flow, "Not found", flowItemId);
+                ret.AddError(CheckArea.Flow, "Not found", flowId);
+            } else {
+                ret.AddInfo(CheckArea.Flow, "Resolved", flow.Name);
             }
-            ret.AddInfo(CheckArea.Flow, "Resolved", flow.Name);
             return ret.AddAll(CheckFlowItem(flow));
         }
 
@@ -284,21 +286,22 @@ namespace FARO.Services {
             }
             if (validator == null) {
                 ret.AddError(CheckArea.Validator, $"Validator engine '{validatorDef.Kind}' cannot be created.", validatorDef.Name);
-            } else {
-                var fields = validator.GetFields();
-                if (fields != null) {
-                    foreach (var validatorField in fields) {
-                        ret.AddInfo(CheckArea.Validator, $"Field: {validatorField.Name}", validatorDef.Name);
-                        if (!outputFields?.Contains(validatorField.Name) ?? false) {
-                            ret.AddError(CheckArea.Validator,
-                                $"Possibly wrong validator definition. '{validatorField.Name}' will not be resolved.",
-                                validatorField.Description ?? validatorField.Name);
-                        } else {
-                            ret.AddInfo(CheckArea.Validator, $"Field found: {validatorField.Name}", validatorDef.Name);
-                        }
+                return ret;
+            }
+            var fields = validator.GetFields();
+            if (fields != null) {
+                foreach (var validatorField in fields) {
+                    ret.AddInfo(CheckArea.Validator, $"Field: {validatorField.Name}", validatorDef.Name);
+                    if (!outputFields?.Contains(validatorField.Name) ?? false) {
+                        ret.AddError(CheckArea.Validator,
+                            $"Possibly wrong validator definition. '{validatorField.Name}' will not be resolved.",
+                            validatorField.Description ?? validatorField.Name);
+                    } else {
+                        ret.AddInfo(CheckArea.Validator, $"Field found: {validatorField.Name}", validatorDef.Name);
                     }
                 }
             }
+
             return ret;
         }
 
@@ -345,7 +348,7 @@ namespace FARO.Services {
         CheckResultCollection CheckDecorator(Dictionary<string, DecoratorDefinition> decoratorDefinitions, (string id, string map, ArgumentValue[] values) decorator, HashSet<string> keyFields, HashSet<string> imageFields) {
             var ret = new CheckResultCollection();
             var hasValues = decorator.values?.Any() ?? false;
-            var values = hasValues ? $" - Values : {decorator.values.Aggregate("", (a, v) => a += $"({v.Name}={v.Value})")}" : "";
+            var values = hasValues ? $" - Values : {decorator.values.Aggregate("", (a, v) => a + $"({v.Name}={v.Value})")}" : "";
             ret.AddInfo(CheckArea.Decorator, $"Map: {decorator.map} {values}", decorator.id);
             if (!decoratorDefinitions.ContainsKey(decorator.id)) {
                 decoratorDefinitions.Add(decorator.id, _definitionDataService.GetDecorator(decorator.id));
@@ -404,7 +407,7 @@ namespace FARO.Services {
         }
 
         static bool IsRefField(object fieldValue, out string refField) {
-            refField = fieldValue?.ToString();
+            refField = fieldValue?.ToString() ?? string.Empty;
             if (refField.StartsWith("{", StringComparison.OrdinalIgnoreCase) && refField.EndsWith("}", StringComparison.OrdinalIgnoreCase)) {
                 refField = refField[1..^1];
                 return true;

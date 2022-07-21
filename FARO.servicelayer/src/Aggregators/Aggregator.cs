@@ -27,7 +27,9 @@ namespace FARO.Services.Aggregators {
         public IImageOutput Aggregate(IImageOutput output) {
             try {
                 var ret = _engine?.Aggregate(this, output, _dataResourceService);
-                ret.OnIterate = output.OnIterate;
+                if (ret is not null) {
+                    ret.OnIterate = output.OnIterate;
+                }
                 output.OnChange?.Invoke(new ChangeOutputEventArgs(this, ImageOutputChangeType.Aggregation, output: ret));
                 return ret;
             } catch (Exception ex) {

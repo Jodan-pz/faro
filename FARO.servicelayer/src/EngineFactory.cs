@@ -45,15 +45,15 @@ namespace FARO.Services {
         };
 
         public IDecorator CreateDecorator(DecoratorDefinition definition,
-                                          IDictionary<string, object> args, string map) =>
+                                          IDictionary<string, object> arguments = null, string map = null) =>
                                           new Decorator(definition,
                                           engine: definition.Source?.Type is not null ? _decoratorEngineFactory(definition.Source.Type) : null,
-                                          args,
+                                          arguments,
                                           map,
                                           new DataResourceService(_appSupport?.DecoratorsDataRootPath));
-        public IKeysIterator CreateKeysIterator(KeysIteratorScopedDefinition scopedDefinition) =>
-                                                new KeysIterator(scopedDefinition,
-                                                engine: scopedDefinition.Definition.Source?.Type is not null ? _keysEngineFactory(scopedDefinition.Definition.Source.Type) : null,
+        public IKeysIterator CreateKeysIterator(KeysIteratorScopedDefinition definition) =>
+                                                new KeysIterator(definition,
+                                                engine: definition.Definition.Source?.Type is not null ? _keysEngineFactory(definition.Definition.Source.Type) : null,
                                                 _expressionEvaluator,
                                                 new DataResourceService(_appSupport?.KeysIteratorsDataRootPath));
 

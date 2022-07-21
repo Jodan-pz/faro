@@ -21,6 +21,6 @@ namespace FARO.Common.Exceptions {
         public NullArgumentValueException(string message, Exception innerException) : base(message, innerException) {
         }
 
-        static string GetValues(IEnumerable<KeyValuePair<string, object>> values) => values?.Aggregate(string.Empty, (a, v) => a += $" {v.Key}:{v.Value},").TrimEnd(',') ?? string.Empty;
+        static string GetValues(IEnumerable<KeyValuePair<string, object>> values) => values?.Aggregate(string.Empty, (a, v) => a + $" {v.Key}:{v.Value},").TrimEnd(',') ?? string.Empty;
     }
 }

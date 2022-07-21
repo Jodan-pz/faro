@@ -68,7 +68,6 @@ namespace FARO.WebApi.Extensions.DependecyInjection {
                         expressionEvaluator.WebApiScoped ? ServiceLifetime.Scoped : ServiceLifetime.Singleton
                         ));
                     break;
-                case ExpressionEvaluatorConfigKind.Default:
                 default:
                     registry.AddSingleton<IExpressionEvaluator, FleeExpressionEvaluator>();
                     break;
@@ -93,7 +92,6 @@ namespace FARO.WebApi.Extensions.DependecyInjection {
                     break;
                 case DefinitionDataServiceConfigKind.None:
                     break;
-                case DefinitionDataServiceConfigKind.Default:
                 default:
                     registry.AddSingleton<IDefinitionDataService, JsonFileDefinitionDataService>();
                     break;

@@ -36,14 +36,16 @@ namespace FARO.Services {
 
         FlowItemDefinition IDefinitionDataService.GetFlowItem(string id) {
             FlowItemDefinition def = null;
+            if (id == null) return def;
             _currentConfiguration.All((fi, _, _) => {
-                if (fi?.Definition.Id == id) def = fi.Definition;
+                if (fi.Definition.Id == id) def = fi.Definition;
             });
             return def;
         }
 
         ImageDefinition IDefinitionDataService.GetImage(string id) {
             ImageDefinition def = null;
+            if (id == null) return def;
             _currentConfiguration.All((fi, _, _) => {
                 if (fi.Image?.Definition.Id == id) def = fi.Image.Definition;
             });
@@ -52,6 +54,7 @@ namespace FARO.Services {
 
         AggregatorDefinition IDefinitionDataService.GetAggregator(string id) {
             AggregatorDefinition def = null;
+            if (id == null) return def;
             _currentConfiguration.All((fi, _, _) => {
                 if (fi.Aggregator?.Definition.Id == id) def = fi.Aggregator.Definition;
             });
@@ -112,7 +115,7 @@ namespace FARO.Services {
             throw new NotImplementedException();
         }
 
-        public ValidatorDefinition CreateValidator(ValidatorDefinition aggregator) {
+        public ValidatorDefinition CreateValidator(ValidatorDefinition validator) {
             throw new NotImplementedException();
         }
 
@@ -229,7 +232,7 @@ namespace FARO.Services {
             throw new NotImplementedException();
         }
 
-        public ValidatorDefinition UpdateValidator(string id, ValidatorDefinition aggregator) {
+        public ValidatorDefinition UpdateValidator(string id, ValidatorDefinition validator) {
             throw new NotImplementedException();
         }
 

@@ -106,9 +106,6 @@ namespace FARO.Services.ImagePersister.Model {
                     .HasConstraintName("Rows_FK");
             });
 
-            OnModelCreatingPartial(modelBuilder);
         }
-
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

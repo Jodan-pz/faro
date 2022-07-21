@@ -20,10 +20,12 @@ namespace FARO.Common.Exceptions {
             } else {
                 sb.AppendLine("-=== KEYS ITERATION ERROR DETAILS ===-");
             }
-            var keySource = sb.Length == 0 ? level == null ? "[KEYS]" : $"[KEYS #{level}]" : $"[KEYS #{level?.ToString() ?? "MAIN"}]";
-            sb.AppendLine($"{keySource} {keysIterator.Definition.Name ?? "Unknown"}");
+
+            var keysCaption = level == null ? "[KEYS]" : $"[KEYS #{level}]";
+            var keysSource = sb.Length == 0 ? keysCaption : $"[KEYS #{level?.ToString() ?? "MAIN"}]";
+            sb.AppendLine($"{keysSource} {keysIterator.Definition.Name ?? "Unknown"}");
             if (keysIterator.Definition.Arguments?.Any() ?? false) {
-                sb.AppendLine($"{keySource} ARGUMENTS:");
+                sb.AppendLine($"{keysSource} ARGUMENTS:");
                 foreach (var arg in keysIterator.Definition.Arguments) {
                     var argName = keysIterator.GetArgumentName(arg.Name);
                     var argValue = args.ContainsKey(argName) ? args[argName] : string.Empty;
@@ -32,9 +34,9 @@ namespace FARO.Common.Exceptions {
                 }
             }
             if (isSourceError) {
-                sb.AppendLine($"{keySource} MESSAGE: {innerException.Message}");
+                sb.AppendLine($"{keysSource} MESSAGE: {innerException.Message}");
                 sb.AppendLine(new string('-', 80));
-                sb.AppendLine($"{keySource} STACK: {innerException.Demystify()}");
+                sb.AppendLine($"{keysSource} STACK: {innerException.Demystify()}");
                 sb.AppendLine(new string('-', 80));
             }
             return sb.ToString();

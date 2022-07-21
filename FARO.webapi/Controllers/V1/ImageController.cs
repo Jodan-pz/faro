@@ -138,7 +138,7 @@ namespace FARO.WebApi.Controllers.V1 {
                 var validationErrorMessage = new StringBuilder();
                 validationErrorMessage.AppendLine($"Error building image '{imageBuildDefinition.Image.Name}' - {vex.Message} ");
                 if (vex.Result.Any()) {
-                    foreach (var err in vex.Result) { //.Where(e => e.Context == null || !e.Context.Contains(ValidatorMessageDefaultContext.GENERIC_ERROR_RAW_VALUES))) {
+                    foreach (var err in vex.Result) {
                         if (err.Context == ValidatorMessageDefaultContext.GENERIC_ERROR_RAW_VALUES)
                             validationErrorMessage.AppendLine($"[{err.Key}] {err.Message[..80]}");
                         else
