@@ -1,38 +1,6 @@
 {
     "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "Sonar (start)",
-            "type": "shell",
-            "command": "dotnet",
-            "args": [
-                "sonarscanner",
-                "begin",
-                "/k:\"FARO\"",
-                "/d:sonar.scm.provider=git",
-                "/d:sonar.host.url=\"http://localhost:9000\"",
-                "/d:sonar.login=\"sqp_54b4c1a89b0064b5b2ef90fee2f1f1fa2f29be4e\""
-                // "/d:sonar.login=\"7ff50978a14cacd16d465613acada6a24c76e999\""
-            ],
-            "problemMatcher": []
-        },
-        {
-            "label": "Sonar",
-            "type": "shell",
-            "dependsOn": [
-                "Sonar (start)",
-                "build"
-            ],
-            "dependsOrder": "sequence",
-            "command": "dotnet",
-            "args": [
-                "sonarscanner",
-                "end",
-                // "/d:sonar.login=\"7ff50978a14cacd16d465613acada6a24c76e999\"",
-                "/d:sonar.login=\"sqp_54b4c1a89b0064b5b2ef90fee2f1f1fa2f29be4e\""
-            ],
-            "problemMatcher": []
-        },
+    "tasks": [        
         {
             "label": "build addons",
             "command": "dotnet",
