@@ -95,7 +95,7 @@ namespace FARO.WebApi.Controllers.V1 {
                 var validationErrorMessage = new StringBuilder();
                 validationErrorMessage.AppendLine($"Error running flow '{runDefinition.FlowItem.Name}' - {vex.Message} ");
                 if (vex.Result.Any()) {
-                    foreach (var err in vex.Result) { 
+                    foreach (var err in vex.Result) {
                         if (err.Context == ValidatorMessageDefaultContext.GENERIC_ERROR_RAW_VALUES)
                             validationErrorMessage.AppendLine($"[{err.Key}] {err.Message[..80]}");
                         else

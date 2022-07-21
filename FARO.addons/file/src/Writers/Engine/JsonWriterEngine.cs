@@ -50,7 +50,7 @@ namespace FARO.Addons.File.Writers.Engine {
             var writerEncoding = GetEncoding(cfg?.Encoding);
 
             if (cfg?.Fields?.Any() ?? false) {
-                var outputWriter = new FormatStreamWriter(writerStream.Stream, writerEncoding, writerCulture);
+                var outputWriter = new FormatStreamWriter(writerStream.InnerStream, writerEncoding, writerCulture);
                 var rows = new List<IDictionary<string, object?>>();
                 output?.IterateRows(row => rows.Add(CreateRow(cfg, writerCulture, row)));
                 outputWriter.WriteLine(JsonConvert.SerializeObject(rows, Formatting.Indented));

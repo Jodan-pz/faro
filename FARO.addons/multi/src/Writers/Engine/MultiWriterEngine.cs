@@ -49,8 +49,8 @@ namespace FARO.Addons.Multi.Writers.Engine {
 
         public WriterStreamInfo WriteAllToStream(IWriter writer, IImageOutput output, WriterStream writerStream, IDataResourceService dataResource, IDictionary<string, object>? args = null) {
             var cfg = writer.Definition.Config?.As<MultiWriterConfig>();
-            if (cfg?.Writers is null || !(writerStream.Stream?.CanWrite ?? false)) return writerStream.Info;
-            using var zipArchive = cfg.StreamZip ? new ZipArchive(writerStream.Stream, ZipArchiveMode.Create, true) : null;
+            if (cfg?.Writers is null || !(writerStream.InnerStream?.CanWrite ?? false)) return writerStream.Info;
+            using var zipArchive = cfg.StreamZip ? new ZipArchive(writerStream.InnerStream, ZipArchiveMode.Create, true) : null;
 
             foreach (var writerMap in cfg.Writers) {
                 var writerDef = _definitionDataService.GetWriter(writerMap.Id);

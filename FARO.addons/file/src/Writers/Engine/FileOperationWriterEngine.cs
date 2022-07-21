@@ -22,7 +22,7 @@ namespace FARO.Addons.File.Writers.Engine {
 
         public WriterStreamInfo WriteAllToStream(IWriter writer, IImageOutput output, WriterStream writerStream, IDataResourceService dataResource, IDictionary<string, object>? args = null) {
             DoOperation(writer, output);
-            writerStream.Stream.Close();
+            writerStream.InnerStream.Close();
             return writerStream.Info;
         }
 

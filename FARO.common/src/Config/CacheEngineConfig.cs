@@ -34,8 +34,8 @@ namespace FARO.Common {
 
         public bool Is<T>(out T result) where T : CacheEngineConfig {
             result = default;
-            if (this is T t) {
-                result = t;
+            if (GetType().IsAssignableTo(typeof(T))) {
+                result = (T)this;
                 return true;
             }
             return false;

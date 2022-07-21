@@ -15,7 +15,7 @@ namespace FARO.Addons.Mail.Writers.Engine {
 
         public WriterStreamInfo WriteAllToStream(IWriter writer, IImageOutput output, WriterStream writerStream, IDataResourceService dataResource, IDictionary<string, object>? args = null) {
             var cfg = writer.Definition.Config?.As<MailWriterConfig>();
-            if (cfg is null || !(writerStream.Stream?.CanRead ?? false)) return writerStream.Info;
+            if (cfg is null || !(writerStream.InnerStream?.CanRead ?? false)) return writerStream.Info;
 
             (var to, var subject, var body, var cc, var bcc, var attachFileName) = GetArgsValue(writerStream, args);
 
@@ -24,15 +24,15 @@ namespace FARO.Addons.Mail.Writers.Engine {
                 if (cc is not null) message.CC.Add(cc);
                 if (bcc is not null) message.Bcc.Add(bcc);
 
-                writerStream.Stream.Seek(0, SeekOrigin.Begin);
-                var attach = new Attachment(writerStream.Stream, attachFileName, writerStream.Info.ContentType);
+                writerStream.InnerStream.Seek(0, SeekOrigin.Begin);
+                var attach = new Attachment(writerStream.InnerStream, attachFileName, writerStream.Info.ContentType);
                 message.Attachments.Add(attach);
 
                 using var smtp = new SmtpClient(cfg.Server.Host, cfg.Server.Port);
                 smtp.Send(message);
             };
 
-            writerStream.Stream.Close();
+            writerStream.InnerStream.Close();
             return writerStream.Info;
         }
 

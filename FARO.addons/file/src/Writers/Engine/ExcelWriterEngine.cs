@@ -54,7 +54,7 @@ namespace FARO.Addons.File.Writers.Engine {
             var templateFile = dataResource.GetResourcePath(cfg?.Template);
             if (!FileIO.Exists(templateFile)) throw new FileNotFoundException("Cannot find template!", cfg?.Template);
             SpreadsheetDocument? doc = null;
-            if (writerStream?.Stream is null) {
+            if (writerStream?.InnerStream is null) {
                 if (fileOut is not null) {
                     if (FileIO.Exists(fileOut)) FileIO.Delete(fileOut);
                     var outputFile = new FileInfo(templateFile).CopyTo(fileOut, true);
@@ -62,8 +62,8 @@ namespace FARO.Addons.File.Writers.Engine {
                 }
             } else {
                 var templateData = FileIO.ReadAllBytes(templateFile);
-                writerStream.Stream.Write(templateData, 0, templateData.Length);
-                doc = SpreadsheetDocument.Open(writerStream.Stream, true);
+                writerStream.InnerStream.Write(templateData, 0, templateData.Length);
+                doc = SpreadsheetDocument.Open(writerStream.InnerStream, true);
             }
             if (doc == null) throw new NullReferenceException($"Cannot initialize excel document from template file: {cfg?.Template}");
             using (var excelFile = doc) {
@@ -83,7 +83,7 @@ namespace FARO.Addons.File.Writers.Engine {
                     excelFile.Save();
                 }
             }
-            writerStream?.Stream?.Flush();
+            writerStream?.InnerStream?.Flush();
             return new WriterStreamInfo { ContentType = MIME_TYPE, FileName = fileOut, FileExtension = EXTENSION };
         }
 

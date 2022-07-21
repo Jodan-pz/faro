@@ -42,7 +42,7 @@ namespace FARO.Addons.Stream.Writers.Engine {
 
         public WriterStreamInfo WriteAllToStream(IWriter writer, IImageOutput output, WriterStream writerStream, IDataResourceService dataResource, IDictionary<string, object>? args = null) {
             var cfg = writer.Definition.Config?.As<StreamableWriterConfig>();
-            if (cfg is null || !(writerStream.Stream?.CanWrite ?? false)) return writerStream.Info;
+            if (cfg is null || !(writerStream.InnerStream?.CanWrite ?? false)) return writerStream.Info;
             var rootDef = _definitionDataService.GetWriter(cfg.Chain.Root.Id);
             var rootMappedArgs = MapArgs(cfg.Chain.Root.Args, args);
             var rootWriter = _engineFactory.CreateWriter(rootDef);

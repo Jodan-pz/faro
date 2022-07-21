@@ -51,7 +51,7 @@ namespace FARO.Addons.File.Writers.Engine {
             var delimiter = cfg?.Delim ?? DEFAULT_DELIM_CHAR;
 
             if (cfg?.Fields?.Any() ?? false) {
-                var outputWriter = new FormatStreamWriter(writerStream.Stream, writerEncoding, writerCulture);
+                var outputWriter = new FormatStreamWriter(writerStream.InnerStream, writerEncoding, writerCulture);
                 if (cfg.IncludeHeader ?? false) outputWriter.WriteLine(cfg.Fields.Aggregate(string.Empty, (a, c) => a += (c.Label ?? c.Name) + delimiter).TrimEnd(delimiter));
                 output?.IterateRows(row => outputWriter.WriteLine(CreateRow(cfg.Fields, delimiter, writerCulture, row)));
                 outputWriter.Flush();
